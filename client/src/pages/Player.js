@@ -34,11 +34,12 @@ export default function Player() {
               <h2>{answer}</h2>
             </Card.Body>
           </Card>
-          <Card>
-            <Card.Body>
-              <h2>{answer}</h2>
-            </Card.Body>
-          </Card>
+          <Button className="#out-button" type="button" variant="light" size="lg">
+          {answer}
+          </Button>
+          <Button className="#out-button" type="button" variant="light" size="lg">
+          {answer}
+          </Button>
         </Col>
       </Row>
       <Card fixed="bottom">

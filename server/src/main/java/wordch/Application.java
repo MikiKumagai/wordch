@@ -1,3 +1,4 @@
+package wordch;
 
 
 import org.springframework.boot.SpringApplication;

@@ -1,6 +1,7 @@
 import { useForm, FormProvider } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { Form, Button, Card, Container, Stack } from 'react-bootstrap';
+import Api from './../common/Api'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -8,7 +9,10 @@ export default function Login() {
   const { register, handleSubmit } = hookForm;
 
   const onSubmit = () => {
-    navigate('/home')
+    Api.post('http://localhost:8080/api/login', hookForm.getValues(), (response) => {
+      console.log(response)
+      navigate('/home')
+    })
   }
   
   return (
