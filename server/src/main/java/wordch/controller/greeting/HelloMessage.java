@@ -1,4 +1,4 @@
-package wordch.controller.game;
+package wordch.controller.greeting;
 
 public class HelloMessage {
   private String name;

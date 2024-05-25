@@ -4,28 +4,25 @@ import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
 export default function Landing() {
-  const [isConnected, setIsConnected] = useState(false);
   const [stompClient, setStompClient] = useState(null);
+  const YOUR_TOKEN = 'YOUR_TOKEN';
 
   const connect = () => {
-    const socket = new SockJS('http://localhost:8080/gs-guide-websocket');
+    const socket = new SockJS('http://localhost:8080/gs-guide-websocket', {}, 
+    { headers: { 'Authorization': 'Bearer ' + YOUR_TOKEN } });
     const client = new Client({
       webSocketFactory: () => socket,
       debug: (str) => {
         console.log(str);
       }
     });
-
     client.onConnect = (frame) => {
       console.log('Connected: ' + frame);
-      setIsConnected(true);
     };
-
     client.onStompError = (frame) => {
       console.error('Broker reported error: ' + frame.headers['message']);
       console.error('Additional details: ' + frame.body);
     };
-
     client.activate();
     setStompClient(client);
   };
@@ -34,41 +31,15 @@ export default function Landing() {
     if (stompClient !== null) {
       stompClient.deactivate();
     }
-    setIsConnected(false);
     console.log("Disconnected");
   };
-
-
-
-
-  // var stompClient = null;
-
-  // const connect = () => {
-    // var socket = new SockJS('http://localhost:8080/gs-guide-websocket');
-    // stompClient = Stomp.over(socket);
-    // stompClient.connect({}, function (frame) {
-    //     setIsConnected(true);
-    //     console.log('Connected: ' + frame);
-    //     stompClient.subscribe('/topic/greetings', function (greeting) {
-    //         showGreeting(JSON.parse(greeting.body).content);
-    //     });
-    // });
-  // }
-
-  // const disconnect =()=> {
-  //     if (stompClient !== null) {
-  //         stompClient.disconnect();
-  //     }
-  //     setIsConnected(false)
-  //     console.log("Disconnected");
-  // }
   
   return (
     <Container>
       <Card>
         <Card.Body>
-        <Button type="submit" variant="secondary" disabled={isConnected} onChange={()=>connect()}>Connect</Button>
-        <Button type="submit" variant="secondary"disabled={!isConnected} onChange={()=>disconnect()}>Disconnect</Button>
+        <Button type="submit" variant="secondary"  onClick={()=>connect()}>Connect</Button>
+        <Button type="submit" variant="secondary" onClick={()=>disconnect()}>Disconnect</Button>
 
           {/* <FormProvider {...hookForm}>
             <form onSubmit={handleSubmit(onSubmit)}>
