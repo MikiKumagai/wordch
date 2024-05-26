@@ -15,7 +15,7 @@ export default function Home() {
           player: playerAmount,
           dealer: dealerAmount
         };
-        stompClient.send('/app/role', {}, JSON.stringify(data));
+        stompClient.publish({ destination: '/app/role', body: JSON.stringify(data) });
       }
       const subscription = stompClient.subscribe('/role_amount', (roleForm) => {
         const data = JSON.parse(roleForm.body);
@@ -36,7 +36,7 @@ export default function Home() {
       dealer: dealerAmount
     };
     if (stompClient && stompClient.connected) {
-      stompClient.send('/app/role', {}, JSON.stringify(data));
+      stompClient.publish({ destination: '/app/role', body: JSON.stringify(data) });
     }
   };
 
@@ -47,7 +47,7 @@ export default function Home() {
       dealer: dealerAmount
     };
     if (stompClient && stompClient.connected) {
-      stompClient.send('/app/role', {}, JSON.stringify(data));
+      stompClient.publish({ destination: '/app/role', body: JSON.stringify(data) });
     }
   };
 

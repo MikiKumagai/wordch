@@ -32,7 +32,7 @@ const useStompClient = (url, token) => {
     });
 
     return client;
-  }, [url, token]);
+  }, [token]);
 
   const connect = useCallback(() => {
     console.log('Attempting to connect...');
