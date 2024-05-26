@@ -4,7 +4,7 @@ import { useStomp } from './../StompClientContext';
 
 export default function Landing() {
   const navigate = useNavigate();
-  const { connect, disconnect, connected, stompClient } = useStomp();
+  const { connect, disconnect, connected } = useStomp();
 
   const onClick = () => { 
     connect();

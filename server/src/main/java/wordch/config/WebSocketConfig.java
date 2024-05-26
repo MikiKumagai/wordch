@@ -20,15 +20,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/gs-guide-websocket")
-                .setAllowedOrigins("http://localhost:3000")
                 .withSockJS();
     }
 
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
-        registration.setSendTimeLimit(15 * 1000) // メッセージ送信のタイムアウトを15秒に設定
-                    .setSendBufferSizeLimit(512 * 1024) // メッセージ送信のバッファサイズを512KBに設定
-                    .setMessageSizeLimit(128 * 1024); // メッセージサイズの上限を128KBに設定
+        registration.setSendTimeLimit(15 * 1000) // タイムアウト(秒)
+                    .setSendBufferSizeLimit(512 * 1024) // バッファサイズ(KB)
+                    .setMessageSizeLimit(128 * 1024); // サイズ上限(KB)
     }
 
 }

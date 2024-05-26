@@ -5,7 +5,7 @@ import { useStomp } from './../StompClientContext';
 export default function Home() {
   const [playerAmount, setPlayerAmount] = useState(0);
   const [dealerAmount, setDealerAmount] = useState(0);
-  const { connect, disconnect, connected, stompClient } = useStomp();
+  const { connected, stompClient } = useStomp();
 
   useEffect(() => {
     if (connected) {
