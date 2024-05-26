@@ -9,40 +9,25 @@ export default function Home() {
 
   useEffect(() => {
     if (connected) {
-      if (playerAmount === 0 && dealerAmount === 0) {
-        const data = {
-          role: 'player',
-          player: playerAmount,
-          dealer: dealerAmount
-        };
-        stompClient.publish({ destination: '/app/role', body: JSON.stringify(data) });
-      }
-      const subscription = stompClient.subscribe('/role_amount', (roleAmount) => {
+      const subscription = stompClient.subscribe('/app/role_amount', (roleAmount) => {
+        console.log('subscription callback', roleAmount);
         const data = JSON.parse(roleAmount.body);
+        if(data.player !==null){
         setPlayerAmount(data.player);
+        }
+        if(data.dealer !==null){
         setDealerAmount(data.dealer);
+        }
       });
-
       return () => {
         if (subscription) subscription.unsubscribe();
       };
     }
-  }, [connected, stompClient, playerAmount, dealerAmount]);
+  }, [stompClient, playerAmount, dealerAmount, connected]);
 
-  const clickPlayer = () => {
+  const clickRole = (role) => {
     const data = {
-      role: 'player',
-      player: playerAmount,
-      dealer: dealerAmount
-    };
-    if (stompClient && stompClient.connected) {
-      stompClient.publish({ destination: '/app/role', body: JSON.stringify(data) });
-    }
-  };
-
-  const clickDealer = () => {
-    const data = {
-      role: 'dealer',
+      role: role,
       player: playerAmount,
       dealer: dealerAmount
     };
@@ -55,7 +40,7 @@ export default function Home() {
     <Container>
       <Row>
         <Col>
-          <Button variant='light' type="button" onClick={clickPlayer}>player</Button>
+          <Button variant='light' type="button" onClick={()=>clickRole("player")}>player</Button>
         </Col>
         <Col>
           <h1>player: {playerAmount}</h1>
@@ -63,7 +48,7 @@ export default function Home() {
       </Row>
       <Row>
         <Col>
-          <Button variant='light' type="button" onClick={clickDealer}>dealer</Button>
+          <Button variant='light' type="button" onClick={()=>clickRole("dealer")}>dealer</Button>
         </Col>
         <Col>
           <h1>dealer: {dealerAmount}</h1>
