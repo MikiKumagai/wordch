@@ -1,18 +1,21 @@
 import { Button, Card, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import useStompClient from './../common/useStompClient';
+import { useStomp } from './../StompClientContext';
 
 export default function Landing() {
   const navigate = useNavigate();
-  const YOUR_TOKEN = 'YOUR_TOKEN';
-  const { connect, disconnect, connected } = 
-  useStompClient('http://localhost:8080/gs-guide-websocket', YOUR_TOKEN);
+  const { connect, disconnect, connected, stompClient } = useStomp();
+
+  const onClick = () => { 
+    connect();
+    navigate('/home');
+  }
 
   return (
     <Container>
       <Card>
         <Card.Body>
-          <Button type="button" variant="secondary" onClick={() => { connect(); navigate('/home'); }}>
+          <Button type="button" variant="secondary" onClick={() => onClick()}>
             Connect
           </Button>
           <Button type="button" variant="secondary" onClick={() => disconnect()}>

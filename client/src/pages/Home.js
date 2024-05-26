@@ -1,27 +1,54 @@
 import { useEffect, useState } from 'react';
 import { Button, Container, Row, Col } from 'react-bootstrap';
-import useStompClient from './../common/useStompClient';
+import { useStomp } from './../StompClientContext';
 
 export default function Home() {
   const [playerAmount, setPlayerAmount] = useState(0);
   const [dealerAmount, setDealerAmount] = useState(0);
-  const { connect, disconnect, connected, stompClient } = useStompClient('http://localhost:8080/gs-guide-websocket', 'YOUR_TOKEN');
+  const { connect, disconnect, connected, stompClient } = useStomp();
 
   useEffect(() => {
-    connect();
-    return () => {
-      disconnect();
-    };
-  }, [connect, disconnect]);
+    if (connected) {
+      if (playerAmount === 0 && dealerAmount === 0) {
+        const data = {
+          role: 'player',
+          player: playerAmount,
+          dealer: dealerAmount
+        };
+        stompClient.send('/app/role', {}, JSON.stringify(data));
+      }
+      const subscription = stompClient.subscribe('/role_amount', (roleForm) => {
+        const data = JSON.parse(roleForm.body);
+        setPlayerAmount(data.player);
+        setDealerAmount(data.dealer);
+      });
+
+      return () => {
+        if (subscription) subscription.unsubscribe();
+      };
+    }
+  }, [connected, stompClient, playerAmount, dealerAmount]);
 
   const clickPlayer = () => {
-    stompClient.send('/app/hello', {}, JSON.stringify({ 'name': 'player' }));
-    setPlayerAmount(playerAmount + 1);
+    const data = {
+      role: 'player',
+      player: playerAmount,
+      dealer: dealerAmount
+    };
+    if (stompClient && stompClient.connected) {
+      stompClient.send('/app/role', {}, JSON.stringify(data));
+    }
   };
 
   const clickDealer = () => {
-    stompClient.send('/app/hello', {}, JSON.stringify({ 'name': 'dealer' }));
-    setDealerAmount(dealerAmount + 1);
+    const data = {
+      role: 'dealer',
+      player: playerAmount,
+      dealer: dealerAmount
+    };
+    if (stompClient && stompClient.connected) {
+      stompClient.send('/app/role', {}, JSON.stringify(data));
+    }
   };
 
   return (

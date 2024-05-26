@@ -16,4 +16,5 @@ public class GreetingController {
               + " : "
               + HtmlUtils.htmlEscape(message.getMessage()) );
   }
+
 }
