@@ -17,8 +17,8 @@ export default function Home() {
         };
         stompClient.publish({ destination: '/app/role', body: JSON.stringify(data) });
       }
-      const subscription = stompClient.subscribe('/role_amount', (roleForm) => {
-        const data = JSON.parse(roleForm.body);
+      const subscription = stompClient.subscribe('/role_amount', (roleAmount) => {
+        const data = JSON.parse(roleAmount.body);
         setPlayerAmount(data.player);
         setDealerAmount(data.dealer);
       });
