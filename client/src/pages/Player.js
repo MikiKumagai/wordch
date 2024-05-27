@@ -1,17 +1,37 @@
 import { useForm, FormProvider } from 'react-hook-form'
-import { useState } from 'react'
 import { Form, Button, Card, Container, Row, Col, Stack } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import { useStomp } from './../StompClientContext';
 
 export default function Player() {
   const hookForm = useForm()
   const { register, handleSubmit } = hookForm;
   const [answer, setAnswer] = useState('')
   const [pastAnswers, setPastAnswers] = useState([])
+  const { connected, stompClient } = useStomp();
+
+  useEffect(() => {
+    if (connected) {
+      const subscription = stompClient.subscribe('/topic/answer', (newAnswer) => {
+        const data = JSON.parse(newAnswer.body);
+        console.log(data);
+        setAnswer(data.answer)
+        setPastAnswers([...pastAnswers, data.answer])
+      });
+      return () => {
+        if (subscription) subscription.unsubscribe();
+      };
+    }
+  }, [stompClient, connected, answer]);
 
   const onSubmit = () => {
     const formValue = hookForm.getValues()
-    setAnswer(formValue.answer)
-    setPastAnswers([...pastAnswers, answer])
+    const data = {
+      answer: formValue.answer
+    };
+    if (stompClient && stompClient.connected) {
+      stompClient.publish({ destination: '/app/answer', body: JSON.stringify(data) });
+    }
     hookForm.reset()
   }
 
