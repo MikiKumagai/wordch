@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import { useStomp } from './../StompClientContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   const [playerAmount, setPlayerAmount] = useState(0);
   const [dealerAmount, setDealerAmount] = useState(0);
   const { connected, stompClient } = useStomp();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (connected) {
-      const subscription = stompClient.subscribe('/app/role_amount', (roleAmount) => {
-        console.log('subscription callback', roleAmount);
+      const subscription = stompClient.subscribe('/topic/role_amount', (roleAmount) => {
         const data = JSON.parse(roleAmount.body);
         if(data.player !==null){
         setPlayerAmount(data.player);
@@ -36,6 +37,10 @@ export default function Home() {
     }
   };
 
+  const startGame = () => {
+    navigate('/player');
+  }
+
   return (
     <Container>
       <Row>
@@ -57,6 +62,12 @@ export default function Home() {
       <div>
         Connection status: {connected ? 'Connected' : 'Disconnected'}
       </div>
+
+      <Row>
+        <Col>
+          <Button variant='light' type="button" onClick={()=>startGame()}>game start!</Button>
+        </Col>
+      </Row>
     </Container>
   );
 }
