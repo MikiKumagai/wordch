@@ -7,6 +7,7 @@ import { GameContext } from "../GameProvider";
 export default function Home() {
   const [player, setPlayer] = useState([]);
   const [dealer, setDealer] = useState("");
+  const [role, setRole] = useState("");
   const { connected, stompClient } = useStomp();
   const { user } = useContext(GameContext);
   const navigate = useNavigate();
@@ -15,9 +16,13 @@ export default function Home() {
     if (connected) {
       const subscription = stompClient.subscribe('/topic/role_amount', (roleAmount) => {
         const data = JSON.parse(roleAmount.body);
-        console.log(data);
-          setPlayer(data.playerList)
-          setDealer(data.dealer)
+        setPlayer(data.playerList)
+        setDealer(data.dealer)
+        if(user === data.dealer){
+          setRole("dealer")
+        }else if(data.playerList.includes(user)){
+          setRole("player")
+        }
       });
       return () => {
         if (subscription) subscription.unsubscribe();
@@ -37,12 +42,12 @@ export default function Home() {
     }
   };
 
-  const startGameAsPlayer = () => {
-    navigate('/player');
-  }
-
-  const startGameAsDealer = () => {
-    navigate('/dealer');
+  const startGame = () => {
+    if(role === "dealer"){
+      navigate('/dealer');
+    }else if(role === "player"){
+      navigate('/player');
+    }else{}
   }
 
   return (
@@ -70,10 +75,7 @@ export default function Home() {
 
       <Row>
         <Col>
-          <Button variant='light' type="button" onClick={()=>startGameAsPlayer()}>game start!</Button>
-        </Col>
-        <Col>
-          <Button variant='light' type="button" onClick={()=>startGameAsDealer()}>game start!</Button>
+          <Button variant='light' type="button" onClick={()=>startGame()}>game start!</Button>
         </Col>
       </Row>
     </Container>
