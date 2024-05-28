@@ -10,11 +10,11 @@ const useStompClient = (url, token) => {
       connectHeaders: {
         'Authorization': 'Bearer ' + token
       },
-      debug: (str) => {
-        console.log('STOMP Debug:', str);
-      },
+      // debug: (str) => {
+      //   console.log('STOMP Debug:', str);
+      // },
       onConnect: (frame) => {
-        console.log('onConnect: ' + frame);
+        // console.log('onConnect: ' + frame);
         setConnected(true);
       },
       onStompError: (frame) => {
@@ -24,7 +24,7 @@ const useStompClient = (url, token) => {
         client.deactivate();
       },
       onDisconnect: () => {
-        console.log('onDisconnect');
+        // console.log('onDisconnect');
         setConnected(false);
       },
       heartbeatIncoming: 0,

@@ -3,8 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import Landing from './pages/Landing';
-import Player from './pages/Player';
-import Dealer from './pages/Dealer';
+import { Player } from './pages/Player';
+import { Dealer } from './pages/Dealer';
 
 function App() {
   return (

@@ -1,15 +1,15 @@
 import { useForm, FormProvider } from 'react-hook-form'
 import { Form, Button, Card, Container, Row, Col, Stack } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
-import { useStomp } from './../common/components/StompClientContext';
+import { useEffect } from 'react';
+import { useStomp } from '../StompClientContext';
+import { useContext } from "react";
+import { GameContext } from "../GameProvider";
 
-export default function Player() {
+export const Player = () => {
   const hookForm = useForm()
   const { register, handleSubmit } = hookForm;
-  const [answer, setAnswer] = useState([])
-  const [looser, setLooser] = useState([])
-  const [winner, setWinner] = useState('初期値1')
-  const [challenger, setChallenger] = useState('初期値2')
+  const { answer, setAnswer, looser, setLooser, winner, setWinner, challenger, setChallenger } 
+  = useContext(GameContext);
   const { connected, stompClient } = useStomp();
 
   useEffect(() => {
