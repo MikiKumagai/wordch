@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { useStomp } from '../StompClientContext';
 import { GameContext } from "../GameProvider";
 
-export const Dealer = () => {
+export const Player = () => {
   const hookForm = useForm()
   const { register, handleSubmit } = hookForm;
   const { answer, looser, winner, challenger } 
@@ -25,18 +25,6 @@ export const Dealer = () => {
     hookForm.reset()
   }
 
-  /**
-   * 勝者を送信する
-   */
-  const match = (newWinner) => {
-    const data = {
-      winner: newWinner
-    };
-    if (stompClient && stompClient.connected) {
-      stompClient.publish({ destination: '/app/winner', body: JSON.stringify(data) });
-    }
-  }
-
   return (
     <Container>
       <Row>
@@ -53,12 +41,9 @@ export const Dealer = () => {
         <Col>
         <Card>
             <Card.Body>
-              <Button type="button" variant="secondary" size="lg" onClick={()=>match(winner)}>
-              {winner}
-              </Button>
-              <Button type="button" variant="secondary" size="lg" onClick={()=>match(challenger)}>
-              {challenger}
-              </Button>
+              <p>{winner}</p>
+              <p>VS</p>
+              <p>{challenger}</p>
             </Card.Body>
           </Card>
           <Card>

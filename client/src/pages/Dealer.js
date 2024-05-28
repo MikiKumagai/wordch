@@ -12,20 +12,6 @@ export const Dealer = () => {
   const { stompClient } = useStomp();
 
   /**
-   * 回答を送信する
-   */
-  const onSubmit = () => {
-    const formValue = hookForm.getValues()
-    const data = {
-      answer: formValue.answer
-    };
-    if (stompClient && stompClient.connected) {
-      stompClient.publish({ destination: '/app/answer', body: JSON.stringify(data) });
-    }
-    hookForm.reset()
-  }
-
-  /**
    * 勝者を送信する
    */
   const match = (newWinner) => {
@@ -39,6 +25,15 @@ export const Dealer = () => {
 
   return (
     <Container>
+      <Row>
+        <Col>
+          <Card>
+            <Card.Body>
+              <h3>theme</h3>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
       <Row>
         <Col>
           <Card className="overflow-scroll" id='card-looser'>
@@ -71,18 +66,6 @@ export const Dealer = () => {
           </Card>
         </Col>
       </Row>
-      <Card fixed="bottom">
-        <Card.Body>
-          <FormProvider {...hookForm}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Stack direction="horizontal" gap={3}>
-                <Form.Control {...register("answer")} type="text" className="me-auto" placeholder="answer" />
-                <Button type="submit" variant="secondary">Submit</Button>
-              </Stack>
-            </form>
-          </FormProvider>
-        </Card.Body>
-      </Card>
     </Container>
   );
 }
