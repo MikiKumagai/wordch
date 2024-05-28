@@ -1,29 +1,46 @@
 import { useForm, FormProvider } from 'react-hook-form'
 import { Form, Button, Card, Container, Row, Col, Stack } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-import { useStomp } from './../StompClientContext';
+import { useStomp } from './../common/components/StompClientContext';
 
 export default function Player() {
   const hookForm = useForm()
   const { register, handleSubmit } = hookForm;
-  const [answer, setAnswer] = useState('')
-  const [pastAnswers, setPastAnswers] = useState([])
+  const [answer, setAnswer] = useState([])
+  const [looser, setLooser] = useState([])
+  const [winner, setWinner] = useState('初期値1')
+  const [challenger, setChallenger] = useState('初期値2')
   const { connected, stompClient } = useStomp();
 
   useEffect(() => {
     if (connected) {
+      // 新しい回答を受信し、回答をストックする
       const subscription = stompClient.subscribe('/topic/answer', (newAnswer) => {
         const data = JSON.parse(newAnswer.body);
-        console.log(data);
-        setAnswer(data.answer)
-        setPastAnswers([...pastAnswers, data.answer])
+        setAnswer((prevAnswer) => [...prevAnswer, data.answer]);
+      });
+      // 新しい勝者を受信し、敗者と新しい勝者と挑戦者をセットする
+      const subscription2 = stompClient.subscribe('/topic/winner', (newWinner) => {
+        const data = JSON.parse(newWinner.body);
+        if(data.winner === winner){
+          setLooser((prevLooser) => [...prevLooser, challenger]);
+        }else{
+          setWinner(data.winner)
+          setLooser((prevLooser) => [...prevLooser, winner]);
+        }
+        setChallenger(answer[0])
+        answer.shift()
       });
       return () => {
         if (subscription) subscription.unsubscribe();
+        if (subscription2) subscription2.unsubscribe();
       };
     }
-  }, [stompClient, connected, answer]);
+  }, [stompClient, connected, answer, winner, challenger]);
 
+  /**
+   * 回答を送信する
+   */
   const onSubmit = () => {
     const formValue = hookForm.getValues()
     const data = {
@@ -35,31 +52,50 @@ export default function Player() {
     hookForm.reset()
   }
 
+  /**
+   * 勝者を送信する
+   */
+  const match = (newWinner) => {
+    const data = {
+      winner: newWinner
+    };
+    if (stompClient && stompClient.connected) {
+      stompClient.publish({ destination: '/app/winner', body: JSON.stringify(data) });
+    }
+  }
+
   return (
     <Container>
       <Row>
         <Col>
           <Card className="overflow-scroll" id='card-looser'>
             <Card.Body>
-              {pastAnswers.map((pastAnswer)=>(
-              <div key={pastAnswer.id} ><p>{pastAnswer}</p>
+              {looser.map((looser)=>(
+              <div key={looser.id} ><p>{looser}</p>
               </div>
               ))}
               </Card.Body>
           </Card>
         </Col>
         <Col>
-          <Card>
+        <Card>
             <Card.Body>
-              <h2>{answer}</h2>
+              <Button type="button" variant="secondary" size="lg" onClick={()=>match(winner)}>
+              {winner}
+              </Button>
+              <Button type="button" variant="secondary" size="lg" onClick={()=>match(challenger)}>
+              {challenger}
+              </Button>
             </Card.Body>
           </Card>
-          <Button className="#out-button" type="button" variant="light" size="lg">
-          {answer}
-          </Button>
-          <Button className="#out-button" type="button" variant="light" size="lg">
-          {answer}
-          </Button>
+          <Card>
+            <Card.Body>
+            {answer.map((answer)=>(
+              <div key={answer.id} ><p>{answer}</p>
+              </div>
+              ))}
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
       <Card fixed="bottom">

@@ -14,6 +14,14 @@ public class GameController {
     var newAnswer = new NewAnswer();
     newAnswer.setAnswer(answerForm.getAnswer());
     return newAnswer;
-}
+  }
+
+  @MessageMapping("/winner")
+  @SendTo("/topic/winner")
+  public NewWinner selectWinner(@RequestBody WinnerForm winnerForm) throws Exception {
+    var newWinner = new NewWinner();
+    newWinner.setWinner(winnerForm.getWinner());
+    return newWinner;
+  }
 
 }
