@@ -1,34 +1,29 @@
 package wordch.controller.role;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
 public class RoleForm {
   private String role;
-  private Integer player;
-  private Integer dealer;
+  private String user;
+  private String dealer;
+  private List<String> playerList;
 
-  public String getRole(){
+  public String getRole() {
     return role;
-  }
+}
 
-  public Integer getPlayer(){
-    return player;
-  }
+public String getUser() {
+    return user;
+}
 
-  public Integer getDealer(){
+public String getDealer() {
     return dealer;
-  }
+}
 
-  public void setPlayer(Integer player){
-    this.player = player;
-  }
-
-  public void setDealer(Integer dealer){
-    this.dealer = dealer;
-  }
-
-  public void setRole(String role){
-    this.role = role;
-  }
+public List<String> getPlayerList() {
+    return playerList;
+}
 }

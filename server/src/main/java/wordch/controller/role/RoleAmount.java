@@ -1,32 +1,34 @@
 package wordch.controller.role;
 
+import java.util.List;
+
 public class RoleAmount {
 
-    private Integer player;
-    private Integer dealer;
+    private String dealer;
+    private List<String> playerList;
 
     public RoleAmount() {
     }
 
     public RoleAmount(RoleAmount RoleAmount) {
-        this.player = RoleAmount.getPlayer();
         this.dealer = RoleAmount.getDealer();
+        this.playerList = RoleAmount.getPlayerList();
     }
 
-    public Integer getPlayer() {
-        return player;
-    }
-
-    public Integer getDealer() {
+    public String getDealer() {
         return dealer;
     }
 
-    public void setPlayer(Integer player) {
-        this.player = player;
+    public List<String> getPlayerList() {
+        return playerList;
     }
 
-    public void setDealer(Integer dealer) {
+    public void setDealer(String dealer) {
         this.dealer = dealer;
+    }
+
+    public void setPlayerList(List<String> playerList) {
+        this.playerList = playerList;
     }
 
 

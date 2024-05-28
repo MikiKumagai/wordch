@@ -5,6 +5,7 @@ export const useGameValues = () => {
   const [looser, setLooser] = useState([]);
   const [winner, setWinner] = useState('defaultValue1');
   const [challenger, setChallenger] = useState('defaultValue2');
+  const [user, setUser] = useState('');
 
-  return { answer, setAnswer, looser, setLooser, winner, setWinner, challenger, setChallenger };
+  return { answer, setAnswer, looser, setLooser, winner, setWinner, challenger, setChallenger, user, setUser};
 };

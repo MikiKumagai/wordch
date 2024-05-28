@@ -6,7 +6,7 @@ export const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
   const { connected, stompClient } = useStomp();
-  const { answer, setAnswer, looser, setLooser, winner, setWinner, challenger, setChallenger } = useGameValues();
+  const { answer, setAnswer, looser, setLooser, winner, setWinner, challenger, setChallenger, user, setUser } = useGameValues();
   useEffect(() => {
     if (connected) {
       // 新しい回答を受信し、回答をストックする
@@ -41,7 +41,9 @@ export const GameProvider = ({ children }) => {
     winner,
     setWinner,
     challenger,
-    setChallenger
+    setChallenger,
+    user,
+    setUser,
   };
 
   return (
