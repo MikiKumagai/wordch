@@ -21,17 +21,19 @@ public class RoleController {
         List<String> playerList = new ArrayList<>(roleForm.getPlayerList());
         playerList.remove(roleForm.getUser());
         roleAmount.setPlayerList(playerList);
+        roleAmount.setDealer(roleForm.getDealer());
       } else if(roleForm.getDealer() != null && roleForm.getDealer().equals(roleForm.getUser())){
         // UserがDealerだったらDealerを削除して、Playerに追加
-        roleAmount.setDealer(null);
         List<String> playerList = new ArrayList<>(roleForm.getPlayerList());
         playerList.add(roleForm.getUser());
         roleAmount.setPlayerList(playerList);
+        roleAmount.setDealer(null);
       } else {
         // UserがDealerでもPlayerでもなかったらPlayerに追加
         List<String> playerList = roleForm.getPlayerList() != null ? new ArrayList<>(roleForm.getPlayerList()) : new ArrayList<>();
         playerList.add(roleForm.getUser());
         roleAmount.setPlayerList(playerList);
+        roleAmount.setDealer(roleForm.getDealer());
       }
     } else if(roleForm.getRole().equals("dealer")){
       if (roleForm.getDealer() == null || roleForm.getDealer().equals("")) {
@@ -44,22 +46,25 @@ public class RoleController {
           roleAmount.setDealer(roleForm.getUser());
         } else {
           // UserがDealerでもPlayerでもなかったらDealerに追加
+          roleAmount.setPlayerList(roleForm.getPlayerList());
           roleAmount.setDealer(roleForm.getUser());
         }
       } else {
         // Dealerがすでにいるとき
         if (roleForm.getDealer().equals(roleForm.getUser())){
           // UserがDealerだったら削除
+          roleAmount.setPlayerList(roleForm.getPlayerList());
           roleAmount.setDealer(null);
         } else {
-          System.err.println("Dealer is already exist.");
+          roleAmount.setPlayerList(roleForm.getPlayerList());
+          roleAmount.setDealer(roleForm.getDealer());
         }
       }
     }else{
       System.err.println("unknown role:" + roleForm.getRole());
+      roleAmount.setPlayerList(roleForm.getPlayerList());
+      roleAmount.setDealer(roleForm.getDealer());
     }
-    System.out.println("dealer:" + roleAmount.getDealer());
-    System.out.println("playerList:" + roleAmount.getPlayerList());
     return roleAmount;
 }
 
