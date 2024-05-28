@@ -37,8 +37,12 @@ export default function Home() {
     }
   };
 
-  const startGame = () => {
+  const startGameAsPlayer = () => {
     navigate('/player');
+  }
+
+  const startGameAsDealer = () => {
+    navigate('/dealer');
   }
 
   return (
@@ -65,7 +69,10 @@ export default function Home() {
 
       <Row>
         <Col>
-          <Button variant='light' type="button" onClick={()=>startGame()}>game start!</Button>
+          <Button variant='light' type="button" onClick={()=>startGameAsPlayer()}>game start!</Button>
+        </Col>
+        <Col>
+          <Button variant='light' type="button" onClick={()=>startGameAsDealer()}>game start!</Button>
         </Col>
       </Row>
     </Container>

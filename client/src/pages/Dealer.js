@@ -1,41 +1,15 @@
 import { useForm, FormProvider } from 'react-hook-form'
 import { Form, Button, Card, Container, Row, Col, Stack } from 'react-bootstrap';
-import { useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { useStomp } from '../StompClientContext';
 import { GameContext } from "../GameProvider";
 
 export const Dealer = () => {
   const hookForm = useForm()
   const { register, handleSubmit } = hookForm;
-  const { answer, setAnswer, looser, setLooser, winner, setWinner, challenger, setChallenger } 
+  const { answer, looser, winner, challenger } 
   = useContext(GameContext);
-  const { connected, stompClient } = useStomp();
-
-  useEffect(() => {
-    if (connected) {
-      // 新しい回答を受信し、回答をストックする
-      const subscription = stompClient.subscribe('/topic/answer', (newAnswer) => {
-        const data = JSON.parse(newAnswer.body);
-        setAnswer((prevAnswer) => [...prevAnswer, data.answer]);
-      });
-      // 新しい勝者を受信し、敗者と新しい勝者と挑戦者をセットする
-      const subscription2 = stompClient.subscribe('/topic/winner', (newWinner) => {
-        const data = JSON.parse(newWinner.body);
-        if(data.winner === winner){
-          setLooser((prevLooser) => [...prevLooser, challenger]);
-        }else{
-          setWinner(data.winner)
-          setLooser((prevLooser) => [...prevLooser, winner]);
-        }
-        setChallenger(answer[0])
-        answer.shift()
-      });
-      return () => {
-        if (subscription) subscription.unsubscribe();
-        if (subscription2) subscription2.unsubscribe();
-      };
-    }
-  }, [stompClient, connected, answer, winner, challenger]);
+  const { stompClient } = useStomp();
 
   /**
    * 回答を送信する
