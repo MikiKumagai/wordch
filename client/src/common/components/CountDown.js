@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Countdown = (role) => {
-  const [seconds, setSeconds] = useState(10);
+  const [seconds, setSeconds] = useState(120);
   const navigate = useNavigate();
 
   useEffect(() => {
