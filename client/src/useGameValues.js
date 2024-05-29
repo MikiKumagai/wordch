@@ -7,6 +7,17 @@ export const useGameValues = () => {
   const [challenger, setChallenger] = useState('defaultValue2');
   const [user, setUser] = useState('');
   const [prepared, setPrepared] = useState(false);
+  const [theme, setTheme] = useState('defaultValue3');
+  const [finalAnswerWithUser, setFinalAnswerWithUser] = useState([{}]);
+  const [finalWinnerWithUser, setFinalWinnerWithUser] = useState({});
 
-  return { answer, setAnswer, looser, setLooser, winner, setWinner, challenger, setChallenger, user, setUser, prepared, setPrepared};
+  return { answer, setAnswer, 
+           looser, setLooser, 
+           winner, setWinner, 
+           challenger, setChallenger, 
+           user, setUser, 
+           prepared, setPrepared, 
+           theme, setTheme, 
+           finalAnswerWithUser, setFinalAnswerWithUser, 
+           finalWinnerWithUser, setFinalWinnerWithUser};
 };

@@ -5,7 +5,7 @@ import { GameContext } from "../GameProvider";
 import Countdown from '../common/components/CountDown';
 
 export const Dealer = () => {
-  const { answer, looser, winner, challenger, prepared } 
+  const { answer, looser, winner, challenger, prepared, theme } 
   = useContext(GameContext);
   const { stompClient } = useStomp();
   
@@ -42,7 +42,7 @@ export const Dealer = () => {
         <Col>
           <Card>
             <Card.Body>
-              <h3>theme</h3>
+              <h3>{theme}</h3>
             </Card.Body>
           </Card>
         </Col>

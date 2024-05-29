@@ -7,7 +7,7 @@ import { GameContext } from "../GameProvider";
 export const PlayerFinal = () => {
   const hookForm = useForm()
   const { register, handleSubmit } = hookForm;
-  const { answer, looser, winner, challenger } 
+  const { finalAnswerWithUser, finalWinnerWithUser, theme, user } 
   = useContext(GameContext);
   const { stompClient } = useStomp();
 
@@ -15,13 +15,29 @@ export const PlayerFinal = () => {
    * 回答を送信する
    */
   const onSubmit = () => {
-    const formValue = hookForm.getValues()
-    console.log(formValue)
+    const formValue = hookForm.getValues();
+    const data = {
+      finalAnswer: formValue.answer,
+      user: user
+    };
+    if (stompClient && stompClient.connected) {
+      stompClient.publish({ destination: '/app/final', body: JSON.stringify(data) });
+    }
     hookForm.reset()
   }
 
   return (
     <Container>
+      <Row>
+        <Col>
+          <Card>
+            <Card.Body>
+              {finalWinnerWithUser == null ?
+              finalAnswerWithUser : `${finalWinnerWithUser.user} - ${finalWinnerWithUser.finalWinner}`}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
       <Card fixed="bottom">
         <Card.Body>
           <FormProvider {...hookForm}>

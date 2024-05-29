@@ -10,10 +10,16 @@ public class FinalController {
 
   @MessageMapping("/final")
   @SendTo("/topic/final")
-  public NewAnswer newAnswer(@RequestBody AnswerForm answerForm) throws Exception {
-    var newAnswer = new NewAnswer();
-    newAnswer.setAnswer(answerForm.getAnswer());
-    return newAnswer;
+  public FinalAnswerForm finalAnswer(@RequestBody FinalAnswerForm finalAnswer) throws Exception {
+    System.out.println("Final Answer: " + finalAnswer.getFinalAnswer());
+    return finalAnswer;
   }
+
+  @MessageMapping("/final/select")
+  @SendTo("/topic/final/select")
+  public FinalWinnerForm selectWinner(@RequestBody FinalWinnerForm finalWinner) throws Exception {
+    return finalWinner;
+  }
+
   
 }

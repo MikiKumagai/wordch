@@ -6,7 +6,15 @@ export const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
   const { connected, stompClient } = useStomp();
-  const { answer, setAnswer, looser, setLooser, winner, setWinner, challenger, setChallenger, user, setUser, prepared, setPrepared } = useGameValues();
+  const { answer, setAnswer, 
+          looser, setLooser, 
+          winner, setWinner, 
+          challenger, setChallenger, 
+          user, setUser, 
+          prepared, setPrepared, 
+          theme, setTheme, 
+          finalAnswerWithUser, setFinalAnswerWithUser, 
+          finalWinnerWithUser, setFinalWinnerWithUser } = useGameValues();
 
   useEffect(() => {
     if (connected) {
@@ -50,6 +58,36 @@ export const GameProvider = ({ children }) => {
     }
   }, [stompClient, connected, answer, winner, challenger]);
 
+  useEffect(() => {
+    if (connected) {
+      const subscription = stompClient.subscribe('/topic/final', (finalAnswer) => {
+        const data = JSON.parse(finalAnswer.body);
+        console.log(data);
+        const setData = {
+          answer: data.finalAnswer,
+          user: data.user
+        }
+        setFinalAnswerWithUser((prevFinalAnswerWithUser) => [...prevFinalAnswerWithUser, setData]);
+      });
+      return () => {
+        if (subscription) subscription.unsubscribe();
+      }
+    }
+  }, [stompClient, connected, finalAnswerWithUser]);
+
+  useEffect(() => {
+    if (connected) {
+      const subscription = stompClient.subscribe('/topic/final/select', (finalWinner) => {
+        const data = JSON.parse(finalWinner.body);
+        setFinalWinnerWithUser(data);
+      });
+      return () => {
+        if (subscription) subscription.unsubscribe();
+      }
+    }
+  }
+  , [stompClient, connected, finalWinnerWithUser]);
+
   const value = {
     answer,
     setAnswer,
@@ -62,7 +100,13 @@ export const GameProvider = ({ children }) => {
     user,
     setUser,
     prepared,
-    setPrepared
+    setPrepared,
+    theme,
+    setTheme,
+    finalAnswerWithUser, 
+    setFinalAnswerWithUser, 
+    finalWinnerWithUser, 
+    setFinalWinnerWithUser
   };
 
   return (
