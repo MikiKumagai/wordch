@@ -3,6 +3,7 @@ import { Form, Button, Card, Container, Row, Col, Stack } from 'react-bootstrap'
 import { useContext } from 'react';
 import { useStomp } from '../StompClientContext';
 import { GameContext } from "../GameProvider";
+import Countdown from '../common/components/CountDown';
 
 export const Player = () => {
   const hookForm = useForm()
@@ -27,6 +28,11 @@ export const Player = () => {
 
   return (
     <Container>
+      <Row>
+        <Col>
+          <Countdown />
+        </Col>
+      </Row>
       <Row>
         <Col>
           <Card className="overflow-scroll" id='card-looser'>

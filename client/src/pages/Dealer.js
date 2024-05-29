@@ -1,12 +1,10 @@
-import { useForm, FormProvider } from 'react-hook-form'
-import { Form, Button, Card, Container, Row, Col, Stack } from 'react-bootstrap';
+import { Button, Card, Container, Row, Col } from 'react-bootstrap';
 import { useContext } from 'react';
 import { useStomp } from '../StompClientContext';
 import { GameContext } from "../GameProvider";
+import Countdown from '../common/components/CountDown';
 
 export const Dealer = () => {
-  const hookForm = useForm()
-  const { register, handleSubmit } = hookForm;
   const { answer, looser, winner, challenger } 
   = useContext(GameContext);
   const { stompClient } = useStomp();
@@ -25,6 +23,11 @@ export const Dealer = () => {
 
   return (
     <Container>
+      <Row>
+        <Col>
+          <Countdown />
+        </Col>
+      </Row>
       <Row>
         <Col>
           <Card>
