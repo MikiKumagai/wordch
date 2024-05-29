@@ -5,6 +5,8 @@ import Home from './pages/Home';
 import Landing from './pages/Landing';
 import { Player } from './pages/Player';
 import { Dealer } from './pages/Dealer';
+import { PlayerFinal } from './pages/PlayerFinal';
+import { DealerFinal } from './pages/DealerFinal';
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route path="/landing" element={<Landing />} />
         <Route path="/player" element={<Player />} />
         <Route path="/dealer" element={<Dealer />} />
+        <Route path='/player/final' element={<PlayerFinal />} />
+        <Route path='/dealer/final' element={<DealerFinal />} />
       </Routes>    
     </div>
   );
