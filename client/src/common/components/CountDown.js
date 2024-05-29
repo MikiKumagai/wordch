@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Countdown = () => {
-  const [seconds, setSeconds] = useState(120);
+const Countdown = (role) => {
+  const [seconds, setSeconds] = useState(10);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (seconds > 0) {
       const timerId = setTimeout(() => setSeconds(seconds - 1), 1000);
       return () => clearTimeout(timerId);
+    }
+    if(seconds === 0){
+      navigate(`/${role.role}/final`)
     }
   }, [seconds]);
   

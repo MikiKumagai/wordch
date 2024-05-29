@@ -35,7 +35,7 @@ export const Dealer = () => {
     <Container>
       <Row>
         <Col>
-        {prepared ? <Countdown /> : <Button variant='secondary' type="button" onClick={()=>clickPrepared()}>ok</Button>}
+        {prepared ? <Countdown role="dealer" /> : <Button variant='secondary' type="button" onClick={()=>clickPrepared()}>ok</Button>}
         </Col>
       </Row>
       <Row>

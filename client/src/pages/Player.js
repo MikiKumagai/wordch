@@ -30,7 +30,7 @@ export const Player = () => {
     <Container>
       <Row>
         <Col>
-        {prepared && <Countdown />}
+        {prepared && <Countdown role="player" />}
         </Col>
       </Row>
       <Row>
