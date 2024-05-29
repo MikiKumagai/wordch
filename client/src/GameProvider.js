@@ -25,7 +25,11 @@ export const GameProvider = ({ children }) => {
       // 新しい回答を受信し、回答をストックする
       const subscription = stompClient.subscribe('/topic/answer', (newAnswer) => {
         const data = JSON.parse(newAnswer.body);
-        setAnswer((prevAnswer) => [...prevAnswer, data.answer]);
+        if(challenger === '' || challenger === undefined){
+          setChallenger(data.answer)
+        }else{
+          setAnswer((prevAnswer) => [...prevAnswer, data.answer]);
+        }
       });
       // 新しい勝者を受信し、敗者と新しい勝者と挑戦者をセットする
       const subscription2 = stompClient.subscribe('/topic/winner', (newWinner) => {

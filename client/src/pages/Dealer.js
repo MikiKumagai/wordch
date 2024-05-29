@@ -8,6 +8,7 @@ export const Dealer = () => {
   const { answer, looser, winner, challenger, prepared } 
   = useContext(GameContext);
   const { stompClient } = useStomp();
+  
 
   /**
    * 準備完了を送信する
@@ -60,10 +61,12 @@ export const Dealer = () => {
         <Col>
         <Card>
             <Card.Body>
-              <Button type="button" variant="secondary" size="lg" disabled={!prepared} onClick={()=>match(winner)}>
+              <Button type="button" variant="secondary" size="lg" 
+                disabled={!prepared || challenger === undefined} onClick={()=>match(winner)}>
               {winner}
               </Button>
-              <Button type="button" variant="secondary" size="lg" disabled={!prepared} onClick={()=>match(challenger)}>
+              <Button type="button" variant="secondary" size="lg" 
+                disabled={!prepared || challenger === undefined} onClick={()=>match(challenger)}>
               {challenger}
               </Button>
             </Card.Body>
