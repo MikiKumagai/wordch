@@ -8,7 +8,7 @@ import Countdown from '../common/components/CountDown';
 export const Player = () => {
   const hookForm = useForm()
   const { register, handleSubmit } = hookForm;
-  const { answer, looser, winner, challenger } 
+  const { answer, looser, winner, challenger, prepared } 
   = useContext(GameContext);
   const { stompClient } = useStomp();
 
@@ -20,7 +20,7 @@ export const Player = () => {
     const data = {
       answer: formValue.answer
     };
-    if (stompClient && stompClient.connected) {
+    if (stompClient && stompClient.connected && data.answer !== '') {
       stompClient.publish({ destination: '/app/answer', body: JSON.stringify(data) });
     }
     hookForm.reset()
@@ -30,7 +30,7 @@ export const Player = () => {
     <Container>
       <Row>
         <Col>
-          <Countdown />
+        {prepared && <Countdown />}
         </Col>
       </Row>
       <Row>
@@ -68,7 +68,7 @@ export const Player = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack direction="horizontal" gap={3}>
                 <Form.Control {...register("answer")} type="text" className="me-auto" placeholder="answer" />
-                <Button type="submit" variant="secondary">Submit</Button>
+                <Button type="submit" variant="secondary" disabled={!prepared} >Submit</Button>
               </Stack>
             </form>
           </FormProvider>

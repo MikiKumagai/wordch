@@ -5,9 +5,18 @@ import { GameContext } from "../GameProvider";
 import Countdown from '../common/components/CountDown';
 
 export const Dealer = () => {
-  const { answer, looser, winner, challenger } 
+  const { answer, looser, winner, challenger, prepared } 
   = useContext(GameContext);
   const { stompClient } = useStomp();
+
+  /**
+   * 準備完了を送信する
+   */
+  const clickPrepared = () => {
+    if (stompClient && stompClient.connected) {
+      stompClient.publish({ destination: '/app/prepared', body: true });
+    }
+  }
 
   /**
    * 勝者を送信する
@@ -25,7 +34,7 @@ export const Dealer = () => {
     <Container>
       <Row>
         <Col>
-          <Countdown />
+        {prepared ? <Countdown /> : <Button variant='secondary' type="button" onClick={()=>clickPrepared()}>ok</Button>}
         </Col>
       </Row>
       <Row>
@@ -51,10 +60,10 @@ export const Dealer = () => {
         <Col>
         <Card>
             <Card.Body>
-              <Button type="button" variant="secondary" size="lg" onClick={()=>match(winner)}>
+              <Button type="button" variant="secondary" size="lg" disabled={!prepared} onClick={()=>match(winner)}>
               {winner}
               </Button>
-              <Button type="button" variant="secondary" size="lg" onClick={()=>match(challenger)}>
+              <Button type="button" variant="secondary" size="lg" disabled={!prepared} onClick={()=>match(challenger)}>
               {challenger}
               </Button>
             </Card.Body>

@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 public class RoleController {
 
+  @MessageMapping("/prepared")
+  @SendTo("/topic/prepared")
+  public Boolean prepared(@RequestBody Boolean prepared) throws Exception {
+    return prepared;
+  }
+
   @MessageMapping("/role")
   @SendTo("/topic/role_amount")
   public RoleAmount roleAmount(@RequestBody RoleForm roleForm) throws Exception {

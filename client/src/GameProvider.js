@@ -6,7 +6,20 @@ export const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
   const { connected, stompClient } = useStomp();
-  const { answer, setAnswer, looser, setLooser, winner, setWinner, challenger, setChallenger, user, setUser } = useGameValues();
+  const { answer, setAnswer, looser, setLooser, winner, setWinner, challenger, setChallenger, user, setUser, prepared, setPrepared } = useGameValues();
+
+  useEffect(() => {
+    if (connected) {
+      const subscription = stompClient.subscribe('/topic/prepared', (prepared) => {
+        setPrepared(prepared);
+      });
+      return () => {
+        if (subscription) subscription.unsubscribe();
+      }
+    }
+  }
+  , [stompClient, connected, prepared]);
+
   useEffect(() => {
     if (connected) {
       // 新しい回答を受信し、回答をストックする
@@ -44,6 +57,8 @@ export const GameProvider = ({ children }) => {
     setChallenger,
     user,
     setUser,
+    prepared,
+    setPrepared
   };
 
   return (

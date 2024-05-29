@@ -6,11 +6,14 @@ import { GameContext } from "../GameProvider";
 
 export default function Home() {
   const [player, setPlayer] = useState([]);
-  const [dealer, setDealer] = useState("");
-  const [role, setRole] = useState("");
+  const [dealer, setDealer] = useState(null);
+  const [role, setRole] = useState(null);
   const { connected, stompClient } = useStomp();
   const { user } = useContext(GameContext);
   const navigate = useNavigate();
+
+  const { prepared, setPrepared } 
+  = useContext(GameContext);
 
   useEffect(() => {
     if (connected) {
@@ -22,6 +25,8 @@ export default function Home() {
           setRole("dealer")
         }else if(data.playerList.includes(user)){
           setRole("player")
+        }else{
+          setRole(null)
         }
       });
       return () => {
@@ -29,6 +34,12 @@ export default function Home() {
       };
     }
   }, [stompClient, player, dealer, connected]);
+
+  const clickPrepared = () => {
+    if (stompClient && stompClient.connected) {
+      stompClient.publish({ destination: '/app/prepared', body: true });
+    }
+  }
 
   const clickRole = (role) => {
     const data = {
@@ -43,6 +54,7 @@ export default function Home() {
   };
 
   const startGame = () => {
+    setPrepared(false);
     if(role === "dealer"){
       navigate('/dealer');
     }else if(role === "player"){
@@ -52,10 +64,15 @@ export default function Home() {
 
   return (
     <Container>
+      <Row>
+        <Col>
+          <Button variant='secondary' type="button" onClick={()=>clickPrepared()}>ok</Button>
+        </Col>
+      </Row>
       <h1>{user}</h1>
       <Row>
         <Col>
-          <Button variant='light' type="button" onClick={()=>clickRole("player")}>player</Button>
+          <Button variant='light' type="button" disabled={!prepared} onClick={()=>clickRole("player")}>player</Button>
         </Col>
         <Col>
           <h1>player: {player}</h1>
@@ -63,7 +80,7 @@ export default function Home() {
       </Row>
       <Row>
         <Col>
-          <Button variant='light' type="button" onClick={()=>clickRole("dealer")}>dealer</Button>
+          <Button variant='light' type="button" disabled={!prepared} onClick={()=>clickRole("dealer")}>dealer</Button>
         </Col>
         <Col>
           <h1>dealer: {dealer}</h1>
