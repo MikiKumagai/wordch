@@ -8,7 +8,7 @@ import Countdown from '../common/components/CountDown';
 export const Player = () => {
   const hookForm = useForm()
   const { register, handleSubmit } = hookForm;
-  const { answer, looser, winner, challenger, prepared } 
+  const { answer, loser, winner, challenger, prepared } 
   = useContext(GameContext);
   const { stompClient } = useStomp();
 
@@ -35,27 +35,29 @@ export const Player = () => {
       </Row>
       <Row>
         <Col>
-          <Card className="overflow-scroll" id='card-looser'>
+          <Card className="overflow-scroll" id='card-loser'>
             <Card.Body>
-              {looser.map((looser)=>(
-              <div key={looser.id} ><p>{looser}</p>
+              {loser.map((loser)=>(
+              <div key={loser.id} >
+                <p className='my-2'>{loser}</p>
               </div>
               ))}
-              </Card.Body>
+            </Card.Body>
           </Card>
         </Col>
         <Col>
-        <Card>
+          <Card className='py-3'>
             <Card.Body>
-              <p>{winner}</p>
-              <p>VS</p>
-              <p>{challenger}</p>
+              <h4 className='text-center'>{winner}</h4>
+              <p className='text-center m-3'>VS</p>
+              <h4 className='text-center'>{challenger}</h4>
             </Card.Body>
           </Card>
-          <Card>
+          <Card className="overflow-scroll" id='card-answer'>
             <Card.Body>
             {answer.map((answer)=>(
-              <div key={answer.id} ><p>{answer}</p>
+              <div key={answer.id} >
+                <p className='my-2'>{answer}</p>
               </div>
               ))}
             </Card.Body>

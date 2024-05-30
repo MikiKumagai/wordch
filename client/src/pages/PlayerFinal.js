@@ -1,4 +1,4 @@
-import { useForm, FormProvider, set } from 'react-hook-form'
+import { useForm, FormProvider } from 'react-hook-form'
 import { Form, Button, Card, Container, Row, Col, Stack } from 'react-bootstrap';
 import { useContext } from 'react';
 import { useStomp } from '../StompClientContext';
@@ -42,33 +42,7 @@ export const PlayerFinal = () => {
 
   return (
     <Container>
-      <Row>
-        <Col>
-          <Card>
-            <Card.Body>
-              {finalWinnerWithUser === '' ?
-              finalAnswerWithUser:(
-                <>
-                  <p>winner : </p>
-                  {finalWinnerWithUser}
-                </>
-                )
-              }
-              {showTheme && 
-                (
-                  <>
-                    {theme}
-                    <Button variant='secondary' onClick={()=>restartGame()}>
-                      return Home
-                    </Button>
-                  </>
-                )
-              }
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      <Card fixed="bottom">
+      <Card>
         <Card.Body>
           <FormProvider {...hookForm}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -80,6 +54,27 @@ export const PlayerFinal = () => {
           </FormProvider>
         </Card.Body>
       </Card>
+      <Card className='py-3'>
+        <Card.Body>
+          {finalWinnerWithUser === '' ?
+            finalAnswerWithUser.map((answer)=>(<h4>{answer}</h4>))
+          :
+          <h4>winner : {finalWinnerWithUser}</h4>
+          }
+          {showTheme && <h3>theme : {theme}</h3>}
+        </Card.Body>
+      </Card>
+      {showTheme && 
+          (
+            <Row>
+              <Col className="text-end me-4">
+                <Button variant='light' onClick={()=>restartGame()}>
+                  return Home
+                </Button>
+              </Col>
+            </Row>
+          )
+        }
     </Container>
   );
 }

@@ -16,7 +16,13 @@ html {
   padding: 0 20px 0 20px;
 }
 
-#card-looser {
+#card-loser {
   overflow-y: auto;
-  height: 80vh;
+  height: 70vh;
+}
+
+/* TODO 縦幅が右上と合わせてloserと同じになるように */
+#card-answer {
+  overflow-y: auto;
+  height: 40vh;
 }

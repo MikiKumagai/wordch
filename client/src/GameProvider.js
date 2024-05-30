@@ -7,7 +7,7 @@ export const GameContext = createContext();
 export const GameProvider = ({ children }) => {
   const { connected, stompClient } = useStomp();
   const { answer, setAnswer, 
-          looser, setLooser, 
+          loser, setLoser, 
           winner, setWinner, 
           challenger, setChallenger, 
           user, setUser, 
@@ -69,10 +69,10 @@ export const GameProvider = ({ children }) => {
       const subscription2 = stompClient.subscribe('/topic/winner', (newWinner) => {
         const data = JSON.parse(newWinner.body);
         if(data.winner === winner){
-          setLooser((prevLooser) => [...prevLooser, challenger]);
+          setLoser((prevLoser) => [...prevLoser, challenger]);
         }else{
           setWinner(data.winner)
-          setLooser((prevLooser) => [...prevLooser, winner]);
+          setLoser((prevLoser) => [...prevLoser, winner]);
         }
         setChallenger(answer[0])
         answer.shift()
@@ -135,8 +135,8 @@ export const GameProvider = ({ children }) => {
   const value = {
     answer,
     setAnswer,
-    looser,
-    setLooser,
+    loser,
+    setLoser,
     winner,
     setWinner,
     challenger,

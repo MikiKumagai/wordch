@@ -5,7 +5,7 @@ import { GameContext } from "../GameProvider";
 import Countdown from '../common/components/CountDown';
 
 export const Dealer = () => {
-  const { answer, looser, winner, challenger, prepared, theme } 
+  const { answer, loser, winner, challenger, prepared, theme } 
   = useContext(GameContext);
   const { stompClient } = useStomp();
   
@@ -44,7 +44,7 @@ export const Dealer = () => {
         {prepared ? 
           <Countdown role="dealer" /> 
           :
-          <Button variant='secondary' type="button" onClick={()=>clickPrepared()}>ok</Button>
+          <Button className='ms-4' variant='secondary' type="button" onClick={()=>clickPrepared()}>Ready</Button>
         }
         </Col>
       </Row>
@@ -52,40 +52,41 @@ export const Dealer = () => {
         <Col>
           <Card>
             <Card.Body>
-              <h3>{theme}</h3>
+              <h3 className='my-2'>{theme}</h3>
             </Card.Body>
           </Card>
         </Col>
       </Row>
       <Row>
         <Col>
-          <Card className="overflow-scroll" id='card-looser'>
+          <Card className="overflow-scroll" id='card-loser'>
             <Card.Body>
-              {looser.map((looser)=>(
-              <div key={looser.id} ><p>{looser}</p>
-              </div>
+              {loser.map((loser)=>(
+                <div key={loser.id} >
+                  <p className='my-2'>{loser}</p>
+                </div>
               ))}
               </Card.Body>
           </Card>
         </Col>
         <Col>
         <Card>
-            <Card.Body>
-              <Button type="button" variant="secondary" size="lg" 
+            <Card.Body className='text-center'>
+              <Button className='my-3' type="button" variant="secondary" size="lg" 
                 disabled={!prepared || challenger === undefined} onClick={()=>match(winner)}>
-              {winner}
-              </Button>
-              <Button type="button" variant="secondary" size="lg" 
+                {winner}
+              </Button><br/>
+              <Button className='my-3' type="button" variant="secondary" size="lg" 
                 disabled={!prepared || challenger === undefined} onClick={()=>match(challenger)}>
-              {challenger}
+                {challenger}
               </Button>
             </Card.Body>
           </Card>
-          <Card>
+          <Card className="overflow-scroll" id='card-answer'>
             <Card.Body>
               {answer.map((answer)=>(
                 <div key={answer.id} >
-                  <p>{answer}</p>
+                  <p className='my-2'>{answer}</p>
                 </div>
               ))}
             </Card.Body>

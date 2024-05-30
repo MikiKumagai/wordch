@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export const useGameValues = () => {
   const [answer, setAnswer] = useState([]);
-  const [looser, setLooser] = useState([]);
+  const [loser, setLoser] = useState([]);
   const [theme, setTheme] = useState('');
   const [winner, setWinner] = useState('');
   const [challenger, setChallenger] = useState('');
@@ -13,7 +13,7 @@ export const useGameValues = () => {
   const [finalWinnerWithUser, setFinalWinnerWithUser] = useState('');
 
   return { answer, setAnswer, 
-           looser, setLooser, 
+           loser, setLoser, 
            winner, setWinner, 
            challenger, setChallenger, 
            user, setUser, 

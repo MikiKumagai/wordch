@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { GameContext } from "../../GameProvider";
 
 const Countdown = (role) => {
-  const [seconds, setSeconds] = useState(5);
+  const [seconds, setSeconds] = useState(10);
   const navigate = useNavigate();
-  const { setAnswer, setLooser, setWinner, setChallenger } = useContext(GameContext);
+  const { setAnswer, setLoser, setWinner, setChallenger } = useContext(GameContext);
 
   useEffect(() => {
     if (seconds > 0) {
@@ -14,7 +14,7 @@ const Countdown = (role) => {
     }
     if(seconds === 0){
       setAnswer([])
-      setLooser([])
+      setLoser([])
       setWinner('defaultValue1')
       setChallenger('defaultValue2')
       navigate(`/${role.role}/final`)

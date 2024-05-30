@@ -45,34 +45,38 @@ export const DealerFinal = () => {
 
   return (
     <Container>
-      <Row>
-        <Col>
-          <Card>
-            <Card.Body>
-              <h3>{theme}</h3>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Card>
-            <Card.Body>
-              {finalWinnerWithUser === '' ?
-                finalAnswerWithUser.map((answer, index) => (
-                  <Button variant='secondary' onClick={() => onSelect(answer)}>
-                    {answer}
-                  </Button>
-                )) : finalWinnerWithUser
-              }
-              {finalWinnerWithUser !== '' && 
-                <Button variant='secondary' disabled={showTheme} onClick={() => displayTheme()}>
-                  show theme
+      <Card>
+        <Card.Body>
+          <h3>{theme}</h3>
+        </Card.Body>
+      </Card>
+      <Card className='py-3'>
+        <Card.Body>
+          {finalWinnerWithUser === '' ?
+            finalAnswerWithUser.map((answer) => (
+              <div>
+                <Button variant='outline-dark' size='lg' className='my-1' onClick={() => onSelect(answer)}>
+                  {answer}
                 </Button>
-              }
-              {showTheme && <Button variant='secondary' onClick={()=>restartGame()}>return Home</Button>}
-            </Card.Body>
-          </Card>
+              </div>
+            )) : <h4>winner : {finalWinnerWithUser}</h4>
+          }
+        </Card.Body>
+      </Card>
+      <Row>
+        <Col className="text-end me-4">
+          {finalWinnerWithUser !== '' && !showTheme &&
+            <Button variant='secondary' disabled={showTheme} onClick={() => displayTheme()}>
+              show theme
+            </Button>
+          }
+          {showTheme && 
+              (
+                <Button variant='light' onClick={()=>restartGame()}>
+                  return Home
+                </Button>
+              )
+            }
         </Col>
       </Row>
     </Container>

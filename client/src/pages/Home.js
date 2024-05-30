@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { Button, Container, Row, Col } from 'react-bootstrap';
+import { Button, Container, Card, Row, Col } from 'react-bootstrap';
 import { useStomp } from './../StompClientContext';
 import { useNavigate } from 'react-router-dom';
 import { GameContext } from "../GameProvider";
@@ -76,33 +76,37 @@ export default function Home() {
 
   return (
     <Container>
+      {!prepared &&
+        <Row>
+          <Col className="ms-4">
+            <Button variant='secondary' type="button" onClick={()=>clickPrepared()}>Ready</Button>
+          </Col>
+        </Row>
+      }
+      <Card>
+        <Card.Body className='p-4'>
+          <Row>
+            <Col className='text-center'>
+              <Button variant='light' size="lg" type="button" disabled={!prepared} onClick={()=>clickRole("player")}>player</Button>
+            </Col>
+            <Col className='text-center'>
+              <Button variant='light' size="lg" type="button" disabled={!prepared} onClick={()=>clickRole("dealer")}>dealer</Button>
+            </Col>
+            </Row>
+          <Row>
+            <Col className='text-center'>
+              {player && player.map((player)=>(
+                <h4 className='my-2'>{player}</h4>
+              ))}
+            </Col>
+            <Col className='text-center'>
+                <h4>{dealer}</h4>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
       <Row>
-        <Col>
-          <Button variant='secondary' type="button" onClick={()=>clickPrepared()}>ok</Button>
-        </Col>
-      </Row>
-      <h1>{user}</h1>
-      <Row>
-        <Col>
-          <Button variant='light' type="button" disabled={!prepared} onClick={()=>clickRole("player")}>player</Button>
-        </Col>
-        <Col>
-          <h1>player: {player}</h1>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Button variant='light' type="button" disabled={!prepared} onClick={()=>clickRole("dealer")}>dealer</Button>
-        </Col>
-        <Col>
-          <h1>dealer: {dealer}</h1>
-        </Col>
-      </Row>
-      <div>
-        Connection status: {connected ? 'Connected' : 'Disconnected'}
-      </div>
-      <Row>
-        <Col>
+        <Col className='text-end me-4'>
           <Button variant='light' type="button" onClick={()=>startGame()}>game start!</Button>
         </Col>
       </Row>

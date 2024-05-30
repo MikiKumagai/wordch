@@ -29,14 +29,12 @@ export default function Landing() {
     <Container>
       <Card>
         <Card.Body>
-          <Button type="button" variant="secondary" onClick={() => disconnect()}>
-            Disconnect
-          </Button>
           <FormProvider {...hookForm}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Stack direction="horizontal" gap={3}>
+              <Stack direction="horizontal" gap={2}>
                 <Form.Control {...register("name")} type="text" className="me-auto" defaultValue="noName" />
                 <Button type="submit" variant="secondary">Connect</Button>
+                <Button type="button" variant="secondary" onClick={() => disconnect()}>Disconnect</Button>
               </Stack>
             </form>
           </FormProvider>
