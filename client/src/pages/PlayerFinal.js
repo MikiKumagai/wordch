@@ -7,7 +7,7 @@ import { GameContext } from "../GameProvider";
 export const PlayerFinal = () => {
   const hookForm = useForm()
   const { register, handleSubmit } = hookForm;
-  const { finalAnswerWithUser, finalWinnerWithUser, theme, user } 
+  const { finalAnswerWithUser, finalWinnerWithUser, theme, user} 
   = useContext(GameContext);
   const { stompClient } = useStomp();
 
@@ -32,8 +32,8 @@ export const PlayerFinal = () => {
         <Col>
           <Card>
             <Card.Body>
-              {finalWinnerWithUser == null ?
-              finalAnswerWithUser : `${finalWinnerWithUser.user} - ${finalWinnerWithUser.finalWinner}`}
+              {finalWinnerWithUser === '' ?
+              finalAnswerWithUser :finalWinnerWithUser }
             </Card.Body>
           </Card>
         </Col>

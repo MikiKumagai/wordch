@@ -10,5 +10,9 @@ public class FinalAnswerForm {
   public String getFinalAnswer() {
     return finalAnswer;
   }
+
+  public String getUser() {
+    return user;
+  }
   
 }

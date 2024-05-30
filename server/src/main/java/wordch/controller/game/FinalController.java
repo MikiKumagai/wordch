@@ -12,12 +12,14 @@ public class FinalController {
   @SendTo("/topic/final")
   public FinalAnswerForm finalAnswer(@RequestBody FinalAnswerForm finalAnswer) throws Exception {
     System.out.println("Final Answer: " + finalAnswer.getFinalAnswer());
+    System.out.println("User: " + finalAnswer.getUser());
     return finalAnswer;
   }
 
   @MessageMapping("/final/select")
   @SendTo("/topic/final/select")
   public FinalWinnerForm selectWinner(@RequestBody FinalWinnerForm finalWinner) throws Exception {
+    System.out.println("Final Winner: " + finalWinner.getFinalWinner());
     return finalWinner;
   }
 

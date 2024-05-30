@@ -58,15 +58,15 @@ export const GameProvider = ({ children }) => {
     }
   }, [stompClient, connected, answer, winner, challenger]);
 
+  /**
+   * 最終回答を受信し、最終回答とユーザーをセットする
+   */
   useEffect(() => {
     if (connected) {
       const subscription = stompClient.subscribe('/topic/final', (finalAnswer) => {
         const data = JSON.parse(finalAnswer.body);
         console.log(data);
-        const setData = {
-          answer: data.finalAnswer,
-          user: data.user
-        }
+        const setData = data.finalAnswer + ' - ' + data.user;
         setFinalAnswerWithUser((prevFinalAnswerWithUser) => [...prevFinalAnswerWithUser, setData]);
       });
       return () => {
@@ -75,11 +75,15 @@ export const GameProvider = ({ children }) => {
     }
   }, [stompClient, connected, finalAnswerWithUser]);
 
+  /**
+   * 最終勝者を受信し、最終勝者とユーザーをセットする
+   */
   useEffect(() => {
     if (connected) {
       const subscription = stompClient.subscribe('/topic/final/select', (finalWinner) => {
         const data = JSON.parse(finalWinner.body);
-        setFinalWinnerWithUser(data);
+        console.log(data);
+        setFinalWinnerWithUser(data.finalWinner);
       });
       return () => {
         if (subscription) subscription.unsubscribe();

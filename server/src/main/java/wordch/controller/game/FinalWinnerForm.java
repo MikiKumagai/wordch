@@ -5,5 +5,8 @@ import lombok.Data;
 @Data
 public class FinalWinnerForm {
   private String finalWinner;
-  private String user;
+
+  public String getFinalWinner() {
+    return finalWinner;
+  }
 }

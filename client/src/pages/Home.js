@@ -89,7 +89,6 @@ export default function Home() {
       <div>
         Connection status: {connected ? 'Connected' : 'Disconnected'}
       </div>
-
       <Row>
         <Col>
           <Button variant='light' type="button" onClick={()=>startGame()}>game start!</Button>

@@ -4,7 +4,7 @@ import { useStomp } from '../StompClientContext';
 import { GameContext } from "../GameProvider";
 
 export const DealerFinal = () => {
-  const { finalAnswerWithUser, finalWinnerWithUser, theme, user } 
+  const { finalAnswerWithUser, finalWinnerWithUser, theme } 
   = useContext(GameContext);
   const { stompClient } = useStomp();
 
@@ -13,8 +13,7 @@ export const DealerFinal = () => {
    */
   const onSelect = (finalWinner) => {
     const data = {
-      finalWinner: finalWinner,
-      user: user
+      finalWinner: finalWinner
     };
     if (stompClient && stompClient.connected) {
       stompClient.publish({ destination: '/app/final/select', body: JSON.stringify(data) });
@@ -36,11 +35,11 @@ export const DealerFinal = () => {
         <Col>
           <Card>
             <Card.Body>
-              {finalWinnerWithUser == null ?
+              {finalWinnerWithUser === '' ?
               finalAnswerWithUser.map((answer, index) => (
-              <Button onClick={() => onSelect(answer)}>{answer.finalAnswer}{answer.user}</Button>
-              )) : finalWinnerWithUser.finalAnswer}
-              {finalWinnerWithUser == null ? '' : <p>テーマを見せる</p>}
+              <Button onClick={() => onSelect(answer)}>{answer}</Button>
+              )) : finalWinnerWithUser}
+              {finalWinnerWithUser === '' ? '' : <p>テーマを見せる</p>}
             </Card.Body>
           </Card>
         </Col>
