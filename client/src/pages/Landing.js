@@ -16,6 +16,9 @@ export default function Landing() {
     handleSubmit,
   } = hookForm;
 
+  /**
+   * ユーザー名をセットし、接続する
+   */
   const onSubmit = (data) => {
     setUser(data.name);
     connect();

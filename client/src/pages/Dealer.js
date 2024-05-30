@@ -9,7 +9,6 @@ export const Dealer = () => {
   = useContext(GameContext);
   const { stompClient } = useStomp();
   
-  // TODO useEffectでリクエスト送ってテーマと初期値受け取る→セットする
   useEffect(() => {
     if (stompClient && stompClient.connected) {
       stompClient.publish({ destination: '/app/start', body: true });

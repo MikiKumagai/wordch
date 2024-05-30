@@ -15,6 +15,9 @@ export default function Home() {
   const { prepared, setPrepared } 
   = useContext(GameContext);
 
+  /**
+   * ゲームの親子を割り振る
+   */
   useEffect(() => {
     if (connected) {
       const subscription = stompClient.subscribe('/topic/role_amount', (roleAmount) => {
@@ -35,12 +38,18 @@ export default function Home() {
     }
   }, [stompClient, player, dealer, connected]);
 
+  /**
+   * 準備完了フラグをセットする
+   */
   const clickPrepared = () => {
     if (stompClient && stompClient.connected) {
       stompClient.publish({ destination: '/app/prepared', body: true });
     }
   }
 
+  /**
+   * 役割を選択する
+   */
   const clickRole = (role) => {
     const data = {
       role: role,
@@ -53,6 +62,9 @@ export default function Home() {
     }
   };
 
+  /**
+   * ゲームを開始する
+   */
   const startGame = () => {
     setPrepared(false);
     if(role === "dealer"){

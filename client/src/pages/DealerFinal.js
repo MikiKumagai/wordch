@@ -22,12 +22,18 @@ export const DealerFinal = () => {
     }
   }
 
+  /**
+   * テーマを表示する
+   */
   const displayTheme = () => {
     if (stompClient && stompClient.connected) {
       stompClient.publish({ destination: '/app/final/theme', body: true });
     }
   }
 
+  /**
+   * 新しいゲームを開始する
+   */
   const restartGame = () => {
     setFinalAnswerWithUser([])
     setFinalWinnerWithUser('')

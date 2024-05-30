@@ -28,6 +28,9 @@ export const PlayerFinal = () => {
     hookForm.reset()
   }
 
+  /**
+   * 新しいゲームを開始する
+   */
   const restartGame = () => {
     setFinalAnswerWithUser([])
     setFinalWinnerWithUser('')
