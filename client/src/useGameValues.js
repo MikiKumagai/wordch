@@ -8,6 +8,7 @@ export const useGameValues = () => {
   const [user, setUser] = useState('');
   const [prepared, setPrepared] = useState(false);
   const [theme, setTheme] = useState('defaultValue3');
+  const [showTheme, setShowTheme] = useState(false);
   const [finalAnswerWithUser, setFinalAnswerWithUser] = useState([]);
   const [finalWinnerWithUser, setFinalWinnerWithUser] = useState('');
 
@@ -18,6 +19,7 @@ export const useGameValues = () => {
            user, setUser, 
            prepared, setPrepared, 
            theme, setTheme, 
+           showTheme, setShowTheme,
            finalAnswerWithUser, setFinalAnswerWithUser, 
            finalWinnerWithUser, setFinalWinnerWithUser};
 };

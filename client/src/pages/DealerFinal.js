@@ -2,11 +2,13 @@ import { Button, Card, Container, Row, Col } from 'react-bootstrap';
 import { useContext } from 'react';
 import { useStomp } from '../StompClientContext';
 import { GameContext } from "../GameProvider";
+import { useNavigate } from 'react-router-dom';
 
 export const DealerFinal = () => {
-  const { finalAnswerWithUser, finalWinnerWithUser, theme } 
+  const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme } 
   = useContext(GameContext);
   const { stompClient } = useStomp();
+  const navigate = useNavigate();
 
   /**
    * 勝者を送信する
@@ -17,6 +19,12 @@ export const DealerFinal = () => {
     };
     if (stompClient && stompClient.connected) {
       stompClient.publish({ destination: '/app/final/select', body: JSON.stringify(data) });
+    }
+  }
+
+  const displayTheme = () => {
+    if (stompClient && stompClient.connected) {
+      stompClient.publish({ destination: '/app/final/theme', body: true });
     }
   }
 
@@ -36,10 +44,18 @@ export const DealerFinal = () => {
           <Card>
             <Card.Body>
               {finalWinnerWithUser === '' ?
-              finalAnswerWithUser.map((answer, index) => (
-              <Button onClick={() => onSelect(answer)}>{answer}</Button>
-              )) : finalWinnerWithUser}
-              {finalWinnerWithUser === '' ? '' : <p>テーマを見せる</p>}
+                finalAnswerWithUser.map((answer, index) => (
+                  <Button variant='secondary' onClick={() => onSelect(answer)}>
+                    {answer}
+                  </Button>
+                )) : finalWinnerWithUser
+              }
+              {finalWinnerWithUser !== '' && 
+                <Button variant='secondary' disabled={showTheme} onClick={() => displayTheme()}>
+                  show theme
+                </Button>
+              }
+              {showTheme && <Button variant='secondary' onClick={()=>navigate('/home')}>return Home</Button>}
             </Card.Body>
           </Card>
         </Col>

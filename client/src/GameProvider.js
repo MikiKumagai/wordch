@@ -13,6 +13,7 @@ export const GameProvider = ({ children }) => {
           user, setUser, 
           prepared, setPrepared, 
           theme, setTheme, 
+          showTheme, setShowTheme,
           finalAnswerWithUser, setFinalAnswerWithUser, 
           finalWinnerWithUser, setFinalWinnerWithUser } = useGameValues();
 
@@ -92,6 +93,19 @@ export const GameProvider = ({ children }) => {
   }
   , [stompClient, connected, finalWinnerWithUser]);
 
+  useEffect(() => {
+    if (connected) {
+      const subscription = stompClient.subscribe('/topic/final/theme', (theme) => {
+        const data = JSON.parse(theme.body);
+        setShowTheme(data);
+      });
+      return () => {
+        if (subscription) subscription.unsubscribe();
+      }
+    }
+  }
+  , [stompClient, connected, showTheme]);
+
   const value = {
     answer,
     setAnswer,
@@ -107,6 +121,8 @@ export const GameProvider = ({ children }) => {
     setPrepared,
     theme,
     setTheme,
+    showTheme,
+    setShowTheme,
     finalAnswerWithUser, 
     setFinalAnswerWithUser, 
     finalWinnerWithUser, 

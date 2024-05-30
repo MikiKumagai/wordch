@@ -3,13 +3,15 @@ import { Form, Button, Card, Container, Row, Col, Stack } from 'react-bootstrap'
 import { useContext } from 'react';
 import { useStomp } from '../StompClientContext';
 import { GameContext } from "../GameProvider";
+import { useNavigate } from 'react-router-dom';
 
 export const PlayerFinal = () => {
   const hookForm = useForm()
   const { register, handleSubmit } = hookForm;
-  const { finalAnswerWithUser, finalWinnerWithUser, theme, user} 
+  const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, user} 
   = useContext(GameContext);
   const { stompClient } = useStomp();
+  const navigate = useNavigate();
 
   /**
    * 回答を送信する
@@ -33,7 +35,21 @@ export const PlayerFinal = () => {
           <Card>
             <Card.Body>
               {finalWinnerWithUser === '' ?
-              finalAnswerWithUser :finalWinnerWithUser }
+              finalAnswerWithUser:(
+                <>
+                  <p>winner : </p>
+                  {finalWinnerWithUser}
+                </>
+                )
+              }
+              {showTheme && 
+                (
+                  <>
+                    {theme}
+                    <Button variant='secondary' onClick={()=>navigate('/home')}>return Home</Button>
+                  </>
+                )
+              }
             </Card.Body>
           </Card>
         </Col>
