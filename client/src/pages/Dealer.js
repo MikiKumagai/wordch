@@ -1,5 +1,5 @@
 import { Button, Card, Container, Row, Col } from 'react-bootstrap';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useStomp } from '../StompClientContext';
 import { GameContext } from "../GameProvider";
 import Countdown from '../common/components/CountDown';
@@ -9,6 +9,13 @@ export const Dealer = () => {
   = useContext(GameContext);
   const { stompClient } = useStomp();
   
+  // TODO useEffectでリクエスト送ってテーマと初期値受け取る→セットする
+  useEffect(() => {
+    if (stompClient && stompClient.connected) {
+      stompClient.publish({ destination: '/app/start', body: true });
+    }
+  }
+  , [stompClient]);
 
   /**
    * 準備完了を送信する

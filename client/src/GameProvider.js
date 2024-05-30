@@ -17,6 +17,9 @@ export const GameProvider = ({ children }) => {
           finalAnswerWithUser, setFinalAnswerWithUser, 
           finalWinnerWithUser, setFinalWinnerWithUser } = useGameValues();
 
+  /**
+   * 準備完了フラグをセットする
+   */
   useEffect(() => {
     if (connected) {
       const subscription = stompClient.subscribe('/topic/prepared', (prepared) => {
@@ -29,6 +32,28 @@ export const GameProvider = ({ children }) => {
   }
   , [stompClient, connected, prepared]);
 
+  /**
+   * ゲームを開始し、テーマと初期値を受信する
+   */
+  useEffect(() => {
+    if (connected) {
+      const subscription = stompClient.subscribe('/topic/start', (game) => {
+        const data = JSON.parse(game.body);
+        setTheme(data.theme);
+        setWinner(data.defaultWinner);
+        setChallenger(data.defaultChallenger);
+      }
+      );
+      return () => {
+        if (subscription) subscription.unsubscribe();
+      }
+    }
+  }
+  , [stompClient, connected, theme, winner, challenger]);
+
+  /**
+   * 新しい回答を受信し、回答をストックする
+   */
   useEffect(() => {
     if (connected) {
       // 新しい回答を受信し、回答をストックする
@@ -91,6 +116,9 @@ export const GameProvider = ({ children }) => {
   }
   , [stompClient, connected, finalWinnerWithUser]);
 
+  /**
+   * テーマを子に公開する
+   */
   useEffect(() => {
     if (connected) {
       const subscription = stompClient.subscribe('/topic/final/theme', (theme) => {

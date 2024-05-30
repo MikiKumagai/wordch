@@ -8,6 +8,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 public class GameController {
 
+  @MessageMapping("/start")
+  @SendTo("/topic/start")
+  public GameValue startGame() throws Exception {
+    var game = new GameValue();
+    game.setTheme("sample theme");
+    game.setDefaultWinner("default winner");
+    game.setDefaultChallenger("default challenger");
+    return game;
+  }
+
   @MessageMapping("/answer")
   @SendTo("/topic/answer")
   public NewAnswer newAnswer(@RequestBody AnswerForm answerForm) throws Exception {
