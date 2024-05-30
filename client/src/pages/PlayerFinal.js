@@ -1,4 +1,4 @@
-import { useForm, FormProvider } from 'react-hook-form'
+import { useForm, FormProvider, set } from 'react-hook-form'
 import { Form, Button, Card, Container, Row, Col, Stack } from 'react-bootstrap';
 import { useContext } from 'react';
 import { useStomp } from '../StompClientContext';
@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 export const PlayerFinal = () => {
   const hookForm = useForm()
   const { register, handleSubmit } = hookForm;
-  const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, user} 
+  const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, user, setFinalAnswerWithUser, setFinalWinnerWithUser, setTheme, setShowTheme, setPrepared} 
   = useContext(GameContext);
   const { stompClient } = useStomp();
   const navigate = useNavigate();
@@ -26,6 +26,15 @@ export const PlayerFinal = () => {
       stompClient.publish({ destination: '/app/final', body: JSON.stringify(data) });
     }
     hookForm.reset()
+  }
+
+  const restartGame = () => {
+    setFinalAnswerWithUser([])
+    setFinalWinnerWithUser('')
+    setTheme('')
+    setShowTheme(false)
+    setPrepared(false)
+    navigate('/home')
   }
 
   return (
@@ -46,7 +55,9 @@ export const PlayerFinal = () => {
                 (
                   <>
                     {theme}
-                    <Button variant='secondary' onClick={()=>navigate('/home')}>return Home</Button>
+                    <Button variant='secondary' onClick={()=>restartGame()}>
+                      return Home
+                    </Button>
                   </>
                 )
               }

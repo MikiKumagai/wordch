@@ -35,7 +35,11 @@ export const Dealer = () => {
     <Container>
       <Row>
         <Col>
-        {prepared ? <Countdown role="dealer" /> : <Button variant='secondary' type="button" onClick={()=>clickPrepared()}>ok</Button>}
+        {prepared ? 
+          <Countdown role="dealer" /> 
+          :
+          <Button variant='secondary' type="button" onClick={()=>clickPrepared()}>ok</Button>
+        }
         </Col>
       </Row>
       <Row>
@@ -73,9 +77,10 @@ export const Dealer = () => {
           </Card>
           <Card>
             <Card.Body>
-            {answer.map((answer)=>(
-              <div key={answer.id} ><p>{answer}</p>
-              </div>
+              {answer.map((answer)=>(
+                <div key={answer.id} >
+                  <p>{answer}</p>
+                </div>
               ))}
             </Card.Body>
           </Card>

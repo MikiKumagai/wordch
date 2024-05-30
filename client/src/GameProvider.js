@@ -66,7 +66,6 @@ export const GameProvider = ({ children }) => {
     if (connected) {
       const subscription = stompClient.subscribe('/topic/final', (finalAnswer) => {
         const data = JSON.parse(finalAnswer.body);
-        console.log(data);
         const setData = data.finalAnswer + ' - ' + data.user;
         setFinalAnswerWithUser((prevFinalAnswerWithUser) => [...prevFinalAnswerWithUser, setData]);
       });
@@ -83,7 +82,6 @@ export const GameProvider = ({ children }) => {
     if (connected) {
       const subscription = stompClient.subscribe('/topic/final/select', (finalWinner) => {
         const data = JSON.parse(finalWinner.body);
-        console.log(data);
         setFinalWinnerWithUser(data.finalWinner);
       });
       return () => {
