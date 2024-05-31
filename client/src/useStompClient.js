@@ -35,11 +35,7 @@ const useStompClient = (url, token) => {
 
   const connect = useCallback(() => {
     if (stompClient && !connected) {
-      if (url.startsWith('ws:') || url.startsWith('wss:')) {
-        stompClient.webSocketFactory = () => new WebSocket(url);
-      } else {
-        stompClient.webSocketFactory = () => new SockJS(url);
-      }
+      stompClient.webSocketFactory = () => new SockJS(url);
       stompClient.activate();
     }
   }, [stompClient, connected, url]);
