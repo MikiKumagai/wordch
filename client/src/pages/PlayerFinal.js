@@ -69,7 +69,7 @@ export const PlayerFinal = () => {
             <Row>
               <Col className="text-end me-4">
                 <Button variant='light' onClick={()=>restartGame()}>
-                  return Home
+                  restart game
                 </Button>
               </Col>
             </Row>

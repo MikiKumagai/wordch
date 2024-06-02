@@ -73,7 +73,7 @@ export const DealerFinal = () => {
           {showTheme && 
               (
                 <Button variant='light' onClick={()=>restartGame()}>
-                  return Home
+                  restart game
                 </Button>
               )
             }
