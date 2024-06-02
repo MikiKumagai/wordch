@@ -80,8 +80,8 @@ export const Dealer = () => {
             <Col>
               <Card className="overflow-scroll" id='card-loser'>
                 <Card.Body>
-                  {loser.map((loser)=>(
-                    <div key={loser.id} >
+                  {loser.map((loser, index)=>(
+                    <div key={index} >
                       <p className='my-2'>{loser}</p>
                     </div>
                   ))}
@@ -103,8 +103,8 @@ export const Dealer = () => {
               </Card>
               <Card className="overflow-scroll" id='card-answer'>
                 <Card.Body>
-                  {answer.map((answer)=>(
-                    <div key={answer.id} >
+                  {answer.map((answer,index)=>(
+                    <div key={index} >
                       <p className='my-2'>{answer}</p>
                     </div>
                   ))}

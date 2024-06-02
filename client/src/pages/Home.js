@@ -95,8 +95,8 @@ export default function Home() {
             </Row>
           <Row>
             <Col className='text-center'>
-              {player && player.map((player)=>(
-                <h4 className='my-2'>{player}</h4>
+              {player && player.map((player, index)=>(
+                <h4 key={index} className='my-2'>{player}</h4>
               ))}
             </Col>
             <Col className='text-center'>
