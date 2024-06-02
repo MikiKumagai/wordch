@@ -29,4 +29,6 @@ public interface DefaultValueEntityMapper {
     int updateByPrimaryKeySelective(DefaultValueEntity row);
 
     int updateByPrimaryKey(DefaultValueEntity row);
+
+    List<DefaultValueEntity> selectByRandom();
 }

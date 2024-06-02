@@ -29,4 +29,6 @@ public interface ThemeEntityMapper {
     int updateByPrimaryKeySelective(ThemeEntity row);
 
     int updateByPrimaryKey(ThemeEntity row);
+
+    List<ThemeEntity> selectByRandom();
 }

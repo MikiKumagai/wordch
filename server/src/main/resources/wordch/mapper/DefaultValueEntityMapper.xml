@@ -187,4 +187,12 @@
       created_at = #{createdAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByRandom" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from default_value
+    where active = true
+    order by random()
+    limit 2
+  </select>
 </mapper>

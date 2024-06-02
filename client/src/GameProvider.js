@@ -39,6 +39,7 @@ export const GameProvider = ({ children }) => {
     if (connected) {
       const subscription = stompClient.subscribe('/topic/start', (game) => {
         const data = JSON.parse(game.body);
+        console.log(data);
         setTheme(data.theme);
         setWinner(data.defaultWinner);
         setChallenger(data.defaultChallenger);

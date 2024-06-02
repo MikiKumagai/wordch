@@ -202,4 +202,12 @@
       created_by = #{createdBy,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByRandom" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from theme
+    where active = true
+    order by random()
+    limit 1
+  </select>
 </mapper>

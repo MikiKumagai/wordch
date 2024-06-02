@@ -9,6 +9,9 @@ export const Dealer = () => {
   = useContext(GameContext);
   const { stompClient } = useStomp();
   
+  /**
+   * テーマ取得のリクエストを送信する
+   */
   useEffect(() => {
     if (stompClient && stompClient.connected) {
       stompClient.publish({ destination: '/app/start', body: true });
@@ -17,7 +20,7 @@ export const Dealer = () => {
   , [stompClient]);
 
   /**
-   * 準備完了を送信する
+   * 準備完了を送信する（TODO テーマを2つから選択する仕様に変更する）
    */
   const clickPrepared = () => {
     if (stompClient && stompClient.connected) {

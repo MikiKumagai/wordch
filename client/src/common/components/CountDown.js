@@ -15,6 +15,7 @@ const Countdown = (role) => {
     if(seconds === 0){
       setAnswer([])
       setLoser([])
+      // TODO subscribeする
       setWinner('defaultValue1')
       setChallenger('defaultValue2')
       navigate(`/${role.role}/final`)
