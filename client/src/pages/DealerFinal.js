@@ -5,9 +5,9 @@ import { GameContext } from "../GameProvider";
 import { useNavigate } from 'react-router-dom';
 
 export const DealerFinal = () => {
-  const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, user, 
+  const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, roomId,
     setFinalAnswerWithUser, setFinalWinnerWithUser, setShowTheme, setPrepared, 
-    setAnswer, setWinner, setChallenge} 
+    setAnswer, setWinner, setChallenger} 
   = useContext(GameContext);
   const { stompClient } = useStomp();
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export const DealerFinal = () => {
       finalWinner: finalWinner
     };
     if (stompClient && stompClient.connected) {
-      stompClient.publish({ destination: '/app/final/select', body: JSON.stringify(data) });
+      stompClient.publish({ destination: '/app/final/select/' + roomId, body: JSON.stringify(data) });
     }
   }
 
@@ -29,7 +29,7 @@ export const DealerFinal = () => {
    */
   const displayTheme = () => {
     if (stompClient && stompClient.connected) {
-      stompClient.publish({ destination: '/app/final/theme', body: true });
+      stompClient.publish({ destination: '/app/final/theme/' + roomId, body: true });
     }
   }
 
@@ -39,7 +39,7 @@ export const DealerFinal = () => {
   const restartGame = () => {
     setAnswer([])
     setWinner('')
-    setChallenge('')
+    setChallenger('')
     setFinalAnswerWithUser([])
     setFinalWinnerWithUser('')
     setShowTheme(false)

@@ -12,7 +12,7 @@ export default function Home() {
   const { user } = useContext(GameContext);
   const navigate = useNavigate();
 
-  const { prepared, setPrepared } 
+  const { prepared, setPrepared, roomId } 
   = useContext(GameContext);
 
   /**
@@ -20,7 +20,7 @@ export default function Home() {
    */
   useEffect(() => {
     if (connected) {
-      const subscription = stompClient.subscribe('/topic/role_amount', (roleAmount) => {
+      const subscription = stompClient.subscribe('/topic/role_amount/' + roomId, (roleAmount) => {
         const data = JSON.parse(roleAmount.body);
         setPlayer(data.playerList)
         setDealer(data.dealer)
@@ -43,7 +43,7 @@ export default function Home() {
    */
   const clickPrepared = () => {
     if (stompClient && stompClient.connected) {
-      stompClient.publish({ destination: '/app/prepared', body: true });
+      stompClient.publish({ destination: '/app/prepared/' + roomId, body: true });
     }
   }
 
@@ -58,7 +58,7 @@ export default function Home() {
       dealer: dealer 
     };
     if (stompClient && stompClient.connected) {
-      stompClient.publish({ destination: '/app/role', body: JSON.stringify(data) });
+      stompClient.publish({ destination: '/app/role/' + roomId, body: JSON.stringify(data) });
     }
   };
 

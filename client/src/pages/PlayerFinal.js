@@ -8,9 +8,9 @@ import { useNavigate } from 'react-router-dom';
 export const PlayerFinal = () => {
   const hookForm = useForm()
   const { register, handleSubmit } = hookForm;
-  const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, user, 
+  const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, user, roomId,
     setFinalAnswerWithUser, setFinalWinnerWithUser, setShowTheme, setPrepared, 
-    setAnswer, setWinner, setChallenge} 
+    setAnswer, setWinner, setChallenger} 
   = useContext(GameContext);
   const { stompClient } = useStomp();
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export const PlayerFinal = () => {
       user: user
     };
     if (stompClient && stompClient.connected) {
-      stompClient.publish({ destination: '/app/final', body: JSON.stringify(data) });
+      stompClient.publish({ destination: '/app/final/' + roomId, body: JSON.stringify(data) });
     }
     hookForm.reset()
   }
@@ -36,7 +36,7 @@ export const PlayerFinal = () => {
   const restartGame = () => {
     setAnswer([])
     setWinner('')
-    setChallenge('')
+    setChallenger('')
     setFinalAnswerWithUser([])
     setFinalWinnerWithUser('')
     setShowTheme(false)

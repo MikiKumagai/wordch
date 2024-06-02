@@ -11,7 +11,7 @@ export default function Landing() {
   const [uuid, setUuid] = useState('');
   const navigate = useNavigate();
   const { connect, disconnect, connected } = useStomp();
-  const { setUser } = useContext(GameContext);
+  const { setUser, setRoomId } = useContext(GameContext);
   const hookForm = useForm();
   const {
     register,
@@ -30,6 +30,7 @@ export default function Landing() {
    */
   const onSubmit = (data) => {
     setUser(data.name);
+    setRoomId(data.roomId);
     connect();
     navigate('/home');
   }

@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 public class RoleController {
 
-  @MessageMapping("/prepared")
-  @SendTo("/topic/prepared")
+  @MessageMapping("/prepared/{roomId}")
+  @SendTo("/topic/prepared/{roomId}")
   public Boolean prepared(@RequestBody Boolean prepared) throws Exception {
     return prepared;
   }
 
-  @MessageMapping("/role")
-  @SendTo("/topic/role_amount")
+  @MessageMapping("/role/{roomId}")
+  @SendTo("/topic/role_amount/{roomId}")
   public RoleAmount roleAmount(@RequestBody RoleForm roleForm) throws Exception {
     RoleAmount roleAmount = new RoleAmount();
     if(roleForm.getRole().equals("player")){      

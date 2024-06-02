@@ -11,6 +11,7 @@ export const GameProvider = ({ children }) => {
           winner, setWinner, 
           challenger, setChallenger, 
           user, setUser, 
+          roomId, setRoomId,
           prepared, setPrepared, 
           themeOptions, setThemeOptions,
           theme, setTheme, 
@@ -23,7 +24,7 @@ export const GameProvider = ({ children }) => {
    */
   useEffect(() => {
     if (connected) {
-      const subscription = stompClient.subscribe('/topic/prepared', (prepared) => {
+      const subscription = stompClient.subscribe('/topic/prepared/' + roomId, (prepared) => {
         setPrepared(prepared);
       });
       return () => {
@@ -38,7 +39,7 @@ export const GameProvider = ({ children }) => {
    */
   useEffect(() => {
     if (connected) {
-      const subscription = stompClient.subscribe('/topic/start', (game) => {
+      const subscription = stompClient.subscribe('/topic/start/' + roomId, (game) => {
         const data = JSON.parse(game.body);
         setThemeOptions(data.theme);
         setWinner(data.defaultWinner);
@@ -58,7 +59,7 @@ export const GameProvider = ({ children }) => {
   useEffect(() => {
     if (connected) {
       // 新しい回答を受信し、回答をストックする
-      const subscription = stompClient.subscribe('/topic/answer', (newAnswer) => {
+      const subscription = stompClient.subscribe('/topic/answer/' + roomId, (newAnswer) => {
         const data = JSON.parse(newAnswer.body);
         if(challenger === '' || challenger === undefined){
           setChallenger(data.answer)
@@ -67,7 +68,7 @@ export const GameProvider = ({ children }) => {
         }
       });
       // 新しい勝者を受信し、敗者と新しい勝者と挑戦者をセットする
-      const subscription2 = stompClient.subscribe('/topic/winner', (newWinner) => {
+      const subscription2 = stompClient.subscribe('/topic/winner/' + roomId, (newWinner) => {
         const data = JSON.parse(newWinner.body);
         if(data.winner === winner){
           setLoser((prevLoser) => [...prevLoser, challenger]);
@@ -90,7 +91,7 @@ export const GameProvider = ({ children }) => {
    */
   useEffect(() => {
     if (connected) {
-      const subscription = stompClient.subscribe('/topic/final', (finalAnswer) => {
+      const subscription = stompClient.subscribe('/topic/final/' + roomId, (finalAnswer) => {
         const data = JSON.parse(finalAnswer.body);
         const setData = data.finalAnswer + ' - ' + data.user;
         setFinalAnswerWithUser((prevFinalAnswerWithUser) => [...prevFinalAnswerWithUser, setData]);
@@ -106,7 +107,7 @@ export const GameProvider = ({ children }) => {
    */
   useEffect(() => {
     if (connected) {
-      const subscription = stompClient.subscribe('/topic/final/select', (finalWinner) => {
+      const subscription = stompClient.subscribe('/topic/final/select/' + roomId, (finalWinner) => {
         const data = JSON.parse(finalWinner.body);
         setFinalWinnerWithUser(data.finalWinner);
       });
@@ -122,7 +123,7 @@ export const GameProvider = ({ children }) => {
    */
   useEffect(() => {
     if (connected) {
-      const subscription = stompClient.subscribe('/topic/final/theme', (theme) => {
+      const subscription = stompClient.subscribe('/topic/final/theme/' + roomId, (theme) => {
         const data = JSON.parse(theme.body);
         setShowTheme(data);
       });
@@ -144,6 +145,8 @@ export const GameProvider = ({ children }) => {
     setChallenger,
     user,
     setUser,
+    roomId,
+    setRoomId,
     prepared,
     setPrepared,
     themeOptions,

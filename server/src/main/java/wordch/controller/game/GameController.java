@@ -21,8 +21,8 @@ public class GameController {
   @Autowired
   DefaultValueEntityMapper valueMapper;
 
-  @MessageMapping("/start")
-  @SendTo("/topic/start")
+  @MessageMapping("/start/{roomId}")
+  @SendTo("/topic/start/{roomId}")
   public GameValue startGame() throws Exception {
     var game = new GameValue();
     List<String> themeOptions = themeMapper.selectByRandom()
@@ -36,16 +36,16 @@ public class GameController {
     return game;
   }
 
-  @MessageMapping("/answer")
-  @SendTo("/topic/answer")
+  @MessageMapping("/answer/{roomId}")
+  @SendTo("/topic/answer/{roomId}")
   public NewAnswer newAnswer(@RequestBody AnswerForm answerForm) throws Exception {
     var newAnswer = new NewAnswer();
     newAnswer.setAnswer(answerForm.getAnswer());
     return newAnswer;
   }
 
-  @MessageMapping("/winner")
-  @SendTo("/topic/winner")
+  @MessageMapping("/winner/{roomId}")
+  @SendTo("/topic/winner/{roomId}")
   public NewWinner selectWinner(@RequestBody WinnerForm winnerForm) throws Exception {
     var newWinner = new NewWinner();
     newWinner.setWinner(winnerForm.getWinner());

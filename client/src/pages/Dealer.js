@@ -5,7 +5,7 @@ import { GameContext } from "../GameProvider";
 import Countdown from '../common/components/CountDown';
 
 export const Dealer = () => {
-  const { answer, loser, winner, challenger, prepared, theme, themeOptions, setTheme } 
+  const { answer, loser, winner, challenger, prepared, theme, themeOptions, setTheme, roomId } 
   = useContext(GameContext);
   const { stompClient } = useStomp();
   
@@ -14,7 +14,7 @@ export const Dealer = () => {
    */
   useEffect(() => {
     if (stompClient && stompClient.connected) {
-      stompClient.publish({ destination: '/app/start', body: true });
+      stompClient.publish({ destination: '/app/start/' + roomId, body: true });
     }
   }
   , [stompClient]);
@@ -25,7 +25,7 @@ export const Dealer = () => {
   const clickPrepared = (theme) => {
     setTheme(theme);
     if (stompClient && stompClient.connected) {
-      stompClient.publish({ destination: '/app/prepared', body: true });
+      stompClient.publish({ destination: '/app/prepared/' + roomId, body: true });
     }
   }
 
@@ -37,7 +37,7 @@ export const Dealer = () => {
       winner: newWinner
     };
     if (stompClient && stompClient.connected) {
-      stompClient.publish({ destination: '/app/winner', body: JSON.stringify(data) });
+      stompClient.publish({ destination: '/app/winner/' + roomId, body: JSON.stringify(data) });
     }
   }
 
