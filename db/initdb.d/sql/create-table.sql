@@ -6,9 +6,9 @@ CREATE TABLE theme (
   created_by text NOT NULL
 );
 
-CREATE TABLE defaultValue (
+CREATE TABLE default_value (
   id SERIAL PRIMARY KEY,
   value text NOT NULL UNIQUE,
   active boolean default FALSE NOT NULL,
-  created_at timestamptz default CURRENT_TIMESTAMP NOT NULL,
+  created_at timestamptz default CURRENT_TIMESTAMP NOT NULL
 );

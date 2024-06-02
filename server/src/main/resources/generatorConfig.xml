@@ -39,7 +39,7 @@
 
   <!-- ファイル名の末尾にEntityをつけて出力 -->
   <!-- coumnOverride で timestamptz 型のカラムを指定し OffsetDateTime 型で出力。timestamptz 型のカラムが存在しない場合はコメントアウトする -->
-  <table tableName="default_value" schema="">
+  <table tableName="theme" schema="">
     <generatedKey column="id" sqlStatement="JDBC" />
     <domainObjectRenamingRule searchString="^(.*)$" replaceString="$1Entity" />
     <columnOverride column="created_at" javaType="java.time.OffsetDateTime" />
