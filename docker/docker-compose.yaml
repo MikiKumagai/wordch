@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: wordch-postgres
+    # command: -c 'config_file=/etc/postgresql/postgresql.conf'
+    environment:
+      POSTGRES_USER: developer
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: wordch
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --no-locale"
+    ports:
+      - 5432:5432
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./db/initdb.d:/docker-entrypoint-initdb.d
+      # - ./db/etc/postgresql.conf:/etc/postgresql/postgresql.conf
+
+volumes:
+  pg_data:
+    name: wordch-pg_data

@@ -1,0 +1,48 @@
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+  <context id="wordch" targetRuntime="MyBatis3">
+  <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin" />
+
+  <commentGenerator>
+    <property name="suppressAllComments" value="true" />
+    <property name="javaFileEncoding" value="UTF-8" />
+  </commentGenerator>
+
+  <jdbcConnection driverClass="org.postgresql.Driver"
+    connectionURL="jdbc:postgresql://localhost:5432/wordch"
+    userId="developer" password="1234" />
+
+  <!-- この設定により、データベースのdate型のカラムがJavaのLocalDate型として扱われます。 -->
+  <!-- 参考URL https://mybatis.org/generator/configreference/javaTypeResolver.html -->
+  <javaTypeResolver>
+    <property name="useJSR310Types" value="true" />
+  </javaTypeResolver>
+
+  <javaModelGenerator
+    targetPackage="wordch.entity"
+    targetProject="src/main/java">
+    <property name="enableSubPackages" value="true" />
+    <property name="trimStrings" value="true" />
+  </javaModelGenerator>
+
+  <sqlMapGenerator
+    targetPackage="wordch.mapper"
+    targetProject="src/main/resources">
+    <property name="enableSubPackages" value="true" />
+  </sqlMapGenerator>
+
+  <javaClientGenerator
+    type="XMLMAPPER"
+    targetPackage="wordch.mapper"
+    targetProject="src/main/java">
+  </javaClientGenerator>
+
+  <!-- ファイル名の末尾にEntityをつけて出力 -->
+  <!-- coumnOverride で timestamptz 型のカラムを指定し OffsetDateTime 型で出力。timestamptz 型のカラムが存在しない場合はコメントアウトする -->
+  <table tableName="default_value" schema="">
+    <generatedKey column="id" sqlStatement="JDBC" />
+    <domainObjectRenamingRule searchString="^(.*)$" replaceString="$1Entity" />
+    <columnOverride column="created_at" javaType="java.time.OffsetDateTime" />
+  </table>
+  </context>
+</generatorConfiguration>
