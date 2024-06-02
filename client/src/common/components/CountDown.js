@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GameContext } from "../../GameProvider";
 
 const Countdown = (role) => {
   const [seconds, setSeconds] = useState(10);
   const navigate = useNavigate();
-  const { setAnswer, setLoser, setWinner, setChallenger } = useContext(GameContext);
 
   useEffect(() => {
     if (seconds > 0) {
@@ -13,11 +11,6 @@ const Countdown = (role) => {
       return () => clearTimeout(timerId);
     }
     if(seconds === 0){
-      setAnswer([])
-      setLoser([])
-      // TODO subscribeする
-      setWinner('defaultValue1')
-      setChallenger('defaultValue2')
       navigate(`/${role.role}/final`)
     }
   }, [seconds]);

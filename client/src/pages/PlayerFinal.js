@@ -8,7 +8,9 @@ import { useNavigate } from 'react-router-dom';
 export const PlayerFinal = () => {
   const hookForm = useForm()
   const { register, handleSubmit } = hookForm;
-  const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, user, setFinalAnswerWithUser, setFinalWinnerWithUser, setTheme, setShowTheme, setPrepared} 
+  const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, user, 
+    setFinalAnswerWithUser, setFinalWinnerWithUser, setShowTheme, setPrepared, 
+    setAnswer, setWinner, setChallenge} 
   = useContext(GameContext);
   const { stompClient } = useStomp();
   const navigate = useNavigate();
@@ -32,9 +34,11 @@ export const PlayerFinal = () => {
    * 新しいゲームを開始する
    */
   const restartGame = () => {
+    setAnswer([])
+    setWinner('')
+    setChallenge('')
     setFinalAnswerWithUser([])
     setFinalWinnerWithUser('')
-    setTheme('')
     setShowTheme(false)
     setPrepared(false)
     navigate('/home')

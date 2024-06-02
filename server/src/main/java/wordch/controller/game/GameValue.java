@@ -2,7 +2,7 @@ package wordch.controller.game;
 
 public class GameValue {
 
-  private String theme;
+  private String[] theme;
   private String defaultWinner;
   private String defaultChallenger;
 
@@ -15,11 +15,11 @@ public class GameValue {
     this.defaultChallenger = gameValue.getDefaultChallenger();
   }
 
-  public String getTheme() {
+  public String[] getTheme() {
     return theme;
   }
 
-  public void setTheme(String theme){
+  public void setTheme(String[] theme){
     this.theme = theme;
   }
 

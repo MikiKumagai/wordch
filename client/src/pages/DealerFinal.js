@@ -5,7 +5,9 @@ import { GameContext } from "../GameProvider";
 import { useNavigate } from 'react-router-dom';
 
 export const DealerFinal = () => {
-  const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, setFinalAnswerWithUser, setFinalWinnerWithUser, setTheme, setShowTheme, prepared, setPrepared} 
+  const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, user, 
+    setFinalAnswerWithUser, setFinalWinnerWithUser, setShowTheme, setPrepared, 
+    setAnswer, setWinner, setChallenge} 
   = useContext(GameContext);
   const { stompClient } = useStomp();
   const navigate = useNavigate();
@@ -35,9 +37,11 @@ export const DealerFinal = () => {
    * 新しいゲームを開始する
    */
   const restartGame = () => {
+    setAnswer([])
+    setWinner('')
+    setChallenge('')
     setFinalAnswerWithUser([])
     setFinalWinnerWithUser('')
-    setTheme('')
     setShowTheme(false)
     setPrepared(false)
     navigate('/home')

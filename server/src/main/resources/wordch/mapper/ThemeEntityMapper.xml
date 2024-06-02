@@ -208,6 +208,6 @@
     from theme
     where active = true
     order by random()
-    limit 1
+    limit 2
   </select>
 </mapper>

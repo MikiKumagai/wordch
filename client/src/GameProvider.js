@@ -12,6 +12,7 @@ export const GameProvider = ({ children }) => {
           challenger, setChallenger, 
           user, setUser, 
           prepared, setPrepared, 
+          themeOptions, setThemeOptions,
           theme, setTheme, 
           showTheme, setShowTheme,
           finalAnswerWithUser, setFinalAnswerWithUser, 
@@ -39,8 +40,7 @@ export const GameProvider = ({ children }) => {
     if (connected) {
       const subscription = stompClient.subscribe('/topic/start', (game) => {
         const data = JSON.parse(game.body);
-        console.log(data);
-        setTheme(data.theme);
+        setThemeOptions(data.theme);
         setWinner(data.defaultWinner);
         setChallenger(data.defaultChallenger);
       }
@@ -146,6 +146,8 @@ export const GameProvider = ({ children }) => {
     setUser,
     prepared,
     setPrepared,
+    themeOptions,
+    setThemeOptions,
     theme,
     setTheme,
     showTheme,

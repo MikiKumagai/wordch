@@ -5,7 +5,7 @@ import { GameContext } from "../GameProvider";
 import Countdown from '../common/components/CountDown';
 
 export const Dealer = () => {
-  const { answer, loser, winner, challenger, prepared, theme } 
+  const { answer, loser, winner, challenger, prepared, theme, themeOptions, setTheme } 
   = useContext(GameContext);
   const { stompClient } = useStomp();
   
@@ -20,9 +20,10 @@ export const Dealer = () => {
   , [stompClient]);
 
   /**
-   * 準備完了を送信する（TODO テーマを2つから選択する仕様に変更する）
+   * 準備完了を送信する
    */
-  const clickPrepared = () => {
+  const clickPrepared = (theme) => {
+    setTheme(theme);
     if (stompClient && stompClient.connected) {
       stompClient.publish({ destination: '/app/prepared', body: true });
     }
@@ -42,60 +43,77 @@ export const Dealer = () => {
 
   return (
     <Container>
-      <Row>
-        <Col>
-        {prepared ? 
-          <Countdown role="dealer" /> 
-          :
-          <Button className='ms-4' variant='secondary' type="button" onClick={()=>clickPrepared()}>Ready</Button>
-        }
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Card>
-            <Card.Body>
-              <h3 className='my-2'>{theme}</h3>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Card className="overflow-scroll" id='card-loser'>
-            <Card.Body>
-              {loser.map((loser)=>(
-                <div key={loser.id} >
-                  <p className='my-2'>{loser}</p>
-                </div>
-              ))}
+      {theme === '' ? 
+        <Row>
+          <Col>
+            <Card>
+              <Card.Body>
+                <Row>
+                  <Col className='text-center'>
+                    <Button className='ms-4' variant='outline-dark' type="button" onClick={()=>clickPrepared(themeOptions[0])}>{themeOptions[0]}</Button>
+                  </Col>
+                  <Col className='text-center'>
+                    <Button className='ms-4' variant='outline-dark' type="button" onClick={()=>clickPrepared(themeOptions[1])}>{themeOptions[1]}</Button>
+                  </Col>
+                </Row>
               </Card.Body>
-          </Card>
-        </Col>
-        <Col>
-        <Card>
-            <Card.Body className='text-center'>
-              <Button className='my-3' type="button" variant="secondary" size="lg" 
-                disabled={!prepared || challenger === undefined} onClick={()=>match(winner)}>
-                {winner}
-              </Button><br/>
-              <Button className='my-3' type="button" variant="secondary" size="lg" 
-                disabled={!prepared || challenger === undefined} onClick={()=>match(challenger)}>
-                {challenger}
-              </Button>
-            </Card.Body>
-          </Card>
-          <Card className="overflow-scroll" id='card-answer'>
-            <Card.Body>
-              {answer.map((answer)=>(
-                <div key={answer.id} >
-                  <p className='my-2'>{answer}</p>
-                </div>
-              ))}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+            </Card>
+          </Col>
+        </Row>
+      :
+        <>
+          <Row>
+            <Col>
+              <Countdown role="dealer" /> 
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Card>
+                <Card.Body>
+                  <h3 className='my-2'>{theme}</h3>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Card className="overflow-scroll" id='card-loser'>
+                <Card.Body>
+                  {loser.map((loser)=>(
+                    <div key={loser.id} >
+                      <p className='my-2'>{loser}</p>
+                    </div>
+                  ))}
+                  </Card.Body>
+              </Card>
+            </Col>
+            <Col>
+            <Card>
+                <Card.Body className='text-center'>
+                  <Button className='my-3' type="button" variant="secondary" size="lg" 
+                    disabled={!prepared || challenger === undefined} onClick={()=>match(winner)}>
+                    {winner}
+                  </Button><br/>
+                  <Button className='my-3' type="button" variant="secondary" size="lg" 
+                    disabled={!prepared || challenger === undefined} onClick={()=>match(challenger)}>
+                    {challenger}
+                  </Button>
+                </Card.Body>
+              </Card>
+              <Card className="overflow-scroll" id='card-answer'>
+                <Card.Body>
+                  {answer.map((answer)=>(
+                    <div key={answer.id} >
+                      <p className='my-2'>{answer}</p>
+                    </div>
+                  ))}
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </>
+      }
     </Container>
   );
 }
