@@ -20,8 +20,8 @@ public class RoleController {
 
   @MessageMapping("/prepared/{roomId}")
   @SendTo("/topic/prepared/{roomId}")
-  public Boolean prepared() {
-    return true;
+  public String prepared(String theme) {
+    return theme;
   }
 
   @MessageMapping("/role/{roomId}")

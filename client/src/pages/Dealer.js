@@ -5,7 +5,7 @@ import { GameContext } from "../GameProvider";
 import Countdown from '../common/components/CountDown';
 
 export const Dealer = () => {
-  const { answer, loser, winner, challenger, prepared, theme, themeOptions, setTheme, roomId } 
+  const { answer, loser, winner, challenger, prepared, theme, themeOptions, roomId } 
   = useContext(GameContext);
   const { stompClient } = useStomp();
   
@@ -23,9 +23,8 @@ export const Dealer = () => {
    * 準備完了を送信する
    */
   const clickPrepared = (theme) => {
-    setTheme(theme);
     if (stompClient && stompClient.connected) {
-      stompClient.publish({ destination: '/app/prepared/' + roomId, body: true });
+      stompClient.publish({ destination: '/app/prepared/' + roomId, body: JSON.stringify(theme) });
     }
   }
 
@@ -43,10 +42,10 @@ export const Dealer = () => {
 
   return (
     <Container>
-      {theme === '' ? 
+      {!prepared ? 
         <Row>
           <Col>
-            <Card>
+            <Card className="py-3">
               <Card.Header>
                 <p className='mb-0 text-center'>テーマを選択してください</p>
               </Card.Header>
@@ -81,7 +80,10 @@ export const Dealer = () => {
           </Row>
           <Row>
             <Col>
-              <Card className="overflow-scroll" id='card-loser'>
+              <Card className="py-3 overflow-scroll" id='card-loser'>
+                <Card.Header>
+                  <p className='mb-0 text-center'>負け</p>
+                </Card.Header>
                 <Card.Body>
                   {loser.map((loser, index)=>(
                     <div key={index} >
@@ -92,19 +94,25 @@ export const Dealer = () => {
               </Card>
             </Col>
             <Col>
-            <Card>
-                <Card.Body className='text-center'>
-                  <Button className='my-3' type="button" variant="secondary" size="lg" 
-                    disabled={!prepared || challenger === undefined} onClick={()=>match(winner)}>
-                    {winner}
-                  </Button><br/>
-                  <Button className='my-3' type="button" variant="secondary" size="lg" 
-                    disabled={!prepared || challenger === undefined} onClick={()=>match(challenger)}>
-                    {challenger}
-                  </Button>
-                </Card.Body>
+            <Card className='py-3'>
+              <Card.Header>
+                <p className='mb-0 text-center'>どっち？</p>
+              </Card.Header>
+              <Card.Body className='text-center'>
+                <Button className='my-3' type="button" variant="secondary" size="lg" 
+                  disabled={!prepared || challenger === undefined} onClick={()=>match(winner)}>
+                  {winner}
+                </Button><br/>
+                <Button className='my-3' type="button" variant="secondary" size="lg" 
+                  disabled={!prepared || challenger === undefined} onClick={()=>match(challenger)}>
+                  {challenger}
+                </Button>
+              </Card.Body>
               </Card>
-              <Card className="overflow-scroll" id='card-answer'>
+              <Card className="py-3 overflow-scroll" id='card-answer'>
+              <Card.Header>
+                <p className='mb-0 text-center'>待ち</p>
+              </Card.Header>
                 <Card.Body>
                   {answer.map((answer,index)=>(
                     <div key={index} >

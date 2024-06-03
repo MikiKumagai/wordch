@@ -55,6 +55,9 @@ export const DealerFinal = () => {
         </Card.Body>
       </Card>
       <Card className='py-3'>
+        <Card.Header>
+          <p className='mb-0 text-center'>みんなのワードから一番を選んでね</p>
+        </Card.Header>
         <Card.Body>
           {finalWinnerWithUser === '' ?
             finalAnswerWithUser.map((answer) => (
@@ -63,7 +66,7 @@ export const DealerFinal = () => {
                   {answer}
                 </Button>
               </div>
-            )) : <h4>winner : {finalWinnerWithUser}</h4>
+            )) : <h4>優勝 : {finalWinnerWithUser}</h4>
           }
         </Card.Body>
       </Card>
@@ -71,13 +74,13 @@ export const DealerFinal = () => {
         <Col className="text-end me-4">
           {finalWinnerWithUser !== '' && !showTheme &&
             <Button variant='secondary' disabled={showTheme} onClick={() => displayTheme()}>
-              show theme
+              みんなにテーマを見せる
             </Button>
           }
           {showTheme && 
               (
                 <Button variant='light' onClick={()=>restartGame()}>
-                  restart game
+                  次のゲームを始める
                 </Button>
               )
             }

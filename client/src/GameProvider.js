@@ -24,8 +24,10 @@ export const GameProvider = ({ children }) => {
    */
   useEffect(() => {
     if (connected) {
-      const subscription = stompClient.subscribe('/topic/prepared/' + roomId, (prepared) => {
-        setPrepared(prepared);
+      const subscription = stompClient.subscribe('/topic/prepared/' + roomId, (theme) => {
+        const data = JSON.parse(theme.body);
+        setTheme(data);
+        setPrepared(true);
       });
       return () => {
         if (subscription) subscription.unsubscribe();
@@ -93,7 +95,7 @@ export const GameProvider = ({ children }) => {
     if (connected) {
       const subscription = stompClient.subscribe('/topic/final/' + roomId, (finalAnswer) => {
         const data = JSON.parse(finalAnswer.body);
-        const setData = data.finalAnswer + ' - ' + data.user;
+        const setData = data.finalAnswer + ' (' + data.user + ')';
         setFinalAnswerWithUser((prevFinalAnswerWithUser) => [...prevFinalAnswerWithUser, setData]);
       });
       return () => {

@@ -46,7 +46,10 @@ export const Player = () => {
         </Row>
         <Row>
           <Col>
-            <Card className="overflow-scroll" id='card-loser'>
+            <Card className="py-3 overflow-scroll" id='card-loser'>
+              <Card.Header>
+                <p className='mb-0 text-center'>負け</p>
+              </Card.Header>
               <Card.Body>
                 {loser.map((loser, index)=>(
                 <div key={index} >
@@ -58,13 +61,19 @@ export const Player = () => {
           </Col>
           <Col>
             <Card className='py-3'>
+              <Card.Header>
+                <p className='mb-0 text-center'>対戦中</p>
+              </Card.Header>
               <Card.Body>
                 <h4 className='text-center'>{winner}</h4>
                 <p className='text-center m-3'>VS</p>
                 <h4 className='text-center'>{challenger}</h4>
               </Card.Body>
             </Card>
-            <Card className="overflow-scroll" id='card-answer'>
+            <Card className="py-3 overflow-scroll" id='card-answer'>
+              <Card.Header>
+                <p className='mb-0 text-center'>待ち</p>
+              </Card.Header>
               <Card.Body>
               {answer.map((answer, index)=>(
                 <div key={index} >
@@ -80,8 +89,8 @@ export const Player = () => {
             <FormProvider {...hookForm}>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Stack direction="horizontal" gap={3}>
-                  <Form.Control {...register("answer")} type="text" className="me-auto" placeholder="answer" />
-                  <Button type="submit" variant="secondary" disabled={!prepared} >Submit</Button>
+                  <Form.Control {...register("answer")} type="text" className="me-auto" placeholder="ワード" />
+                  <Button className='col-auto' type="submit" variant="secondary" disabled={!prepared} >送る</Button>
                 </Stack>
               </form>
             </FormProvider>

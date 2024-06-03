@@ -1,6 +1,6 @@
 import { useForm, FormProvider } from 'react-hook-form'
 import { Form, Button, Card, Container, Row, Col, Stack } from 'react-bootstrap';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useStomp } from '../StompClientContext';
 import { GameContext } from "../GameProvider";
 import { useNavigate } from 'react-router-dom';
@@ -14,11 +14,13 @@ export const PlayerFinal = () => {
   = useContext(GameContext);
   const { stompClient } = useStomp();
   const navigate = useNavigate();
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   /**
    * 回答を送信する
    */
   const onSubmit = () => {
+    setIsSubmitted(true)
     const formValue = hookForm.getValues();
     const data = {
       finalAnswer: formValue.answer,
@@ -46,13 +48,16 @@ export const PlayerFinal = () => {
 
   return (
     <Container>
-      <Card>
+      <Card className='py-3'>
+        <Card.Header>
+          <p className='mb-0 text-center'>最後のワードを送ってね</p>
+        </Card.Header>
         <Card.Body>
           <FormProvider {...hookForm}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack direction="horizontal" gap={3}>
-                <Form.Control {...register("answer")} type="text" className="me-auto" placeholder="answer" />
-                <Button type="submit" variant="secondary">Submit</Button>
+                <Form.Control {...register("answer")} type="text" className="me-auto" placeholder="最後のワード" disabled={isSubmitted} />
+                <Button className='col-auto' type="submit" variant="secondary" disabled={isSubmitted}>送る</Button>
               </Stack>
             </form>
           </FormProvider>
@@ -61,11 +66,11 @@ export const PlayerFinal = () => {
       <Card className='py-3'>
         <Card.Body>
           {finalWinnerWithUser === '' ?
-            finalAnswerWithUser.map((answer)=>(<h4>{answer}</h4>))
+            finalAnswerWithUser.map((answer, index)=>(<h4 key={index}>{answer}</h4>))
           :
-          <h4>winner : {finalWinnerWithUser}</h4>
+          <h4>優勝 : {finalWinnerWithUser}</h4>
           }
-          {showTheme && <h3>theme : {theme}</h3>}
+          {showTheme && <h3 className='mt-5'>今回のテーマは {theme} でした！</h3>}
         </Card.Body>
       </Card>
       {showTheme && 
@@ -73,7 +78,7 @@ export const PlayerFinal = () => {
             <Row>
               <Col className="text-end me-4">
                 <Button variant='light' onClick={()=>restartGame()}>
-                  restart game
+                  次のゲームを始める
                 </Button>
               </Col>
             </Row>
