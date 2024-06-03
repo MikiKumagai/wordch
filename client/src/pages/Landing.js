@@ -1,10 +1,10 @@
-import { Button, Card, Container } from 'react-bootstrap';
+import { Button, Card, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useStomp } from './../StompClientContext';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Stack, Form } from 'react-bootstrap';
 import { GameContext } from "../GameProvider";
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Api from '../common/Api';
 
 export default function Landing() {
@@ -15,8 +15,14 @@ export default function Landing() {
   const hookForm = useForm();
   const {
     register,
+    formState: { errors },
     handleSubmit,
   } = hookForm;
+
+  useEffect(() => {
+    disconnect();
+  }
+  ,[])
 
   /**
    * 部屋IDを作成する
@@ -39,26 +45,37 @@ export default function Landing() {
     <Container>
       <Card>
         <Card.Body>
-          {uuid === "" ?
-            <Button variant='secondary' onClick={()=>createRoom()}>
-              create room
-            </Button>
-          :
-            <div>roomID: {uuid}</div>
-          }
           <FormProvider {...hookForm}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack direction="horizontal" gap={2}>
-                <Form.Control {...register("roomId")} type="text" className="me-auto" placeholder='roomID' />
-                <Form.Control {...register("name")} type="text" className="me-auto" defaultValue="noName" />
-                <Button type="submit" variant="secondary">Connect</Button>
-                <Button type="button" variant="secondary" onClick={() => disconnect()}>Disconnect</Button>
+                <Form.Control {...register("roomId", {
+                  required: "必須",
+                  minLength: { value: 8, message: "8文字" },
+                  maxLength: { value: 8, message: "8文字" },
+                  })} type="text" className="me-auto" placeholder='部屋ID' 
+                />
+                {errors.roomId && <small className="text-danger text-left">{errors.roomId.message}</small>}
+                <Form.Control {...register("name", {
+                  required: "必須",
+                  maxLength: { value: 8, message: "8文字以内" },
+                  })} type="text" className="me-auto" placeholder='名前を入力' 
+                />
+                {errors.name && <small className="text-danger text-left">{errors.name.message}</small>}
+                <Button type="submit" variant="secondary" className='col-auto'>始める</Button>
               </Stack>
             </form>
           </FormProvider>
-          <div>
-            Connection status: {connected ? 'Connected' : 'Disconnected'}
-          </div>
+          <Row>
+            <Col className='my-1'>
+              {uuid === "" ?
+                <Button variant='secondary' onClick={()=>createRoom()}>
+                  新しく部屋をつくる
+                </Button>
+              :
+                <div>部屋ID: {uuid}</div>
+              }
+            </Col>
+          </Row>
         </Card.Body>
       </Card>
     </Container>

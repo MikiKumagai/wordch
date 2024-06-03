@@ -1,13 +1,11 @@
 package wordch.controller.game;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import wordch.mapper.DefaultValueEntityMapper;
 import wordch.mapper.ThemeEntityMapper;
@@ -38,7 +36,7 @@ public class GameController {
 
   @MessageMapping("/answer/{roomId}")
   @SendTo("/topic/answer/{roomId}")
-  public NewAnswer newAnswer(@RequestBody AnswerForm answerForm) throws Exception {
+  public NewAnswer newAnswer(AnswerForm answerForm) throws Exception {
     var newAnswer = new NewAnswer();
     newAnswer.setAnswer(answerForm.getAnswer());
     return newAnswer;
@@ -46,7 +44,7 @@ public class GameController {
 
   @MessageMapping("/winner/{roomId}")
   @SendTo("/topic/winner/{roomId}")
-  public NewWinner selectWinner(@RequestBody WinnerForm winnerForm) throws Exception {
+  public NewWinner selectWinner(WinnerForm winnerForm) throws Exception {
     var newWinner = new NewWinner();
     newWinner.setWinner(winnerForm.getWinner());
     return newWinner;

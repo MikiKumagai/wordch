@@ -12,7 +12,7 @@ export default function Home() {
   const { user } = useContext(GameContext);
   const navigate = useNavigate();
 
-  const { prepared, setPrepared, roomId } 
+  const { prepared, roomId } 
   = useContext(GameContext);
 
   /**
@@ -39,34 +39,22 @@ export default function Home() {
   }, [stompClient, player, dealer, connected]);
 
   /**
-   * 準備完了フラグをセットする
-   */
-  const clickPrepared = () => {
-    if (stompClient && stompClient.connected) {
-      stompClient.publish({ destination: '/app/prepared/' + roomId, body: true });
-    }
-  }
-
-  /**
    * 役割を選択する
    */
   const clickRole = (role) => {
     const data = {
       role: role,
       user: user,
-      playerList: player,
-      dealer: dealer 
     };
     if (stompClient && stompClient.connected) {
       stompClient.publish({ destination: '/app/role/' + roomId, body: JSON.stringify(data) });
     }
-  };
+  }
 
   /**
    * ゲームを開始する
    */
   const startGame = () => {
-    setPrepared(false);
     if(role === "dealer"){
       navigate('/dealer');
     }else if(role === "player"){
@@ -76,31 +64,24 @@ export default function Home() {
 
   return (
     <Container>
-      {!prepared &&
-        <Row>
-          <Col className="ms-4">
-            <Button variant='secondary' type="button" onClick={()=>clickPrepared()}>Ready</Button>
-          </Col>
-        </Row>
-      }
       <Card>
         <Card.Body className='p-4'>
           <Row>
             <Col className='text-center'>
-              <Button variant='light' size="lg" type="button" disabled={!prepared} onClick={()=>clickRole("player")}>player</Button>
+              <Button variant='light' size="lg" type="button" onClick={()=>clickRole("dealer")}>親</Button>
             </Col>
             <Col className='text-center'>
-              <Button variant='light' size="lg" type="button" disabled={!prepared} onClick={()=>clickRole("dealer")}>dealer</Button>
+              <Button variant='light' size="lg" type="button" onClick={()=>clickRole("player")}>子</Button>
             </Col>
             </Row>
           <Row>
             <Col className='text-center'>
+                <h4>{dealer}</h4>
+            </Col>
+            <Col className='text-center'>
               {player && player.map((player, index)=>(
                 <h4 key={index} className='my-2'>{player}</h4>
               ))}
-            </Col>
-            <Col className='text-center'>
-                <h4>{dealer}</h4>
             </Col>
           </Row>
         </Card.Body>
