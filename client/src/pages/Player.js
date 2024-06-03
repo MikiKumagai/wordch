@@ -28,54 +28,68 @@ export const Player = () => {
 
   return (
     <Container>
-      <Row>
-        <Col>
-        {prepared && <Countdown role="player" />}
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Card className="overflow-scroll" id='card-loser'>
-            <Card.Body>
-              {loser.map((loser, index)=>(
-              <div key={index} >
-                <p className='my-2'>{loser}</p>
-              </div>
-              ))}
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col>
-          <Card className='py-3'>
-            <Card.Body>
-              <h4 className='text-center'>{winner}</h4>
-              <p className='text-center m-3'>VS</p>
-              <h4 className='text-center'>{challenger}</h4>
-            </Card.Body>
-          </Card>
-          <Card className="overflow-scroll" id='card-answer'>
-            <Card.Body>
-            {answer.map((answer, index)=>(
-              <div key={index} >
-                <p className='my-2'>{answer}</p>
-              </div>
-              ))}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      <Card fixed="bottom">
+    {!prepared ?
+    (
+      <>
+      <Card>
         <Card.Body>
-          <FormProvider {...hookForm}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Stack direction="horizontal" gap={3}>
-                <Form.Control {...register("answer")} type="text" className="me-auto" placeholder="answer" />
-                <Button type="submit" variant="secondary" disabled={!prepared} >Submit</Button>
-              </Stack>
-            </form>
-          </FormProvider>
+          親がテーマを選択中です…
         </Card.Body>
       </Card>
+      </>
+    ):( 
+      <>
+        <Row>
+          <Col>
+          <Countdown role="player" />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Card className="overflow-scroll" id='card-loser'>
+              <Card.Body>
+                {loser.map((loser, index)=>(
+                <div key={index} >
+                  <p className='my-2'>{loser}</p>
+                </div>
+                ))}
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col>
+            <Card className='py-3'>
+              <Card.Body>
+                <h4 className='text-center'>{winner}</h4>
+                <p className='text-center m-3'>VS</p>
+                <h4 className='text-center'>{challenger}</h4>
+              </Card.Body>
+            </Card>
+            <Card className="overflow-scroll" id='card-answer'>
+              <Card.Body>
+              {answer.map((answer, index)=>(
+                <div key={index} >
+                  <p className='my-2'>{answer}</p>
+                </div>
+                ))}
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+        <Card fixed="bottom">
+          <Card.Body>
+            <FormProvider {...hookForm}>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Stack direction="horizontal" gap={3}>
+                  <Form.Control {...register("answer")} type="text" className="me-auto" placeholder="answer" />
+                  <Button type="submit" variant="secondary" disabled={!prepared} >Submit</Button>
+                </Stack>
+              </form>
+            </FormProvider>
+          </Card.Body>
+        </Card>
+      </>
+      )
+    }
     </Container>
   );
 }

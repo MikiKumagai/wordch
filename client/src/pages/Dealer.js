@@ -47,6 +47,9 @@ export const Dealer = () => {
         <Row>
           <Col>
             <Card>
+              <Card.Header>
+                <p className='mb-0 text-center'>テーマを選択してください</p>
+              </Card.Header>
               <Card.Body>
                 <Row>
                   <Col className='text-center'>

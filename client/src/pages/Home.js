@@ -88,7 +88,7 @@ export default function Home() {
       </Card>
       <Row>
         <Col className='text-end me-4'>
-          <Button variant='light' type="button" onClick={()=>startGame()}>game start!</Button>
+          <Button variant='light' type="button" onClick={()=>startGame()}>ゲーム画面へ</Button>
         </Col>
       </Row>
     </Container>

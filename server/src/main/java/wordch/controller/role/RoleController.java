@@ -13,8 +13,16 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class RoleController {
 
+  // TODO 一定時間操作がないとき削除する
+
     private static final ConcurrentMap<String, String> roomDealerName = new ConcurrentHashMap<>();
     private static final ConcurrentMap<String, Set<String>> roomPlayerNames = new ConcurrentHashMap<>();
+
+  @MessageMapping("/prepared/{roomId}")
+  @SendTo("/topic/prepared/{roomId}")
+  public Boolean prepared() {
+    return true;
+  }
 
   @MessageMapping("/role/{roomId}")
   @SendTo("/topic/role_amount/{roomId}")
