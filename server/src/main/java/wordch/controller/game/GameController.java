@@ -2,10 +2,15 @@ package wordch.controller.game;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 
 import wordch.mapper.DefaultValueEntityMapper;
 import wordch.mapper.ThemeEntityMapper;
@@ -36,10 +41,14 @@ public class GameController {
 
   @MessageMapping("/answer/{roomId}")
   @SendTo("/topic/answer/{roomId}")
-  public NewAnswer newAnswer(AnswerForm answerForm) throws Exception {
+  public ResponseEntity<?> newAnswer(@Validated AnswerForm answerForm, 
+      BindingResult result) throws Exception {
+    if (result.hasErrors()) {
+      return ResponseEntity.badRequest().build();
+    }
     var newAnswer = new NewAnswer();
     newAnswer.setAnswer(answerForm.getAnswer());
-    return newAnswer;
+    return ResponseEntity.ok(newAnswer);
   }
 
   @MessageMapping("/winner/{roomId}")
