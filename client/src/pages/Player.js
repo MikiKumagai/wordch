@@ -94,14 +94,13 @@ export const Player = () => {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Stack direction="horizontal" gap={3}>
                   <Form.Control {...register("answer",{
-                    required: "必須",
-                    maxLength: { value: 20, message: "20文字" },
+                    maxLength: { value: 20, message: "20文字までで考えてね！" },
                   })} type="text" className="me-auto" placeholder="ワード" />
-                  {errors.answer && <small className="text-danger text-left">{errors.answer.message}</small>}
                   <Button className='col-auto' type="submit" variant="secondary" disabled={!prepared} >送る</Button>
                 </Stack>
               </form>
             </FormProvider>
+            {errors.answer && <small className="text-danger text-left">{errors.answer.message}</small>}
           </Card.Body>
         </Card>
       </>

@@ -45,22 +45,22 @@ export default function Landing() {
     <Container>
       <Card>
         <Card.Body>
+          {errors.roomId && <><small className="text-danger text-left">{errors.roomId.message}</small><br /></>}
+          {errors.name && <small className="text-danger text-left">{errors.name.message}</small>}
           <FormProvider {...hookForm}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack direction="horizontal" gap={2}>
                 <Form.Control {...register("roomId", {
-                  required: "必須",
-                  minLength: { value: 8, message: "8文字" },
-                  maxLength: { value: 8, message: "8文字" },
+                  required: "部屋IDを入力してね！",
+                  minLength: { value: 8, message: "部屋IDは8文字だよ！" },
+                  maxLength: { value: 8, message: "部屋IDは8文字だよ！" },
                   })} type="text" className="me-auto" placeholder='部屋ID' 
                 />
-                {errors.roomId && <small className="text-danger text-left">{errors.roomId.message}</small>}
                 <Form.Control {...register("name", {
-                  required: "必須",
-                  maxLength: { value: 8, message: "8文字以内" },
+                  required: "名前を入力してね！",
+                  maxLength: { value: 8, message: "名前は8文字以内に決めてね！" },
                   })} type="text" className="me-auto" placeholder='名前を入力' 
                 />
-                {errors.name && <small className="text-danger text-left">{errors.name.message}</small>}
                 <Button type="submit" variant="secondary" className='col-auto'>始める</Button>
               </Stack>
             </form>
