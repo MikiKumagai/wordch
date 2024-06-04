@@ -10,7 +10,7 @@ import Api from '../common/Api';
 export default function Landing() {
   const [uuid, setUuid] = useState('');
   const navigate = useNavigate();
-  const { connect, disconnect, connected } = useStomp();
+  const { connect, disconnect } = useStomp();
   const { setUser, setRoomId } = useContext(GameContext);
   const hookForm = useForm();
   const {

@@ -7,7 +7,11 @@ import Countdown from '../common/components/CountDown';
 
 export const Player = () => {
   const hookForm = useForm()
-  const { register, handleSubmit } = hookForm;
+  const { 
+    register,
+    formState: { errors }, 
+    handleSubmit 
+  } = hookForm;
   const { answer, loser, winner, challenger, prepared, roomId } 
   = useContext(GameContext);
   const { stompClient } = useStomp();
@@ -89,7 +93,11 @@ export const Player = () => {
             <FormProvider {...hookForm}>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Stack direction="horizontal" gap={3}>
-                  <Form.Control {...register("answer")} type="text" className="me-auto" placeholder="ワード" />
+                  <Form.Control {...register("answer",{
+                    required: "必須",
+                    maxLength: { value: 20, message: "20文字" },
+                  })} type="text" className="me-auto" placeholder="ワード" />
+                  {errors.answer && <small className="text-danger text-left">{errors.answer.message}</small>}
                   <Button className='col-auto' type="submit" variant="secondary" disabled={!prepared} >送る</Button>
                 </Stack>
               </form>

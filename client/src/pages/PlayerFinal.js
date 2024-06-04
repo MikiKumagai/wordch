@@ -7,7 +7,11 @@ import { useNavigate } from 'react-router-dom';
 
 export const PlayerFinal = () => {
   const hookForm = useForm()
-  const { register, handleSubmit } = hookForm;
+  const { 
+    register, 
+    formState: { errors }, 
+    handleSubmit 
+ } = hookForm;
   const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, user, roomId,
     setFinalAnswerWithUser, setFinalWinnerWithUser, setShowTheme, setPrepared, 
     setAnswer, setWinner, setChallenger} 
@@ -56,7 +60,11 @@ export const PlayerFinal = () => {
           <FormProvider {...hookForm}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack direction="horizontal" gap={3}>
-                <Form.Control {...register("answer")} type="text" className="me-auto" placeholder="最後のワード" disabled={isSubmitted} />
+                <Form.Control {...register("answer",{
+                  required: "必須",
+                  maxLength: { value: 20, message: "20文字" },
+                })} type="text" className="me-auto" placeholder="最後のワード" disabled={isSubmitted} />
+                {errors.answer && <small className="text-danger text-left">{errors.answer.message}</small>}
                 <Button className='col-auto' type="submit" variant="secondary" disabled={isSubmitted}>送る</Button>
               </Stack>
             </form>
