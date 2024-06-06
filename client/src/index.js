@@ -10,7 +10,7 @@ import { GameProvider } from './GameProvider';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 <React.StrictMode>
-  <StompClientProvider url="http://localhost:8080/gs-guide-websocket" token="token">
+  <StompClientProvider url={`${process.env.REACT_APP_API_URL}/gs-guide-websocket`} token="token">
     <BrowserRouter>
       <GameProvider>
         <App />

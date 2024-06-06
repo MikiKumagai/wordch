@@ -13,12 +13,14 @@ class Api {
    */
   static async get(url, successHandler, params) {
     try {
-      const response = await axios.get(url, {
-        params: params,
-        paramsSerializer: (params) => {
-          return QueryString.stringify(params, { arrayFormat: 'repeat' });
-        },
-      });
+      const response = await axios.get(
+        process.env.REACT_APP_API_URL + url,
+        {
+          params: params,
+          paramsSerializer: (params) => {
+            return QueryString.stringify(params, { arrayFormat: 'repeat' });
+          },
+        });
       if (successHandler && typeof successHandler === 'function') {
         successHandler(response.data);
       }
@@ -35,7 +37,10 @@ class Api {
    */
   static async post(url, data, successHandler) {
     try {
-      const response = await axios.post(url, data);
+      const response = await axios.post(
+        process.env.REACT_APP_API_URL + url,
+        data
+      );
       if (successHandler && typeof successHandler === 'function') {
         successHandler(response.data);
       }

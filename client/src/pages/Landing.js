@@ -43,6 +43,11 @@ export default function Landing() {
 
   return (
     <Container>
+      <Row>
+        <Col>
+          <h1 className='mx-4'>ワードッチ</h1>
+        </Col>
+      </Row>
       <Card>
         <Card.Body>
           {errors.roomId && <><small className="text-danger text-left">{errors.roomId.message}</small><br /></>}

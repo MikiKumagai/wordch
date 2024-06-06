@@ -1,13 +1,19 @@
 #!/bin/bash
+set -eux
+
+pushd $(dirname $0) >/dev/null
+trap "popd > /dev/null" EXIT
 
 BASE_DIR="$(dirname $0)"
 
 # データベース接続情報
-# export PGHOST="localhost"
+export PGHOST=${1:-"localhost"}
 export PGPORT="5432"
-export PGUSER="developer"
-# export PGPASSWORD="1234"
+export PGUSER="kmmk"
+export PGPASSWORD="uwfyzcyr"
 export PGDATABASE="wordch"
+
+psql -d postgres -c "CREATE DATABASE ${PGDATABASE};"
 
 # SQLファイルのパス
 SQL_DIR="${BASE_DIR}/sql"

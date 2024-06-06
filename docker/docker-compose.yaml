@@ -4,9 +4,9 @@ services:
     container_name: wordch-postgres
     # command: -c 'config_file=/etc/postgresql/postgresql.conf'
     environment:
-      POSTGRES_USER: developer
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: wordch
+      POSTGRES_USER: kmmk
+      POSTGRES_PASSWORD: uwfyzcyr
+      POSTGRES_DB: postgres
       POSTGRES_INITDB_ARGS: "--encoding=UTF8 --no-locale"
     ports:
       - 5432:5432
