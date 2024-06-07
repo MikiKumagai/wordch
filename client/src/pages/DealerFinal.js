@@ -54,20 +54,24 @@ export const DealerFinal = () => {
           <h3>{theme}</h3>
         </Card.Body>
       </Card>
-      <Card className='py-3'>
+      <Card>
         <Card.Header>
           <p className='mb-0 text-center'>みんなのワードから一番を選んでね</p>
         </Card.Header>
         <Card.Body>
           {finalWinnerWithUser === '' ?
             finalAnswerWithUser.map((answer) => (
-              <div>
+              <>
                 <Button variant='outline-dark' size='lg' className='my-1' onClick={() => onSelect(answer)}>
                   {answer}
                 </Button>
-              </div>
-            )) : <h4>優勝 : {finalWinnerWithUser}</h4>
-          }
+              </>
+            )) : (    
+              <>
+                <h5 className='mt-4'>優勝</h5>
+                <h3>{finalWinnerWithUser}</h3>
+              </>
+            )}
         </Card.Body>
       </Card>
       <Row>

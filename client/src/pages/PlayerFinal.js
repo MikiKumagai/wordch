@@ -52,7 +52,7 @@ export const PlayerFinal = () => {
 
   return (
     <Container>
-      <Card className='py-3'>
+      <Card>
         <Card.Header>
           <p className='mb-0 text-center'>最後のワードを送ってね</p>
         </Card.Header>
@@ -70,14 +70,22 @@ export const PlayerFinal = () => {
           {errors.answer && <small className="text-danger text-left">{errors.answer.message}</small>}
         </Card.Body>
       </Card>
-      <Card className='py-3'>
+      <Card>
         <Card.Body>
           {finalWinnerWithUser === '' ?
             finalAnswerWithUser.map((answer, index)=>(<h4 key={index}>{answer}</h4>))
           :
-          <h4>優勝 : {finalWinnerWithUser}</h4>
+          <>
+            <h5>優勝</h5>
+            <h3>{finalWinnerWithUser}</h3>
+          </>
           }
-          {showTheme && <h3 className='mt-5'>今回のテーマは {theme} でした！</h3>}
+          {showTheme && 
+            <>
+              <h5 className="mt-5">今回のテーマ</h5>
+              <h3>{theme}</h3>
+            </>
+          }
         </Card.Body>
       </Card>
       {showTheme && 

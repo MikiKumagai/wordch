@@ -50,7 +50,7 @@ export const Player = () => {
         </Row>
         <Row>
           <Col>
-            <Card className="py-3 overflow-scroll" id='card-loser'>
+            <Card className="overflow-scroll" id='card-loser'>
               <Card.Header>
                 <p className='mb-0 text-center'>負け</p>
               </Card.Header>
@@ -64,7 +64,7 @@ export const Player = () => {
             </Card>
           </Col>
           <Col>
-            <Card className='py-3'>
+            <Card>
               <Card.Header>
                 <p className='mb-0 text-center'>対戦中</p>
               </Card.Header>
@@ -74,7 +74,7 @@ export const Player = () => {
                 <h4 className='text-center'>{challenger}</h4>
               </Card.Body>
             </Card>
-            <Card className="py-3 overflow-scroll" id='card-answer'>
+            <Card className="overflow-scroll" id='card-answer'>
               <Card.Header>
                 <p className='mb-0 text-center'>待ち</p>
               </Card.Header>

@@ -45,7 +45,7 @@ export const Dealer = () => {
       {!prepared ? 
         <Row>
           <Col>
-            <Card className="py-3">
+            <Card>
               <Card.Header>
                 <p className='mb-0 text-center'>テーマを選択してください</p>
               </Card.Header>
@@ -80,7 +80,7 @@ export const Dealer = () => {
           </Row>
           <Row>
             <Col>
-              <Card className="py-3 overflow-scroll" id='card-loser'>
+              <Card className="overflow-scroll" id='card-loser'>
                 <Card.Header>
                   <p className='mb-0 text-center'>負け</p>
                 </Card.Header>
@@ -94,7 +94,7 @@ export const Dealer = () => {
               </Card>
             </Col>
             <Col>
-            <Card className='py-3'>
+            <Card>
               <Card.Header>
                 <p className='mb-0 text-center'>どっち？</p>
               </Card.Header>
@@ -109,7 +109,7 @@ export const Dealer = () => {
                 </Button>
               </Card.Body>
               </Card>
-              <Card className="py-3 overflow-scroll" id='card-answer'>
+              <Card className="overflow-scroll" id='card-answer'>
               <Card.Header>
                 <p className='mb-0 text-center'>待ち</p>
               </Card.Header>
