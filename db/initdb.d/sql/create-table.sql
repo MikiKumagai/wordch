@@ -1,7 +1,3 @@
-CREATE DATABASE wordch;
-
-\c wordch
-
 CREATE TABLE theme (
   id SERIAL PRIMARY KEY,
   theme text NOT NULL UNIQUE,
