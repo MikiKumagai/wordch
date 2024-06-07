@@ -2,14 +2,11 @@ package wordch.controller.game;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 
 import wordch.mapper.DefaultValueEntityMapper;
@@ -41,14 +38,10 @@ public class GameController {
 
   @MessageMapping("/answer/{roomId}")
   @SendTo("/topic/answer/{roomId}")
-  public ResponseEntity<?> newAnswer(@Validated AnswerForm answerForm, 
-      BindingResult result) throws Exception {
-    if (result.hasErrors()) {
-      return ResponseEntity.badRequest().build();
-    }
+  public NewAnswer newAnswer(@Validated AnswerForm answerForm) throws Exception {
     var newAnswer = new NewAnswer();
     newAnswer.setAnswer(answerForm.getAnswer());
-    return ResponseEntity.ok(newAnswer);
+    return newAnswer;
   }
 
   @MessageMapping("/winner/{roomId}")
