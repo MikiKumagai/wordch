@@ -1,0 +1,8 @@
+[Unit]
+Description=wordch API application
+
+[Service]
+ExecStart=java -jar /wordch.jar --spring.profiles.active=prd
+
+[Install]
+WantedBy=multi-user.target

@@ -10,13 +10,38 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+
 @Controller
 public class RoleController {
 
-  // TODO 一定時間操作がないとき削除する
-
     private static final ConcurrentMap<String, String> roomDealerName = new ConcurrentHashMap<>();
     private static final ConcurrentMap<String, Set<String>> roomPlayerNames = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, AtomicLong> roomLastUpdateTime = new ConcurrentHashMap<>();
+    private static final long EXPIRATION_TIME_MILLIS = 60000 * 60;
+
+    public RoleController() {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(this::removeStaleEntries, EXPIRATION_TIME_MILLIS, EXPIRATION_TIME_MILLIS, TimeUnit.MILLISECONDS);
+    }
+
+    private void updateLastUpdateTime(String roomId) {
+        roomLastUpdateTime.put(roomId, new AtomicLong(System.currentTimeMillis()));
+    }
+
+    private void removeStaleEntries() {
+        long currentTime = System.currentTimeMillis();
+        roomLastUpdateTime.forEach((roomId, lastUpdateTime) -> {
+            if (currentTime - lastUpdateTime.get() > EXPIRATION_TIME_MILLIS) {
+                roomDealerName.remove(roomId);
+                roomPlayerNames.remove(roomId);
+                roomLastUpdateTime.remove(roomId);
+            }
+        });
+    }
 
   @MessageMapping("/prepared/{roomId}")
   @SendTo("/topic/prepared/{roomId}")
@@ -29,6 +54,7 @@ public class RoleController {
   public RoleAmount roleAmount(RoleForm roleForm, @DestinationVariable String roomId) {
     synchronized (this) {
       roomPlayerNames.putIfAbsent(roomId, ConcurrentHashMap.newKeySet());
+      updateLastUpdateTime(roomId);
 
       Set<String> playerNames = roomPlayerNames.get(roomId);
       String dealerName = roomDealerName.get(roomId);
@@ -59,8 +85,6 @@ public class RoleController {
     roleAmount.setPlayerList(new ArrayList<>(playerNames));
     roleAmount.setDealer(roomDealerName.get(roomId) == "" ? "" : roomDealerName.get(roomId));
     return roleAmount;
-}
-
+    }
   }
-
 }
