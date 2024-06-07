@@ -71,9 +71,9 @@ export const Dealer = () => {
           </Row>
           <Row>
             <Col>
-              <Card>
+              <Card className='py-0'>
                 <Card.Body>
-                  <h3 className='my-2'>{theme}</h3>
+                  <h3 className='mb-0'>{theme}</h3>
                 </Card.Body>
               </Card>
             </Col>
@@ -90,7 +90,7 @@ export const Dealer = () => {
                       <p className='my-2'>{loser}</p>
                     </div>
                   ))}
-                  </Card.Body>
+                </Card.Body>
               </Card>
             </Col>
             <Col>

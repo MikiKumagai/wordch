@@ -73,17 +73,17 @@ export const PlayerFinal = () => {
       <Card>
         <Card.Body>
           {finalWinnerWithUser === '' ?
-            finalAnswerWithUser.map((answer, index)=>(<h4 key={index}>{answer}</h4>))
+            finalAnswerWithUser.map((answer, index)=>(<h4 key={index} className='my-2'>{answer}</h4>))
           :
           <>
-            <h5>優勝</h5>
-            <h3>{finalWinnerWithUser}</h3>
+            <h5 className="mt-3">優勝</h5>
+            <h3 className="mb-3">{finalWinnerWithUser}</h3>
           </>
           }
           {showTheme && 
             <>
               <h5 className="mt-5">今回のテーマ</h5>
-              <h3>{theme}</h3>
+              <h3 className="mb-3">{theme}</h3>
             </>
           }
         </Card.Body>

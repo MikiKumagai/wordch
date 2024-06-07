@@ -43,11 +43,6 @@ export default function Landing() {
 
   return (
     <Container>
-      <Row>
-        <Col>
-          <h1 className='mx-4'>ワードッチ</h1>
-        </Col>
-      </Row>
       <Card>
         <Card.Body>
           {errors.roomId && <><small className="text-danger text-left">{errors.roomId.message}</small><br /></>}
@@ -73,7 +68,7 @@ export default function Landing() {
           <Row>
             <Col className='my-1'>
               {uuid === "" ?
-                <Button variant='secondary' onClick={()=>createRoom()}>
+                <Button variant='secondary' size="sm" onClick={()=>createRoom()}>
                   新しく部屋をつくる
                 </Button>
               :

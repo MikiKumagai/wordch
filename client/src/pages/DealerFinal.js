@@ -49,9 +49,9 @@ export const DealerFinal = () => {
 
   return (
     <Container>
-      <Card>
+      <Card className='py-0'>
         <Card.Body>
-          <h3>{theme}</h3>
+          <h3 className='mb-0'>{theme}</h3>
         </Card.Body>
       </Card>
       <Card>
@@ -69,7 +69,7 @@ export const DealerFinal = () => {
             )) : (    
               <>
                 <h5 className='mt-4'>優勝</h5>
-                <h3>{finalWinnerWithUser}</h3>
+                <h3 className='mb-4'>{finalWinnerWithUser}</h3>
               </>
             )}
         </Card.Body>

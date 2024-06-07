@@ -4,7 +4,7 @@ html {
 }
 
 .App {
-  background: #c4c4c4;
+  background: #e2e2e2;
   padding: 40px;
   min-height: 100vh;
 }
@@ -12,8 +12,7 @@ html {
 .card {
   background: white;
   border-radius: 4px;
-  margin: 20px;
-  padding: 20px;
+  margin: 10px;
 }
 
 #card-loser {
