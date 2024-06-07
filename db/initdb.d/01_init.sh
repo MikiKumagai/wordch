@@ -7,7 +7,7 @@ trap "popd > /dev/null" EXIT
 BASE_DIR="$(dirname $0)"
 
 # データベース接続情報
-export PGHOST=${1:-"localhost"}
+export PGHOST=${1:-""}
 export PGPORT="5432"
 export PGUSER="kmmk"
 export PGPASSWORD="uwfyzcyr"
