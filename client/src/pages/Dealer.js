@@ -1,4 +1,4 @@
-import { Button, Card, Container, Row, Col, Form } from 'react-bootstrap';
+import { Button, Card, Container, Row, Col, Form, Stack } from 'react-bootstrap';
 import { useContext, useEffect, useState } from 'react';
 import { useStomp } from '../StompClientContext';
 import { GameContext } from "../GameProvider";
@@ -72,34 +72,36 @@ export const Dealer = () => {
                 <p className='mb-0 text-center'>テーマを選択してください</p>
               </Card.Header>
               <Card.Body>
-                <Row>
-                  <Col className='text-center'>
-                    <Button variant='outline-dark' type="button" onClick={()=>clickPrepared(themeOptions[0])}>{themeOptions[0]}</Button>
-                  </Col>
-                  <Col className='text-center'>
-                    <Button variant='outline-dark' type="button" onClick={()=>clickPrepared(themeOptions[1])}>{themeOptions[1]}</Button>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col className='text-center'>
-                    {!inputTheme ? (
-                      <Button variant='outline-dark' type="button" onClick={()=>setInputTheme(true)}>自分で決める</Button>
-                    ):(
-                      <FormProvider {...hookForm}>
-                        <form onSubmit={handleSubmit(clickPrepared)}>
-                          <Row>
-                            <Col>
-                              <Form.Control {...register("theme")} type="text" className="me-auto" />
-                            </Col>
-                            <Col>
-                              <Button type="submit" variant="outline-dark" className='col-auto'>送る</Button>
-                            </Col>
-                          </Row>
-                        </form>
-                    </FormProvider>
+                {!inputTheme ? (
+                  <>
+                  <Row>
+                    <Col className='my-2 text-center'>
+                      <Button variant='outline-dark' type="button" onClick={()=>clickPrepared(themeOptions[0])}>{themeOptions[0]}</Button>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className='my-2 text-center'>
+                      <Button variant='outline-dark' type="button" onClick={()=>clickPrepared(themeOptions[1])}>{themeOptions[1]}</Button>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className='my-2 text-center'>
+                        <Button variant='outline-secondary' type="button" onClick={()=>setInputTheme(true)}>自分で決める</Button>
+                    </Col>
+                  </Row>
+                  </>
+                ):(
+                  <FormProvider {...hookForm}>
+                    <form onSubmit={handleSubmit(clickPrepared)}>
+                    <small>素敵なテーマは使わせてもらうかも！</small>
+                    <Form.Control {...register("theme")} type="text" className="mb-2" placeholder='テーマを入力'/>
+                    <Stack direction="horizontal" gap={2}>
+                      <Button type="button" variant="secondary" className='ms-auto' onClick={()=>setInputTheme(false)}>やっぱりやめる</Button>
+                      <Button type="submit" variant="outline-dark">送る</Button>
+                    </Stack>
+                    </form>
+                  </FormProvider>
                     )}
-                  </Col>
-                </Row>
               </Card.Body>
             </Card>
           </Col>
