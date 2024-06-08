@@ -10,6 +10,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import wordch.entity.ThemeEntity;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -46,7 +48,11 @@ public class RoleController {
   @MessageMapping("/prepared/{roomId}")
   @SendTo("/topic/prepared/{roomId}")
   public String prepared(ThemeForm form) {
-    // TODO 入力されたやつだったらDBにactive=falseでinsert
+    if(form.getIsUserInput()){
+        var entity = new ThemeEntity();
+        entity.setTheme(form.getTheme());
+        entity.setCreatedBy("user");
+    }
     return form.getTheme();
   }
 
