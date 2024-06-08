@@ -63,7 +63,7 @@ export const PlayerFinal = () => {
                 <Form.Control {...register("answer",{
                   maxLength: { value: 20, message: "20文字までで考えてね！" },
                 })} type="text" className="me-auto" placeholder="最後のワード" disabled={isSubmitted} />
-                <Button className='col-auto' type="submit" variant="secondary" disabled={isSubmitted}>送る</Button>
+                <Button className='col-auto' type="submit" variant="outline-dark" disabled={isSubmitted}>送る</Button>
               </Stack>
             </form>
           </FormProvider>
@@ -91,7 +91,7 @@ export const PlayerFinal = () => {
       {showTheme && 
           (
             <Row>
-              <Col className="text-end me-4">
+              <Col className="text-end me-3">
                 <Button variant='light' onClick={()=>restartGame()}>
                   次のゲームを始める
                 </Button>

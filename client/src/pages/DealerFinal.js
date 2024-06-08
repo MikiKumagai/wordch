@@ -75,7 +75,7 @@ export const DealerFinal = () => {
         </Card.Body>
       </Card>
       <Row>
-        <Col className="text-end me-4">
+        <Col className="text-end me-3">
           {finalWinnerWithUser !== '' && !showTheme &&
             <Button variant='secondary' disabled={showTheme} onClick={() => displayTheme()}>
               みんなにテーマを見せる
