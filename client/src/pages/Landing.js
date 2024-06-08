@@ -54,14 +54,14 @@ export default function Landing() {
                   required: "部屋IDを入力してね！",
                   minLength: { value: 8, message: "部屋IDは8文字だよ！" },
                   maxLength: { value: 8, message: "部屋IDは8文字だよ！" },
-                  })} type="text" className="me-auto" placeholder='部屋ID' 
+                  })} type="text" className="me-auto" placeholder='グループの部屋ID' 
                 />
                 <Form.Control {...register("name", {
                   required: "名前を入力してね！",
                   maxLength: { value: 8, message: "名前は8文字以内に決めてね！" },
-                  })} type="text" className="me-auto" placeholder='名前を入力' 
+                  })} type="text" className="me-auto" placeholder='あなたの名前' 
                 />
-                <Button type="submit" variant="secondary" className='col-auto'>始める</Button>
+                <Button type="submit" variant="outline-dark" className='col-auto'>始める</Button>
               </Stack>
             </form>
           </FormProvider>
@@ -69,7 +69,7 @@ export default function Landing() {
             <Col className='my-1'>
               {uuid === "" ?
                 <Button variant='secondary' size="sm" onClick={()=>createRoom()}>
-                  新しく部屋をつくる
+                  部屋IDを生成
                 </Button>
               :
                 <div>部屋ID: {uuid}</div>

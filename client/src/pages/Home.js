@@ -68,10 +68,10 @@ export default function Home() {
         <Card.Body className='p-4'>
           <Row>
             <Col className='text-center'>
-              <Button variant='light' size="lg" type="button" onClick={()=>clickRole("dealer")}>親</Button>
+              <Button variant='outline-dark' size="lg" type="button" onClick={()=>clickRole("dealer")}>親</Button>
             </Col>
             <Col className='text-center'>
-              <Button variant='light' size="lg" type="button" onClick={()=>clickRole("player")}>子</Button>
+              <Button variant='outline-dark' size="lg" type="button" onClick={()=>clickRole("player")}>子</Button>
             </Col>
             </Row>
           <Row>

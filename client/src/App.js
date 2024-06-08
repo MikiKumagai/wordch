@@ -10,7 +10,7 @@ import { DealerFinal } from './pages/DealerFinal';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App bg_pattern bg_custom">
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="" element={<Landing />} />

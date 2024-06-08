@@ -9,9 +9,23 @@ html {
   min-height: 100vh;
 }
 
+.bg_pattern {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  opacity: 1;
+  z-index: -1;
+}
+.bg_custom {
+  background-image: radial-gradient(#d4d4d4 2px, #c4c4c4 2px);
+  background-size: 20px 20px;
+}
+
 .card {
   background: white;
-  border-radius: 4px;
   margin: 10px;
 }
 
@@ -24,4 +38,5 @@ html {
 #card-answer {
   overflow-y: auto;
   height: 40vh;
+  margin: 20px 10px 10px 10px
 }
