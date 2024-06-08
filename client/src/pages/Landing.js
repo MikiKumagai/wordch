@@ -5,10 +5,9 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { Stack, Form } from 'react-bootstrap';
 import { GameContext } from "../GameProvider";
 import { useContext, useEffect, useState } from 'react';
-import Api from '../common/Api';
 
 export default function Landing() {
-  const [uuid, setUuid] = useState('');
+  const [newRoomId, setNewRoomId] = useState('');
   const navigate = useNavigate();
   const { connect, disconnect } = useStomp();
   const { setUser, setRoomId } = useContext(GameContext);
@@ -27,8 +26,9 @@ export default function Landing() {
   /**
    * 部屋IDを作成する
    */
-  const createRoom = () => {
-    Api.get('/api/room/create', (data)=>setUuid(data))
+  const createRoomId = () => {
+    const randomString = Math.random().toString(32).substring(2, 10)
+    setNewRoomId(randomString)
   }
 
   /**
@@ -52,8 +52,7 @@ export default function Landing() {
               <Stack direction="horizontal" gap={2}>
                 <Form.Control {...register("roomId", {
                   required: "部屋IDを入力してね！",
-                  minLength: { value: 8, message: "部屋IDは8文字だよ！" },
-                  maxLength: { value: 8, message: "部屋IDは8文字だよ！" },
+                  maxLength: { value: 8, message: "部屋IDは8文字以内にしてね！" },
                   })} type="text" className="me-auto" placeholder='グループの部屋ID' 
                 />
                 <Form.Control {...register("name", {
@@ -67,12 +66,12 @@ export default function Landing() {
           </FormProvider>
           <Row>
             <Col className='my-1'>
-              {uuid === "" ?
-                <Button variant='secondary' size="sm" onClick={()=>createRoom()}>
+              {newRoomId === "" ?
+                <Button variant='secondary' size="sm" onClick={()=>createRoomId()}>
                   部屋IDを生成
                 </Button>
               :
-                <div>部屋ID: {uuid}</div>
+                <div>部屋ID: {newRoomId}</div>
               }
             </Col>
           </Row>
