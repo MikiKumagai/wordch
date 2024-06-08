@@ -20,13 +20,12 @@ export const GameProvider = ({ children }) => {
           finalWinnerWithUser, setFinalWinnerWithUser } = useGameValues();
 
   /**
-   * 準備完了フラグをセットする
+   * テーマと準備完了フラグをセットする
    */
   useEffect(() => {
     if (connected) {
       const subscription = stompClient.subscribe('/topic/prepared/' + roomId, (theme) => {
-        const data = JSON.parse(theme.body);
-        setTheme(data);
+        setTheme(theme.body);
         setPrepared(true);
       });
       return () => {

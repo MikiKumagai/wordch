@@ -1,13 +1,21 @@
-import { Button, Card, Container, Row, Col } from 'react-bootstrap';
-import { useContext, useEffect } from 'react';
+import { Button, Card, Container, Row, Col, Form } from 'react-bootstrap';
+import { useContext, useEffect, useState } from 'react';
 import { useStomp } from '../StompClientContext';
 import { GameContext } from "../GameProvider";
 import Countdown from '../common/components/CountDown';
+import { useForm, FormProvider } from 'react-hook-form';
 
 export const Dealer = () => {
   const { answer, loser, winner, challenger, prepared, theme, themeOptions, roomId } 
   = useContext(GameContext);
   const { stompClient } = useStomp();
+  const [ inputTheme, setInputTheme ] = useState(false);
+  const hookForm = useForm();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = hookForm;
   
   /**
    * テーマ取得のリクエストを送信する
@@ -24,7 +32,21 @@ export const Dealer = () => {
    */
   const clickPrepared = (theme) => {
     if (stompClient && stompClient.connected) {
-      stompClient.publish({ destination: '/app/prepared/' + roomId, body: JSON.stringify(theme) });
+      if (theme && typeof theme === 'object' && theme !== null){
+        const postData = {
+          theme: theme.theme,
+          isUserInput: true
+        }
+        stompClient.publish({ destination: '/app/prepared/' + roomId, body: JSON.stringify(postData) });
+      } else {
+        const postData = {
+          theme: theme,
+          isUserInput: false
+        }
+        stompClient.publish({ destination: '/app/prepared/' + roomId, body: JSON.stringify(postData) });
+      }
+      setInputTheme(false);
+      hookForm.reset();
     }
   }
 
@@ -52,10 +74,30 @@ export const Dealer = () => {
               <Card.Body>
                 <Row>
                   <Col className='text-center'>
-                    <Button className='ms-4' variant='outline-dark' type="button" onClick={()=>clickPrepared(themeOptions[0])}>{themeOptions[0]}</Button>
+                    <Button variant='outline-dark' type="button" onClick={()=>clickPrepared(themeOptions[0])}>{themeOptions[0]}</Button>
                   </Col>
                   <Col className='text-center'>
-                    <Button className='ms-4' variant='outline-dark' type="button" onClick={()=>clickPrepared(themeOptions[1])}>{themeOptions[1]}</Button>
+                    <Button variant='outline-dark' type="button" onClick={()=>clickPrepared(themeOptions[1])}>{themeOptions[1]}</Button>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className='text-center'>
+                    {!inputTheme ? (
+                      <Button variant='outline-dark' type="button" onClick={()=>setInputTheme(true)}>自分で決める</Button>
+                    ):(
+                      <FormProvider {...hookForm}>
+                        <form onSubmit={handleSubmit(clickPrepared)}>
+                          <Row>
+                            <Col>
+                              <Form.Control {...register("theme")} type="text" className="me-auto" />
+                            </Col>
+                            <Col>
+                              <Button type="submit" variant="outline-dark" className='col-auto'>送る</Button>
+                            </Col>
+                          </Row>
+                        </form>
+                    </FormProvider>
+                    )}
                   </Col>
                 </Row>
               </Card.Body>
@@ -99,11 +141,11 @@ export const Dealer = () => {
                 <p className='mb-0 text-center'>どっち？</p>
               </Card.Header>
               <Card.Body className='text-center'>
-                <Button className='my-3' type="button" variant="secondary" size="lg" 
+                <Button className='my-3' type="button" variant="outline-dark" size="lg" 
                   disabled={!prepared || challenger === undefined} onClick={()=>match(winner)}>
                   {winner}
                 </Button><br/>
-                <Button className='my-3' type="button" variant="secondary" size="lg" 
+                <Button className='my-3' type="button" variant="outline-dark" size="lg" 
                   disabled={!prepared || challenger === undefined} onClick={()=>match(challenger)}>
                   {challenger}
                 </Button>

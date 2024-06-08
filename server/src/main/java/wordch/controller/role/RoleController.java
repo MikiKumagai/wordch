@@ -45,8 +45,9 @@ public class RoleController {
 
   @MessageMapping("/prepared/{roomId}")
   @SendTo("/topic/prepared/{roomId}")
-  public String prepared(String theme) {
-    return theme;
+  public String prepared(ThemeForm form) {
+    // TODO 入力されたやつだったらDBにactive=falseでinsert
+    return form.getTheme();
   }
 
   @MessageMapping("/role/{roomId}")
