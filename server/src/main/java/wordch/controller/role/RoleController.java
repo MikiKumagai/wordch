@@ -9,6 +9,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 
 import wordch.entity.ThemeEntity;
 
@@ -47,7 +48,7 @@ public class RoleController {
 
   @MessageMapping("/prepared/{roomId}")
   @SendTo("/topic/prepared/{roomId}")
-  public String prepared(ThemeForm form) {
+  public String prepared(@Validated ThemeForm form) throws Exception {
     if(form.getIsUserInput()){
         var entity = new ThemeEntity();
         entity.setTheme(form.getTheme());

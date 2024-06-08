@@ -93,12 +93,15 @@ export const Dealer = () => {
                 ):(
                   <FormProvider {...hookForm}>
                     <form onSubmit={handleSubmit(clickPrepared)}>
-                    <small>素敵なテーマは使わせてもらうかも！</small>
-                    <Form.Control {...register("theme")} type="text" className="mb-2" placeholder='テーマを入力'/>
-                    <Stack direction="horizontal" gap={2}>
-                      <Button type="button" variant="secondary" className='ms-auto' onClick={()=>setInputTheme(false)}>やっぱりやめる</Button>
-                      <Button type="submit" variant="outline-dark">送る</Button>
-                    </Stack>
+                      <small>素敵なテーマは使わせてもらうかも！</small>
+                      <Form.Control {...register("theme", {
+                        maxLength: { value: 50, message: "50文字までで考えてね！" },
+                      })} type="text" className="mb-2" placeholder='テーマを入力'/>
+                      <Stack direction="horizontal" gap={2}>
+                        <Button type="button" variant="secondary" className='ms-auto' onClick={()=>setInputTheme(false)}>やっぱりやめる</Button>
+                        <Button type="submit" variant="outline-dark">送る</Button>
+                      </Stack>
+                      {errors.theme && <small className="text-danger text-left">{errors.theme.message}</small>}
                     </form>
                   </FormProvider>
                     )}
