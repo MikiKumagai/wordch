@@ -60,7 +60,7 @@ export const DealerFinal = () => {
           {finalWinnerWithUser === '' ?
             finalAnswerWithUser.map((answer) => (
               <>
-                <Button variant='outline-dark' size='lg' className='my-1' onClick={() => onSelect(answer)}>
+                <Button variant='dark' size='lg' className='my-1' onClick={() => onSelect(answer)}>
                   {answer}
                 </Button>
               </>

@@ -90,7 +90,7 @@ export const Player = () => {
                   <Form.Control {...register("answer",{
                     maxLength: { value: 20, message: "20文字までで考えてね！" },
                   })} type="text" className="me-auto" placeholder="ワード" />
-                  <Button className='col-auto' type="submit" variant="secondary" disabled={!prepared} >送る</Button>
+                  <Button className='col-auto' type="submit" variant="dark" disabled={!prepared} >送る</Button>
                 </Stack>
               </form>
             </FormProvider>

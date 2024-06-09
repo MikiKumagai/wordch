@@ -97,7 +97,7 @@ export const Dealer = () => {
                       })} type="text" className="mb-2" placeholder='テーマを入力'/>
                       <Stack direction="horizontal" gap={2}>
                         <Button type="button" variant="secondary" className='ms-auto' onClick={()=>setInputTheme(false)}>やっぱりやめる</Button>
-                        <Button type="submit" variant="outline-dark">送る</Button>
+                        <Button type="submit" variant="dark">送る</Button>
                       </Stack>
                       {errors.theme && <small className="text-danger text-left">{errors.theme.message}</small>}
                     </form>
