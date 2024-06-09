@@ -55,9 +55,7 @@ export const DealerFinal = () => {
         </Card.Body>
       </Card>
       <Card>
-        <Card.Header>
-          <p className='mb-0 text-center'>みんなのワードから一番を選んでね</p>
-        </Card.Header>
+        <Card.Header className='text-center'>みんなのワードから一番を選んでね</Card.Header>
         <Card.Body>
           {finalWinnerWithUser === '' ?
             finalAnswerWithUser.map((answer) => (

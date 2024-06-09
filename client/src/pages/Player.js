@@ -51,9 +51,7 @@ export const Player = () => {
         <Row>
           <Col>
             <Card className="overflow-scroll" id='card-loser'>
-              <Card.Header>
-                <p className='mb-0 text-center'>負け</p>
-              </Card.Header>
+              <Card.Header className='text-center'>負け</Card.Header>
               <Card.Body>
                 {loser.map((loser, index)=>(
                 <div key={index} >
@@ -65,9 +63,7 @@ export const Player = () => {
           </Col>
           <Col>
             <Card>
-              <Card.Header>
-                <p className='mb-0 text-center'>対戦中</p>
-              </Card.Header>
+              <Card.Header className='text-center'>対戦中</Card.Header>
               <Card.Body>
                 <h4 className='text-center'>{winner}</h4>
                 <p className='text-center m-3'>VS</p>
@@ -75,9 +71,7 @@ export const Player = () => {
               </Card.Body>
             </Card>
             <Card className="overflow-scroll" id='card-answer'>
-              <Card.Header>
-                <p className='mb-0 text-center'>待ち</p>
-              </Card.Header>
+              <Card.Header className='text-center'>待ち</Card.Header>
               <Card.Body>
               {answer.map((answer, index)=>(
                 <div key={index} >

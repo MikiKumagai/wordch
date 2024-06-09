@@ -65,13 +65,14 @@ export default function Home() {
   return (
     <Container>
       <Card className='small-card'>
+        <Card.Header className='text-center'>役を選んでください</Card.Header>
         <Card.Body className='p-4'>
           <Row>
             <Col className='text-center'>
-              <Button variant='warning' size="lg" type="button" onClick={()=>clickRole("dealer")}>親</Button>
+              <Button variant='dark' size="lg" type="button" onClick={()=>clickRole("dealer")}>親</Button>
             </Col>
             <Col className='text-center'>
-              <Button variant='warning' size="lg" type="button" onClick={()=>clickRole("player")}>子</Button>
+              <Button variant='dark' size="lg" type="button" onClick={()=>clickRole("player")}>子</Button>
             </Col>
             </Row>
           <Row>
@@ -84,9 +85,9 @@ export default function Home() {
               ))}
             </Col>
           </Row>
-          <Row>
+          <Row className='mt-4'>
             <Col className='text-center d-grid'>
-              <Button variant='outline-warning' type="button" onClick={()=>startGame()}>ゲーム画面へ</Button>
+              <Button variant='outline-dark' type="button" onClick={()=>startGame()}>ゲーム画面へ</Button>
             </Col>
           </Row>
         </Card.Body>

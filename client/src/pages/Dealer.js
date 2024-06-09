@@ -68,25 +68,23 @@ export const Dealer = () => {
         <Row>
           <Col>
             <Card>
-              <Card.Header>
-                <p className='mb-0 text-center'>テーマを選択してください</p>
-              </Card.Header>
+              <Card.Header className='text-center'>テーマを選択してください</Card.Header>
               <Card.Body>
                 {!inputTheme ? (
                   <>
                   <Row>
                     <Col className='my-2 text-center'>
-                      <Button variant='outline-dark' type="button" onClick={()=>clickPrepared(themeOptions[0])}>{themeOptions[0]}</Button>
+                      <Button variant='dark' type="button" onClick={()=>clickPrepared(themeOptions[0])}>{themeOptions[0]}</Button>
                     </Col>
                   </Row>
                   <Row>
                     <Col className='my-2 text-center'>
-                      <Button variant='outline-dark' type="button" onClick={()=>clickPrepared(themeOptions[1])}>{themeOptions[1]}</Button>
+                      <Button variant='dark' type="button" onClick={()=>clickPrepared(themeOptions[1])}>{themeOptions[1]}</Button>
                     </Col>
                   </Row>
                   <Row>
                     <Col className='my-2 text-center'>
-                        <Button variant='outline-secondary' type="button" onClick={()=>setInputTheme(true)}>自分で決める</Button>
+                        <Button variant='secondary' type="button" onClick={()=>setInputTheme(true)}>自分で決める</Button>
                     </Col>
                   </Row>
                   </>
@@ -128,9 +126,7 @@ export const Dealer = () => {
           <Row>
             <Col>
               <Card className="overflow-scroll" id='card-loser'>
-                <Card.Header>
-                  <p className='mb-0 text-center'>負け</p>
-                </Card.Header>
+                <Card.Header className='text-center'>負け</Card.Header>
                 <Card.Body>
                   {loser.map((loser, index)=>(
                     <div key={index} >
@@ -142,24 +138,20 @@ export const Dealer = () => {
             </Col>
             <Col>
             <Card>
-              <Card.Header>
-                <p className='mb-0 text-center'>どっち？</p>
-              </Card.Header>
+              <Card.Header className='text-center'>どっち？</Card.Header>
               <Card.Body className='text-center'>
-                <Button className='my-3' type="button" variant="outline-dark" size="lg" 
+                <Button className='my-3' type="button" variant="dark" size="lg" 
                   disabled={!prepared || challenger === undefined} onClick={()=>match(winner)}>
                   {winner}
                 </Button><br/>
-                <Button className='my-3' type="button" variant="outline-dark" size="lg" 
+                <Button className='my-3' type="button" variant="dark" size="lg" 
                   disabled={!prepared || challenger === undefined} onClick={()=>match(challenger)}>
                   {challenger}
                 </Button>
               </Card.Body>
               </Card>
               <Card className="overflow-scroll" id='card-answer'>
-              <Card.Header>
-                <p className='mb-0 text-center'>待ち</p>
-              </Card.Header>
+              <Card.Header className='text-center'>待ち</Card.Header>
                 <Card.Body>
                   {answer.map((answer,index)=>(
                     <div key={index} >

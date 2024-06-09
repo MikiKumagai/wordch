@@ -54,19 +54,41 @@ html {
   margin: 20px 10px 10px 10px
 }
 
-/*------------------------------------
-- COLOR warning
-------------------------------------*/
-
 .card-header {
-  background-color: #e0ff93 !important;
+  /* background-color: #e0ff93 !important; */
 }
 
-.btn-warning {
+/*------------------------------------
+- COLOR dark
+------------------------------------*/
+
+.btn-dark {
   color: #fff !important;
   background-color: #000000 !important;
   border-color: #000000 !important;
 }
+
+.btn-dark:hover {
+  color: #212529 !important;
+  background-color: #aff400 !important;
+  border-color: #aff400 !important;
+}
+
+.btn-outline-dark {
+  color: #000000 !important;
+  background-color: transparent !important;
+  border-color: #000000 !important;
+}
+
+.btn-outline-dark:hover {
+  color: #212529 !important;
+  background-color: #c7ff15 !important;
+  border-color: #c7ff15 !important;
+}
+
+/*------------------------------------
+- COLOR light
+------------------------------------*/
 
 .btn-light {
   color: #000000 !important;
@@ -80,27 +102,31 @@ html {
   border-color: #aff400 !important;
 }
 
-.btn-warning:hover {
+
+/*------------------------------------
+- COLOR secondary
+------------------------------------*/
+
+.btn-secondary {
+  color: #fff;
+  background-color: #817f7f;
+  border-color: #817f7f;
+}
+
+.btn-secondary:hover {
   color: #212529 !important;
   background-color: #aff400 !important;
   border-color: #aff400 !important;
 }
 
-.btn-warning.disabled, .btn-warning:disabled {
+.btn-outline-secondary {
+  color: #817f7f;
+  background-color: transparent;
+  border-color: #817f7f;
+}
+
+.btn-outline-secondary:hover {
   color: #212529 !important;
   background-color: #aff400 !important;
   border-color: #aff400 !important;
 }
-
-.btn-outline-warning {
-  color: #000000 !important;
-  background-color: transparent !important;
-  border-color: #000000 !important;
-}
-
-.btn-outline-warning:hover {
-  color: #212529 !important;
-  background-color: #c7ff15 !important;
-  border-color: #c7ff15 !important;
-}
-

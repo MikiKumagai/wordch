@@ -2,12 +2,11 @@ import { Button, Card, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useStomp } from './../StompClientContext';
 import { useForm, FormProvider } from 'react-hook-form';
-import { Stack, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { GameContext } from "../GameProvider";
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 
 export default function Landing() {
-  const [newRoomId, setNewRoomId] = useState('');
   const navigate = useNavigate();
   const { connect, disconnect } = useStomp();
   const { setUser, setRoomId } = useContext(GameContext);
@@ -28,7 +27,6 @@ export default function Landing() {
    */
   const createRoomId = () => {
     const randomString = Math.random().toString(32).substring(2, 10)
-    setNewRoomId(randomString)
     hookForm.setValue("roomId", randomString)
   }
 
@@ -75,7 +73,7 @@ export default function Landing() {
                   </Button>
                 </Col>
                 <Col className='d-flex justify-content-center'>
-                  <Button type="submit" variant="outline-warning" className='col-auto'>始める</Button>
+                  <Button type="submit" variant="dark" className='col-auto'>始める</Button>
                 </Col>
               </Row>
             </form>
