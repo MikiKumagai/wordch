@@ -29,6 +29,7 @@ export default function Landing() {
   const createRoomId = () => {
     const randomString = Math.random().toString(32).substring(2, 10)
     setNewRoomId(randomString)
+    hookForm.setValue("roomId", randomString)
   }
 
   /**
@@ -43,38 +44,42 @@ export default function Landing() {
 
   return (
     <Container>
-      <Card>
+      <Card className='small-card'>
         <Card.Body>
           {errors.roomId && <><small className="text-danger text-left">{errors.roomId.message}</small><br /></>}
           {errors.name && <small className="text-danger text-left">{errors.name.message}</small>}
           <FormProvider {...hookForm}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Stack direction="horizontal" gap={2}>
-                <Form.Control {...register("roomId", {
-                  required: "部屋IDを入力してね！",
-                  maxLength: { value: 8, message: "部屋IDは8文字以内にしてね！" },
-                  })} type="text" className="me-auto" placeholder='グループの部屋ID' 
-                />
-                <Form.Control {...register("name", {
-                  required: "名前を入力してね！",
-                  maxLength: { value: 8, message: "名前は8文字以内に決めてね！" },
-                  })} type="text" className="me-auto" placeholder='あなたの名前' 
-                />
-                <Button type="submit" variant="outline-dark" className='col-auto'>始める</Button>
-              </Stack>
+              <Row className='my-3'>
+                <Col>
+                  <Form.Control {...register("roomId", {
+                    required: "部屋IDを入力してね！",
+                    maxLength: { value: 8, message: "部屋IDは8文字以内にしてね！" },
+                    })} type="text" className="me-auto" placeholder='グループの部屋ID' 
+                  />
+                </Col>
+              </Row>
+              <Row className='my-3'>
+                <Col>
+                  <Form.Control {...register("name", {
+                    required: "名前を入力してね！",
+                    maxLength: { value: 8, message: "名前は8文字以内に決めてね！" },
+                    })} type="text" className="me-auto" placeholder='あなたの名前' 
+                  />
+                </Col>
+              </Row>
+              <Row className='my-3'>
+                <Col className='d-flex justify-content-center align-items-center'>
+                  <Button variant='secondary' onClick={()=>createRoomId()}>
+                    部屋IDを生成
+                  </Button>
+                </Col>
+                <Col className='d-flex justify-content-center'>
+                  <Button type="submit" variant="outline-warning" className='col-auto'>始める</Button>
+                </Col>
+              </Row>
             </form>
           </FormProvider>
-          <Row>
-            <Col className='my-1'>
-              {newRoomId === "" ?
-                <Button variant='secondary' size="sm" onClick={()=>createRoomId()}>
-                  部屋IDを生成
-                </Button>
-              :
-                <div>部屋ID: {newRoomId}</div>
-              }
-            </Col>
-          </Row>
         </Card.Body>
       </Card>
     </Container>
