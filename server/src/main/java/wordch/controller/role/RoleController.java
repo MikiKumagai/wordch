@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 
 import wordch.entity.ThemeEntity;
+import wordch.mapper.ThemeEntityMapper;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,6 +22,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Controller
 public class RoleController {
+
+    @Autowired
+    private ThemeEntityMapper themeEntityMapper;
 
     private static final ConcurrentMap<String, String> roomDealerName = new ConcurrentHashMap<>();
     private static final ConcurrentMap<String, Set<String>> roomPlayerNames = new ConcurrentHashMap<>();
@@ -53,6 +58,7 @@ public class RoleController {
         var entity = new ThemeEntity();
         entity.setTheme(form.getTheme());
         entity.setCreatedBy("user");
+        themeEntityMapper.insertSelective(entity);
     }
     return form.getTheme();
   }

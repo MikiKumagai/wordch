@@ -5,9 +5,8 @@ import { GameContext } from "../GameProvider";
 import { useNavigate } from 'react-router-dom';
 
 export const DealerFinal = () => {
-  const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, roomId,
-    setFinalAnswerWithUser, setFinalWinnerWithUser, setShowTheme, setPrepared, 
-    setAnswer, setWinner, setChallenger} 
+  const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, roomId, setFinalAnswerWithUser, 
+    setFinalWinnerWithUser, setShowTheme, setPrepared, setAnswer, setWinner, setChallenger} 
   = useContext(GameContext);
   const { stompClient } = useStomp();
   const navigate = useNavigate();
@@ -75,7 +74,7 @@ export const DealerFinal = () => {
       <Row>
         <Col className="text-end me-3">
           {finalWinnerWithUser !== '' && !showTheme &&
-            <Button variant='secondary' disabled={showTheme} onClick={() => displayTheme()}>
+            <Button variant='light' disabled={showTheme} onClick={() => displayTheme()}>
               みんなにテーマを見せる
             </Button>
           }
