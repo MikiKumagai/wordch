@@ -62,12 +62,14 @@ export const Player = () => {
             </Card>
           </Col>
           <Col>
-            <Card>
+            <Card id='card-matching'>
               <Card.Header className='text-center'>対戦中</Card.Header>
-              <Card.Body>
-                <h4 className='text-center'>{winner}</h4>
-                <p className='text-center m-3'>VS</p>
-                <h4 className='text-center'>{challenger}</h4>
+              <Card.Body className='d-flex align-items-center justify-content-center'>
+                <div>
+                  <h4 className='text-center'>{winner}</h4>
+                  <p className='text-center m-3'>VS</p>
+                  <h4 className='text-center'>{challenger}</h4>
+                </div>
               </Card.Body>
             </Card>
             <Card className="overflow-scroll" id='card-answer'>

@@ -25,6 +25,12 @@ html {
   background-size: 20px 20px;
 }
 
+.btn {
+  /* padding: 4px 15px 4px 15px !important;
+  border-radius: 9999px !important */
+  border-radius: 0 !important
+}
+
 .card {
   background: white;
   margin: 10px;
@@ -32,7 +38,7 @@ html {
 }
 
 .small-card {
-  width: 50vw !important;
+  width: 270px !important;
   margin: 0 auto;
 }
 
@@ -41,16 +47,14 @@ html {
   height: 70vh;
 }
 
-.btn {
-  /* padding: 4px 15px 4px 15px !important;
-  border-radius: 9999px !important */
-  border-radius: 0 !important
+#card-matching {
+  height: 25vh;
 }
 
 /* TODO 縦幅が右上と合わせてloserと同じになるように */
 #card-answer {
   overflow-y: auto;
-  height: 40vh;
+  height: 43vh;
   margin: 20px 10px 10px 10px
 }
 

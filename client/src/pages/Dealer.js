@@ -137,17 +137,19 @@ export const Dealer = () => {
               </Card>
             </Col>
             <Col>
-            <Card>
+            <Card id='card-matching'>
               <Card.Header className='text-center'>どっち？</Card.Header>
-              <Card.Body className='text-center'>
-                <Button className='my-3' type="button" variant="dark" size="lg" 
-                  disabled={!prepared || challenger === undefined} onClick={()=>match(winner)}>
-                  {winner}
-                </Button><br/>
-                <Button className='my-3' type="button" variant="dark" size="lg" 
-                  disabled={!prepared || challenger === undefined} onClick={()=>match(challenger)}>
-                  {challenger}
-                </Button>
+              <Card.Body className='d-flex align-items-center justify-content-center text-center'>
+                <div>
+                  <Button className='my-3' type="button" variant="dark" size="lg" 
+                    disabled={!prepared || challenger === undefined} onClick={()=>match(winner)}>
+                    {winner}
+                  </Button><br/>
+                  <Button className='my-3' type="button" variant="dark" size="lg" 
+                    disabled={!prepared || challenger === undefined} onClick={()=>match(challenger)}>
+                    {challenger}
+                  </Button>
+                </div>
               </Card.Body>
               </Card>
               <Card className="overflow-scroll" id='card-answer'>
