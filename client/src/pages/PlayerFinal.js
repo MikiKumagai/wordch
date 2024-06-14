@@ -14,7 +14,7 @@ export const PlayerFinal = () => {
  } = hookForm;
   const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, user, roomId,
     setFinalAnswerWithUser, setFinalWinnerWithUser, setShowTheme, setPrepared, 
-    setAnswer, setWinner, setChallenger} 
+    setAnswer, setWinner, setChallenger, setLoser} 
   = useContext(GameContext);
   const { stompClient } = useStomp();
   const navigate = useNavigate();
@@ -47,6 +47,7 @@ export const PlayerFinal = () => {
     setFinalWinnerWithUser('')
     setShowTheme(false)
     setPrepared(false)
+    setLoser([])
     navigate('/home')
   }
 

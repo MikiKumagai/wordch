@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const DealerFinal = () => {
   const { finalAnswerWithUser, finalWinnerWithUser, showTheme, theme, roomId, setFinalAnswerWithUser, 
-    setFinalWinnerWithUser, setShowTheme, setPrepared, setAnswer, setWinner, setChallenger} 
+    setFinalWinnerWithUser, setShowTheme, setPrepared, setAnswer, setWinner, setChallenger, setLoser} 
   = useContext(GameContext);
   const { stompClient } = useStomp();
   const navigate = useNavigate();
@@ -43,6 +43,7 @@ export const DealerFinal = () => {
     setFinalWinnerWithUser('')
     setShowTheme(false)
     setPrepared(false)
+    setLoser([])
     navigate('/home')
   }
 
@@ -62,6 +63,7 @@ export const DealerFinal = () => {
                 <Button variant='dark' size='lg' className='my-1' onClick={() => onSelect(answer)}>
                   {answer}
                 </Button>
+                <br />
               </>
             )) : (    
               <>
