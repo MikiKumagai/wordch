@@ -11,6 +11,8 @@ export const DealerFinal = () => {
   const { stompClient } = useStomp();
   const navigate = useNavigate();
 
+  // TODO 全員の回答が揃うのを待つ
+
   /**
    * 勝者を送信する
    */
@@ -55,7 +57,7 @@ export const DealerFinal = () => {
         </Card.Body>
       </Card>
       <Card>
-        <Card.Header className='text-center'>みんなのワードから一番を選んでね</Card.Header>
+        <Card.Header className='text-center'>みんなのワードが出揃ったら、一番を選んでね</Card.Header>
         <Card.Body>
           {finalWinnerWithUser === '' ?
             finalAnswerWithUser.map((answer) => (

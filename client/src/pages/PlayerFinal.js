@@ -54,7 +54,7 @@ export const PlayerFinal = () => {
   return (
     <Container>
       <Card>
-        <Card.Header className='text-center'>最後のワードを送ってね</Card.Header>
+        <Card.Header className='text-center'>テーマを予想して、最強のワードを送ってね</Card.Header>
         <Card.Body>
           <FormProvider {...hookForm}>
             <form onSubmit={handleSubmit(onSubmit)}>
