@@ -67,7 +67,7 @@ export const Dealer = () => {
       {!prepared ? 
         <Row>
           <Col>
-            <Card>
+            <Card className='small-card'>
               <Card.Header className='text-center'>テーマを選択してください</Card.Header>
               <Card.Body>
                 {!inputTheme ? (
