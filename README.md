@@ -13,5 +13,5 @@ Java（Spring Boot）と JavaScript（React）を使って構築した、オン�
 
 ## 使用技術
 - **バックエンド**：Java / Spring Boot / MyBatis / WebSocket
-- **フロントエンド**：JavaScript / React / HTML / CSS
+- **フロントエンド**：JavaScript / React / Bootstrap / HTML / CSS
 - **データベース**：PostgreSQL
