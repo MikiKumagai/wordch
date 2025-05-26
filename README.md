@@ -1,7 +1,8 @@
 # オンラインボードゲーム（リアルタイム対戦）
 
 Java（Spring Boot）と JavaScript（React）を使って構築した、オンラインボードゲームです。
-WebSocket を活用したリアルタイム通信が特徴です。
+
+[このカードゲーム](https://arclightgames.jp/product/651wordocchi/)のルールをベースに作成しています（もちろん非公式）。
 
 ## 特徴
 - WebSocket によるリアルタイム通信（チャット機能がメイン）
