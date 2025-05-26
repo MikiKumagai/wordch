@@ -2,7 +2,7 @@
 
 Java（Spring Boot）と JavaScript（React）を使って構築した、オンラインボードゲームです。
 
-[このカードゲーム](https://arclightgames.jp/product/651wordocchi/)のルールをベースに作成しています（もちろん非公式）。
+[このカードゲーム](https://arclightgames.jp/product/651wordocchi/)のルールをベースに作成しています。
 
 ## 特徴
 - WebSocket によるリアルタイム通信（チャット機能がメイン）
