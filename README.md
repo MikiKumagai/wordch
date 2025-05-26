@@ -1,0 +1,16 @@
+# オンラインボードゲーム（リアルタイム対戦）
+
+Java（Spring Boot）と JavaScript（React）を使って構築した、オンラインボードゲームです。
+WebSocket を活用したリアルタイム通信が特徴です。
+
+## 特徴
+- WebSocket によるリアルタイム通信（チャット機能がメイン）
+- Java（Spring Boot）バックエンド + MyBatis によるデータ管理
+- JavaScript（React）+ HTML/CSS によるフロントエンド
+- 部屋作成、パスワードによるログイン機能
+
+## 使用技術
+- **バックエンド**：Java / Spring Boot / MyBatis / WebSocket
+- **フロントエンド**：JavaScript / HTML / CSS
+- **データベース**：PostgreSQL（または使用してるDBを記載）
+
