@@ -14,3 +14,6 @@ Java（Spring Boot）と JavaScript（React）を使って構築した、オン�
 - **バックエンド**：Java / Spring Boot / MyBatis / WebSocket
 - **フロントエンド**：JavaScript / React / Bootstrap / HTML / CSS
 - **データベース**：PostgreSQL
+
+## プレイ動画リンク
+https://youtu.be/C1W4JaJcVlQ
