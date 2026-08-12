@@ -1,0 +1,16 @@
+aws_region = "ap-northeast-3"
+
+# Replace with a narrow CIDR such as your current global IP plus /32.
+ssh_allowed_cidr = "203.0.113.10/32"
+
+# Public while the S3 website talks directly to the API.
+app_allowed_cidr = "0.0.0.0/0"
+
+# Optional: existing EC2 key pair name.
+key_name = "wordch"
+
+db_username = "kmmk"
+db_password = "change-me"
+
+# Optional: keep this null to generate a unique bucket name.
+# client_bucket_name = "wordch-client"
