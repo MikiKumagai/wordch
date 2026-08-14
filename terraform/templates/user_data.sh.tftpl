@@ -1,11 +1,20 @@
 #!/bin/bash
 set -eux
 
+# EC2 初回起動時に実行されるスクリプトです。
+# Terraform の templatefile から呼ばれ、${db_host} などに実際の値が埋め込まれます。
+
+# OS パッケージを更新します。
 dnf update -y
+
+# Spring Boot の jar を動かすために Java 17 を入れます。
 dnf install -y java-17-amazon-corretto-headless
 
+# アプリ本体と設定ファイルを置くディレクトリを作ります。
 mkdir -p /opt/wordch /etc/wordch
 
+# Spring Boot に渡す環境変数をファイルに書きます。
+# systemd service から EnvironmentFile として読み込まれます。
 cat >/etc/wordch/wordch.env <<'ENV'
 SPRING_PROFILES_ACTIVE=prd
 SPRING_DATASOURCE_URL=jdbc:postgresql://${db_host}:5432/${db_name}
@@ -14,8 +23,11 @@ SPRING_DATASOURCE_PASSWORD=${db_password}
 CORS_ALLOWED_ORIGINS=${cors_allowed_origins}
 ENV
 
+# DB パスワードを含むため、root だけが読める権限にします。
 chmod 600 /etc/wordch/wordch.env
 
+# Spring Boot アプリを systemd service として登録します。
+# /opt/wordch/wordch.jar は、この後のデプロイ手順で配置します。
 cat >/etc/systemd/system/wordch.service <<'SERVICE'
 [Unit]
 Description=wordch API application
@@ -33,5 +45,9 @@ User=root
 WantedBy=multi-user.target
 SERVICE
 
+# systemd に新しい service ファイルを読み込ませます。
 systemctl daemon-reload
+
+# EC2 再起動時にも wordch service が起動するように有効化します。
+# jar はまだ置かれていないため、ここでは start せず enable だけにしています。
 systemctl enable wordch
