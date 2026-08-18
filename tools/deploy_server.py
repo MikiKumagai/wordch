@@ -3,25 +3,19 @@ from pathlib import Path
 
 import paramiko
 
-# プロジェクトのルート
-project_dir = Path(__file__).parent.parent
+root_dir = Path(__file__).parent.parent
+server_dir = root_dir / "server"
 
-# serverディレクトリ
-server_dir = project_dir / "server"
-
-# EC2接続情報
 EC2_USER = "ec2-user"
 EC2_HOST = "ec2-15-152-30-0.ap-northeast-3.compute.amazonaws.com"
 SSH_KEY = Path.home() / ".ssh" / "wordch.pem"
 
-# server に移動して ./gradlew build
 subprocess.run(
     ["./gradlew", "build"],
     cwd=server_dir,
     check=True
 )
 
-# JAR
 jar_path = server_dir / "build" / "libs" / "wordch-0.0.1-SNAPSHOT.jar"
 
 # EC2にSSH接続
@@ -33,7 +27,7 @@ client.connect(
     key_filename=SSH_KEY
 )
 
-# JARをEC2へ転送
+# JARをE転送
 sftp = client.open_sftp()
 
 sftp.put(
@@ -41,17 +35,17 @@ sftp.put(
     "/home/ec2-user/wordch.jar"
 )
 
-# serviceディレクトリ作成、終わるまで待ってファイル転送
+# serviceディレクトリ作成、終わるまで待つ
 stdin, stdout, stderr = client.exec_command("mkdir -p ~/service")
 stdout.channel.recv_exit_status()
 
-# serviceを転送
+# serviceも転送
 sftp.put(
-    project_dir / "service" / "wordch.service",
+    root_dir / "service" / "wordch.service",
     "/home/ec2-user/service/wordch.service"
 )
 sftp.put(
-    project_dir / "service" / "move_service.sh",
+    root_dir / "service" / "move_service.sh",
     "/home/ec2-user/service/move_service.sh"
 )
 
