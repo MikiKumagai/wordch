@@ -12,17 +12,13 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8080
 ```
 
-DB 接続先は `WORDCH_DATABASE_URL` で変更できます。
+SQLite のDBファイルは初回起動時に自動作成されます。保存先は `WORDCH_SQLITE_PATH` で変更できます。
 
 ```bash
-export WORDCH_DATABASE_URL=postgresql://kmmk:uwfyzcyr@localhost:5432/wordch
+export WORDCH_SQLITE_PATH=./wordch.sqlite3
 ```
 
-ローカルDBが未作成の場合は、リポジトリルートから既存の初期化スクリプトを実行してください。
-
-```bash
-./script/init_db.sh
-```
+初期データはリポジトリ内の `db/initdb.d/csv/*.csv` から投入されます。
 
 ## 対応エンドポイント
 

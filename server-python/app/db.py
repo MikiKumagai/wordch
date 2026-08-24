@@ -1,26 +1,87 @@
+import csv
+import sqlite3
 from contextlib import contextmanager
-from datetime import datetime
+from pathlib import Path
 from typing import Any
 
-import psycopg
+from app.config import REPO_ROOT, SQLITE_PATH
 
-from app.config import DATABASE_URL
+
+THEME_CSV = REPO_ROOT / "db" / "initdb.d" / "csv" / "theme.csv"
+DEFAULT_VALUE_CSV = REPO_ROOT / "db" / "initdb.d" / "csv" / "default_value.csv"
 
 
 @contextmanager
 def db_connection():
-    with psycopg.connect(DATABASE_URL) as conn:
+    conn = sqlite3.connect(SQLITE_PATH)
+    conn.row_factory = sqlite3.Row
+    try:
         yield conn
+    finally:
+        conn.close()
 
 
-def row_to_theme(row: tuple[Any, ...]) -> dict[str, Any]:
-    created_at = row[3]
+def init_database() -> None:
+    SQLITE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with db_connection() as conn:
+        conn.execute(
+            """
+            create table if not exists theme (
+              id integer primary key autoincrement,
+              theme text not null unique,
+              active integer default 0,
+              created_at text default current_timestamp,
+              created_by text not null
+            )
+            """
+        )
+        conn.execute(
+            """
+            create table if not exists default_value (
+              id integer primary key autoincrement,
+              value text not null unique,
+              active integer default 0,
+              created_at text default current_timestamp
+            )
+            """
+        )
+        seed_table(conn, "theme", THEME_CSV, ("id", "theme", "active", "created_at", "created_by"))
+        seed_table(conn, "default_value", DEFAULT_VALUE_CSV, ("id", "value", "active", "created_at"))
+        conn.commit()
+
+
+def seed_table(conn: sqlite3.Connection, table: str, csv_path: Path, columns: tuple[str, ...]) -> None:
+    row_count = conn.execute(f"select count(*) from {table}").fetchone()[0]
+    if row_count > 0 or not csv_path.exists():
+        return
+
+    placeholders = ", ".join("?" for _ in columns)
+    column_list = ", ".join(columns)
+    with csv_path.open(newline="", encoding="utf-8") as csv_file:
+        reader = csv.DictReader(csv_file)
+        rows = [
+            tuple(normalize_csv_value(row[column]) for column in columns)
+            for row in reader
+        ]
+    conn.executemany(f"insert or ignore into {table} ({column_list}) values ({placeholders})", rows)
+
+
+def normalize_csv_value(value: str) -> Any:
+    stripped = value.strip()
+    if stripped in {"t", "true", "TRUE"}:
+        return 1
+    if stripped in {"f", "false", "FALSE"}:
+        return 0
+    return stripped
+
+
+def row_to_theme(row: sqlite3.Row) -> dict[str, Any]:
     return {
-        "id": row[0],
-        "theme": row[1],
-        "active": row[2],
-        "createdAt": created_at.isoformat() if isinstance(created_at, datetime) else created_at,
-        "createdBy": row[4],
+        "id": row["id"],
+        "theme": row["theme"],
+        "active": bool(row["active"]),
+        "createdAt": row["created_at"],
+        "createdBy": row["created_by"],
     }
 
 
@@ -34,21 +95,20 @@ def get_theme_list() -> list[dict[str, Any]]:
 
 def toggle_theme(theme_id: int) -> str | None:
     with db_connection() as conn:
-        row = conn.execute(
-            "update theme set active = not active where id = %s returning theme",
-            (theme_id,),
-        ).fetchone()
+        row = conn.execute("select theme from theme where id = ?", (theme_id,)).fetchone()
         if row is None:
             return None
+        conn.execute("update theme set active = case active when 0 then 1 else 0 end where id = ?", (theme_id,))
         conn.commit()
-    return row[0]
+    return row["theme"]
 
 
 def delete_theme(theme_id: int) -> bool:
     with db_connection() as conn:
-        row = conn.execute("delete from theme where id = %s returning id", (theme_id,)).fetchone()
+        row = conn.execute("select id from theme where id = ?", (theme_id,)).fetchone()
         if row is None:
             return False
+        conn.execute("delete from theme where id = ?", (theme_id,))
         conn.commit()
     return True
 
@@ -72,7 +132,7 @@ def select_random_default_values() -> list[str]:
 def insert_user_theme(theme: str) -> None:
     with db_connection() as conn:
         conn.execute(
-            "insert into theme (theme, created_by) values (%s, %s) on conflict (theme) do nothing",
+            "insert or ignore into theme (theme, created_by) values (?, ?)",
             (theme, "user"),
         )
         conn.commit()
