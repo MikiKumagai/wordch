@@ -23,7 +23,7 @@ variable "vpc_cidr" {
   description = "CIDR block for the VPC."
   type        = string
   # CIDR表記:10.20.0.0/24 = 10.20.x.x
-  default     = "10.20.0.0/16"
+  default = "10.20.0.0/16"
 }
 
 # publicサブネット（vpc_cidrの中から設定）
@@ -32,16 +32,7 @@ variable "public_subnet_cidrs" {
   type        = list(string)
   # CIDR表記:10.20.0.0/24 = 10.20.0.x
   # CIDR表記:10.20.1.0/24 = 10.20.1.x
-  default     = ["10.20.0.0/24", "10.20.1.0/24"]
-}
-
-# privateサブネット（vpc_cidrの中から設定）
-variable "private_subnet_cidrs" {
-  description = "CIDR blocks for private subnets."
-  type        = list(string)
-  # CIDR表記:10.20.10.0/24 = 10.20.10.x
-  # CIDR表記:10.20.11.0/24 = 10.20.11.x
-  default     = ["10.20.10.0/24", "10.20.11.0/24"]
+  default = ["10.20.0.0/24", "10.20.1.0/24"]
 }
 
 # EC2にSSH接続できる送信元IP範囲
@@ -51,10 +42,10 @@ variable "ssh_allowed_cidr" {
   type        = string
 }
 
-# APIにリクエストを遅れる送信元IP範囲（全体公開）
+# APIにリクエストを送れる送信元IP範囲（全体公開）
 # terraform.tfvarsに設定
 variable "app_allowed_cidr" {
-  description = "CIDR block allowed to access the Spring Boot app port."
+  description = "CIDR block allowed to access the FastAPI app port."
   type        = string
 }
 
@@ -66,42 +57,15 @@ variable "key_name" {
 }
 
 variable "instance_type" {
-  description = "EC2 instance type for the Spring Boot app."
+  description = "EC2 instance type for the FastAPI app."
   type        = string
   default     = "t3.micro"
 }
 
-variable "db_name" {
-  description = "PostgreSQL database name."
+variable "sqlite_path" {
+  description = "SQLite database file path on the app EC2 instance."
   type        = string
-  default     = "wordch"
-}
-
-# terraform.tfvarsに設定
-variable "db_username" {
-  description = "PostgreSQL master username."
-  type        = string
-}
-
-# sensitive = trueで隠されやすくなる
-# terraform.tfvarsに設定
-variable "db_password" {
-  description = "PostgreSQL master password."
-  type        = string
-  sensitive   = true
-}
-
-variable "db_instance_class" {
-  description = "RDS instance class."
-  type        = string
-  default     = "db.t3.micro"
-}
-
-# 単位はGiB
-variable "db_allocated_storage" {
-  description = "Allocated RDS storage in GiB."
-  type        = number
-  default     = 20
+  default     = "/var/lib/wordch/wordch.sqlite3"
 }
 
 # nullの場合は main.tf の locals の client_bucket_name で

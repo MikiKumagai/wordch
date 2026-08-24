@@ -6,7 +6,6 @@ app_allowed_cidr = "0.0.0.0/0"
 
 key_name = "wordch"
 
-db_username = "username"
-db_password = "password"
+sqlite_path = "/var/lib/wordch/wordch.sqlite3"
 
 # client_bucket_name = "wordch-client"

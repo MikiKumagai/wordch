@@ -2,7 +2,7 @@
 
 # EC2のpublic IP
 output "app_public_ip" {
-  description = "Public IP address of the Spring Boot EC2 instance."
+  description = "Public IP address of the FastAPI EC2 instance."
   value       = aws_instance.app.public_ip
 }
 
@@ -24,8 +24,8 @@ output "client_website_url" {
   value       = local.client_website_url
 }
 
-# RDSのエンドポイント
-output "db_endpoint" {
-  description = "RDS PostgreSQL endpoint."
-  value       = aws_db_instance.postgres.endpoint
+# SQLite DB のパス
+output "sqlite_path" {
+  description = "SQLite database file path on the app EC2 instance."
+  value       = var.sqlite_path
 }
