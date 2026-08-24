@@ -20,6 +20,7 @@ app.add_middleware(
 app.include_router(router)
 
 
+# アプリ起動時にSQLite初期化とルーム掃除タスクを開始する。
 @app.on_event("startup")
 async def startup() -> None:
     init_database()

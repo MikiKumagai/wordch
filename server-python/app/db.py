@@ -11,6 +11,7 @@ THEME_CSV = REPO_ROOT / "db" / "initdb.d" / "csv" / "theme.csv"
 DEFAULT_VALUE_CSV = REPO_ROOT / "db" / "initdb.d" / "csv" / "default_value.csv"
 
 
+# SQLite接続を開き、処理後に必ず閉じる。
 @contextmanager
 def db_connection():
     conn = sqlite3.connect(SQLITE_PATH)
@@ -21,6 +22,7 @@ def db_connection():
         conn.close()
 
 
+# 必要なテーブルを作成し、空の場合だけCSV初期データを投入する。
 def init_database() -> None:
     SQLITE_PATH.parent.mkdir(parents=True, exist_ok=True)
     with db_connection() as conn:
@@ -50,6 +52,7 @@ def init_database() -> None:
         conn.commit()
 
 
+# CSVファイルの内容を指定テーブルへ初期投入する。
 def seed_table(conn: sqlite3.Connection, table: str, csv_path: Path, columns: tuple[str, ...]) -> None:
     row_count = conn.execute(f"select count(*) from {table}").fetchone()[0]
     if row_count > 0 or not csv_path.exists():
@@ -66,6 +69,7 @@ def seed_table(conn: sqlite3.Connection, table: str, csv_path: Path, columns: tu
     conn.executemany(f"insert or ignore into {table} ({column_list}) values ({placeholders})", rows)
 
 
+# CSV上の値をSQLiteに保存しやすい値へ変換する。
 def normalize_csv_value(value: str) -> Any:
     stripped = value.strip()
     if stripped in {"t", "true", "TRUE"}:
@@ -75,6 +79,7 @@ def normalize_csv_value(value: str) -> Any:
     return stripped
 
 
+# SQLiteのテーマ行をJava版互換のJSONキーへ変換する。
 def row_to_theme(row: sqlite3.Row) -> dict[str, Any]:
     return {
         "id": row["id"],
@@ -85,6 +90,7 @@ def row_to_theme(row: sqlite3.Row) -> dict[str, Any]:
     }
 
 
+# 管理画面向けに全テーマをID順で取得する。
 def get_theme_list() -> list[dict[str, Any]]:
     with db_connection() as conn:
         rows = conn.execute(
@@ -93,6 +99,7 @@ def get_theme_list() -> list[dict[str, Any]]:
     return [row_to_theme(row) for row in rows]
 
 
+# 指定テーマのactiveフラグを反転し、対象テーマ名を返す。
 def toggle_theme(theme_id: int) -> str | None:
     with db_connection() as conn:
         row = conn.execute("select theme from theme where id = ?", (theme_id,)).fetchone()
@@ -103,6 +110,7 @@ def toggle_theme(theme_id: int) -> str | None:
     return row["theme"]
 
 
+# 指定テーマを削除し、削除できたかどうかを返す。
 def delete_theme(theme_id: int) -> bool:
     with db_connection() as conn:
         row = conn.execute("select id from theme where id = ?", (theme_id,)).fetchone()
@@ -113,6 +121,7 @@ def delete_theme(theme_id: int) -> bool:
     return True
 
 
+# ゲーム開始時に使う有効テーマをランダムに2件取得する。
 def select_random_themes() -> list[str]:
     with db_connection() as conn:
         rows = conn.execute(
@@ -121,6 +130,7 @@ def select_random_themes() -> list[str]:
     return [row[0] for row in rows]
 
 
+# ゲーム開始時に使う初期ワードをランダムに2件取得する。
 def select_random_default_values() -> list[str]:
     with db_connection() as conn:
         rows = conn.execute(
@@ -129,6 +139,7 @@ def select_random_default_values() -> list[str]:
     return [row[0] for row in rows]
 
 
+# ユーザー入力テーマを重複させずに保存する。
 def insert_user_theme(theme: str) -> None:
     with db_connection() as conn:
         conn.execute(

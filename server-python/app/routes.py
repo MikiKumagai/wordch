@@ -10,16 +10,19 @@ from app.stomp import handle_stomp_websocket
 router = APIRouter()
 
 
+# ヘルスチェック用に固定文字列を返す。
 @router.get("/ping")
 def ping() -> str:
     return "ping"
 
 
+# 管理画面に表示するテーマ一覧を返す。
 @router.get("/api/admin")
 def admin_theme_list() -> list[dict[str, Any]]:
     return get_theme_list()
 
 
+# 指定されたテーマの有効/無効を切り替える。
 @router.get("/api/admin/edit/{theme_id}")
 def edit_theme(theme_id: int) -> str:
     theme = toggle_theme(theme_id)
@@ -28,6 +31,7 @@ def edit_theme(theme_id: int) -> str:
     return f"edit theme{theme}"
 
 
+# 指定されたテーマを削除する。
 @router.get("/api/admin/delete/{theme_id}")
 def remove_theme(theme_id: int) -> str:
     if not delete_theme(theme_id):
@@ -35,6 +39,7 @@ def remove_theme(theme_id: int) -> str:
     return f"delete theme{theme_id}"
 
 
+# SockJSの接続前チェックに必要なサーバー情報を返す。
 @router.get("/gs-guide-websocket/info")
 def sockjs_info() -> dict[str, Any]:
     return {
@@ -45,11 +50,13 @@ def sockjs_info() -> dict[str, Any]:
     }
 
 
+# SockJS互換URLでWebSocket接続を受け付ける。
 @router.websocket("/gs-guide-websocket/{server_id}/{session_id}/websocket")
 async def sockjs_websocket(websocket: WebSocket, server_id: str, session_id: str) -> None:
     await handle_stomp_websocket(websocket, use_sockjs=True)
 
 
+# 素のWebSocket URLでSTOMP接続を受け付ける。
 @router.websocket("/gs-guide-websocket/websocket")
 async def direct_websocket(websocket: WebSocket) -> None:
     await handle_stomp_websocket(websocket, use_sockjs=False)

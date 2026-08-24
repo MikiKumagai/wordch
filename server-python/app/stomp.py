@@ -18,6 +18,7 @@ class StompMessage(BaseModel):
 
 
 class ClientConnection:
+    # WebSocket接続とSockJS利用有無、購読先を保持する。
     def __init__(self, websocket: WebSocket, use_sockjs: bool) -> None:
         self.websocket = websocket
         self.use_sockjs = use_sockjs
@@ -25,15 +26,18 @@ class ClientConnection:
 
 
 class Broker:
+    # 接続中クライアントとtopic購読状態を初期化する。
     def __init__(self) -> None:
         self._clients: set[ClientConnection] = set()
         self._topics: dict[str, set[ClientConnection]] = defaultdict(set)
         self._lock = asyncio.Lock()
 
+    # クライアントをブローカーに登録する。
     async def connect(self, client: ClientConnection) -> None:
         async with self._lock:
             self._clients.add(client)
 
+    # 切断されたクライアントと購読情報をブローカーから外す。
     async def disconnect(self, client: ClientConnection) -> None:
         async with self._lock:
             self._clients.discard(client)
@@ -41,17 +45,20 @@ class Broker:
                 self._topics[destination].discard(client)
             client.subscriptions.clear()
 
+    # クライアントを指定topicに購読登録する。
     async def subscribe(self, client: ClientConnection, subscription_id: str, destination: str) -> None:
         async with self._lock:
             client.subscriptions[subscription_id] = destination
             self._topics[destination].add(client)
 
+    # クライアントの指定購読を解除する。
     async def unsubscribe(self, client: ClientConnection, subscription_id: str) -> None:
         async with self._lock:
             destination = client.subscriptions.pop(subscription_id, None)
             if destination is not None:
                 self._topics[destination].discard(client)
 
+    # 指定topicを購読している全クライアントへメッセージを配信する。
     async def publish(self, destination: str, body: str) -> None:
         async with self._lock:
             subscribers = list(self._topics.get(destination, set()))
@@ -64,6 +71,7 @@ class Broker:
 broker = Broker()
 
 
+# WebSocket接続を受け取り、STOMPフレームを読み続ける。
 async def handle_stomp_websocket(websocket: WebSocket, use_sockjs: bool) -> None:
     await websocket.accept()
     client = ClientConnection(websocket, use_sockjs)
@@ -82,6 +90,7 @@ async def handle_stomp_websocket(websocket: WebSocket, use_sockjs: bool) -> None
         await broker.disconnect(client)
 
 
+# STOMPコマンドごとの処理へ振り分ける。
 async def handle_stomp_message(client: ClientConnection, message: StompMessage, use_sockjs: bool) -> None:
     if message.command in {"CONNECT", "STOMP"}:
         await send_sockjs_message(
@@ -116,6 +125,7 @@ async def handle_stomp_message(client: ClientConnection, message: StompMessage, 
         await client.websocket.close()
 
 
+# /app/... 宛ての送信内容をゲーム処理へ変換する。
 async def route_app_message(destination: str, body: str) -> None:
     parts = destination.strip("/").split("/")
     if len(parts) < 3 or parts[0] != "app":
@@ -165,6 +175,7 @@ async def route_app_message(destination: str, body: str) -> None:
         )
 
 
+# テーマ選択完了メッセージを処理し、必要ならユーザー入力テーマを保存する。
 async def handle_prepared(room_id: str, payload: dict[str, Any]) -> None:
     theme = payload.get("theme", "")
     if payload.get("isUserInput") is True and theme:
@@ -172,10 +183,12 @@ async def handle_prepared(room_id: str, payload: dict[str, Any]) -> None:
     await broker.publish(f"/topic/prepared/{room_id}", theme)
 
 
+# dictをJSON文字列にしてtopicへ配信する。
 async def publish_json(destination: str, payload: dict[str, Any]) -> None:
     await broker.publish(destination, json.dumps(payload, ensure_ascii=False))
 
 
+# STOMP bodyをJSON dictとして読み取る。
 def parse_json_body(body: str) -> dict[str, Any]:
     if not body:
         return {}
@@ -186,6 +199,7 @@ def parse_json_body(body: str) -> dict[str, Any]:
     return data if isinstance(data, dict) else {}
 
 
+# SockJS形式または素のWebSocket形式の受信データからSTOMPペイロードを取り出す。
 def parse_sockjs_payload(raw: str, use_sockjs: bool) -> list[str]:
     if not use_sockjs:
         return [raw]
@@ -200,6 +214,7 @@ def parse_sockjs_payload(raw: str, use_sockjs: bool) -> list[str]:
     return [raw]
 
 
+# STOMPペイロード文字列をフレーム単位に分解する。
 def parse_stomp_messages(payload: str) -> list[StompMessage]:
     messages: list[StompMessage] = []
     for frame in payload.split("\x00"):
@@ -219,6 +234,7 @@ def parse_stomp_messages(payload: str) -> list[StompMessage]:
     return messages
 
 
+# STOMP送信用のフレーム文字列を組み立てる。
 def build_frame(command: str, headers: dict[str, str] | None = None, body: str = "") -> str:
     header_lines = [command]
     for key, value in (headers or {}).items():
@@ -226,6 +242,7 @@ def build_frame(command: str, headers: dict[str, str] | None = None, body: str =
     return "\n".join(header_lines) + "\n\n" + body + "\x00"
 
 
+# 接続方式に合わせてSTOMPフレームをWebSocketへ送信する。
 async def send_sockjs_message(websocket: WebSocket, frame: str, use_sockjs: bool = True) -> None:
     if use_sockjs:
         await websocket.send_text("a" + json.dumps([frame]))
@@ -233,6 +250,7 @@ async def send_sockjs_message(websocket: WebSocket, frame: str, use_sockjs: bool
         await websocket.send_text(frame)
 
 
+# クライアントの購読IDを付けてMESSAGEフレームを送信する。
 async def send_message_to_client(client: ClientConnection, destination: str, body: str) -> None:
     subscription_id = next(
         (

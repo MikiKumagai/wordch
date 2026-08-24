@@ -6,6 +6,7 @@ from app.config import ROOM_EXPIRATION_SECONDS
 
 
 class RoomRoles:
+    # 部屋ごとの親と参加プレイヤー一覧を初期化する。
     def __init__(self) -> None:
         self.dealer = ""
         self.players: set[str] = set()
@@ -16,6 +17,7 @@ room_roles: dict[str, RoomRoles] = {}
 room_lock = asyncio.Lock()
 
 
+# 一定時間更新されていない部屋の役職状態を削除する。
 async def cleanup_rooms() -> None:
     while True:
         await asyncio.sleep(ROOM_EXPIRATION_SECONDS)
@@ -30,6 +32,7 @@ async def cleanup_rooms() -> None:
                 room_roles.pop(room_id, None)
 
 
+# 役職選択メッセージを反映し、現在の親とプレイヤー一覧を返す。
 async def update_role_amount(room_id: str, payload: dict[str, Any]) -> dict[str, Any]:
     async with room_lock:
         room = room_roles.setdefault(room_id, RoomRoles())
@@ -37,6 +40,7 @@ async def update_role_amount(room_id: str, payload: dict[str, Any]) -> dict[str,
         user = payload.get("user", "")
         role = payload.get("role", "")
 
+        # 同じ役職の再選択は解除扱いにし、親は1人だけにする。
         if role == "player":
             if user in room.players:
                 room.players.remove(user)
