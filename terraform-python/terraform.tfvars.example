@@ -1,0 +1,11 @@
+aws_region = "ap-northeast-3"
+
+ssh_allowed_cidr = "203.0.113.10/32"
+
+app_allowed_cidr = "0.0.0.0/0"
+
+key_name = "wordch"
+
+sqlite_path = "/var/lib/wordch/wordch.sqlite3"
+
+# client_bucket_name = "wordch-client"
