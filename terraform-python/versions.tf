@@ -23,4 +23,5 @@ terraform {
 # terraform plan / terraform apply のときに使われる
 provider "aws" {
   region = var.aws_region
+  profile = "wordch"
 }

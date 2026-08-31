@@ -1,38 +1,63 @@
-# wordch Terraform
+# wordch Terraform for Python
 
-AWS に `wordch` の本番用リソースを作るためのたたき台です。
+AWSにPython版 `wordch` を配置するためのTerraformです。FastAPIサーバーはEC2上でsystemdサービスとして起動し、SQLite DBはEC2内のファイルとして保存します。
 
-作るもの:
+## 作るもの
 
-- React 配信用の S3 static website bucket
-- FastAPI API 用の EC2
-- EC2 ローカルの SQLite 保存先
-- VPC、public subnets、security group
+- React配信用のS3 static website bucket
+- FastAPI API用のEC2
+- SQLite DB保存用ディレクトリ
+- VPC、public subnets、Internet Gateway、route table
+- EC2用security group
 
-## 使い方
+RDSは作りません。Python版はSQLiteを使うため、DB用subnetや5432番ポートも不要です。
+
+## 前提
+
+- Terraform CLI
+- AWS CLIの認証設定
+- EC2へSSHするためのKey Pair
+- ReactのビルドとS3 syncに使うAWS権限
+
+## 初期設定
 
 ```bash
 cd terraform-python
 cp terraform.tfvars.example terraform.tfvars
 ```
 
-`terraform.tfvars` の `ssh_allowed_cidr`、必要なら `key_name` や `sqlite_path` を変更します。
+`terraform.tfvars` の主な項目:
+
+| 変数 | 説明 |
+| --- | --- |
+| `aws_region` | デプロイ先リージョン |
+| `ssh_allowed_cidr` | SSHを許可する送信元CIDR |
+| `app_allowed_cidr` | API 8080番を許可する送信元CIDR |
+| `key_name` | EC2 Key Pair名 |
+| `sqlite_path` | EC2上のSQLite DB保存先 |
+| `client_bucket_name` | 任意。指定しない場合はランダムsuffix付きで作成 |
+
+## Terraform実行
 
 ```bash
 terraform init
+terraform fmt
+terraform validate
 terraform plan
 terraform apply
 ```
 
-`apply` 後、`api_url` を使って React をビルドします。
+`apply` 後に確認するoutput:
 
-```bash
-cd ../client
-REACT_APP_API_URL=http://example.compute.amazonaws.com:8080 npm run build
-aws s3 sync build/ s3://<client_bucket_name> --delete
-```
+- `app_public_ip`: SSH接続先
+- `api_url`: Reactの `REACT_APP_API_URL`
+- `client_bucket_name`: React buildを配置するS3 bucket
+- `client_website_url`: 公開される画面URL
+- `sqlite_path`: EC2上のSQLite DBファイルパス
 
-FastAPI アプリは EC2 に配置して、仮想環境を作成してから systemd を起動します。
+## APIデプロイ
+
+FastAPIアプリとCSV初期データをEC2へ配置します。
 
 ```bash
 cd ..
@@ -51,8 +76,45 @@ ssh ec2-user@<app_public_ip> '
 '
 ```
 
-## メモ
+確認:
 
-- SQLite は EC2 の `sqlite_path` に保存します。EC2を作り直すとDBも消えるため、必要なら別途バックアップしてください。
-- API の 8080 は S3 website から直接呼ぶ前提で公開しています。
-- HTTPS や独自ドメインを使う場合は、次の段階で CloudFront、ACM、Route 53、ALB を追加する想定です。
+```bash
+curl http://<app_public_ip>:8080/ping
+curl http://<app_public_ip>:8080/api/admin
+```
+
+ログ確認:
+
+```bash
+ssh ec2-user@<app_public_ip> 'sudo journalctl -u wordch -f'
+```
+
+## Reactデプロイ
+
+Terraform outputの `api_url` を使ってReactをビルドし、S3へ配置します。
+
+```bash
+cd client
+REACT_APP_API_URL=http://example.compute.amazonaws.com:8080 npm run build
+aws s3 sync build/ s3://<client_bucket_name> --delete
+```
+
+## SQLite運用メモ
+
+- SQLite DBは `sqlite_path` に保存されます。
+- EC2を作り直すとDBも消えるため、必要な場合はバックアップしてください。
+- 初回起動時、DBが空なら `db/initdb.d/csv/*.csv` から初期データが入ります。
+- 既にデータがある場合、CSV seedはスキップされます。
+
+バックアップ例:
+
+```bash
+ssh ec2-user@<app_public_ip> 'sudo cp /var/lib/wordch/wordch.sqlite3 /tmp/wordch.sqlite3'
+scp ec2-user@<app_public_ip>:/tmp/wordch.sqlite3 ./wordch.sqlite3.backup
+```
+
+## 注意
+
+- APIの8080番はS3 websiteから直接呼ぶ前提で公開しています。
+- HTTPSや独自ドメインはまだ含めていません。必要ならCloudFront、ACM、Route 53、ALBを追加します。
+- 既にRDS付きの古い `terraform-python` をapply済みの場合、現在の構成をapplyするとRDS関連リソースは削除対象になります。
