@@ -1,8 +1,8 @@
 # wordch
 
-ワード当て系のオンラインボードゲームです。
+ワード当て系のオンラインボードゲーム
 
-[このカードゲーム](https://arclightgames.jp/product/651wordocchi/)のルールをベースに、親とプレイヤーが同じ部屋に入り、WebSocketでゲーム進行を同期します。
+[このカードゲーム](https://arclightgames.jp/product/651wordocchi/)のルールをベースに、親とプレイヤーが同じ部屋に入り、WebSocketでゲーム進行を同期する
 
 ## 特徴
 
@@ -32,7 +32,7 @@ terraform-python/  Python版をAWSへ置くTerraform
 
 ## ローカル起動
 
-Python版APIを起動します。
+Python版APIを起動
 
 ```bash
 cd server-python
@@ -42,7 +42,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8080
 ```
 
-Reactクライアントを起動します。
+Reactクライアントを起動
 
 ```bash
 cd client
@@ -50,54 +50,31 @@ npm install
 npm start
 ```
 
-ブラウザで `http://localhost:3000` を開きます。`client/package.json` の `proxy` が `http://localhost:8080` を向いているため、ローカルではAPI URLを明示しなくても動かせます。
+ブラウザで `http://localhost:3000` を開く。`client/package.json` の `proxy` が `http://localhost:8080` を向いているため、ローカルではAPI URLを明示しなくても動作する。
 
 ## データ
 
-Python版はSQLiteを使います。初回起動時に `server-python/wordch.sqlite3` が作成され、`db/initdb.d/csv/*.csv` から初期データが投入されます。
+Python版はSQLiteを使う。初回起動時に `server-python/wordch.sqlite3` が作成され、`db/initdb.d/csv/*.csv` から初期データが投入される。
 
-DBファイルの保存先を変える場合は `WORDCH_SQLITE_PATH` を指定します。
+DBファイルの保存先を変える場合は `WORDCH_SQLITE_PATH` を指定する。
 
 ```bash
 export WORDCH_SQLITE_PATH=/path/to/wordch.sqlite3
 ```
 
-Java版はPostgreSQLを使います。ローカルDBを作る場合は次を実行します。
+Java版はPostgreSQLを使う。ローカルDBを作る場合は次を実行する。
 
 ```bash
 ./script/init_db.sh
 ```
 
-## API
-
-HTTP:
-
-- `GET /ping`
-- `GET /api/admin`
-- `GET /api/admin/edit/{theme_id}`
-- `GET /api/admin/delete/{theme_id}`
-
-WebSocket/STOMP:
-
-- 接続先: `/gs-guide-websocket`
-- publish: `/app/start/{roomId}`
-- publish: `/app/prepared/{roomId}`
-- publish: `/app/role/{roomId}`
-- publish: `/app/answer/{roomId}`
-- publish: `/app/winner/{roomId}`
-- publish: `/app/final/{roomId}`
-- publish: `/app/final/select/{roomId}`
-- publish: `/app/final/theme/{roomId}`
-
-配信先は対応する `/topic/.../{roomId}` です。
-
 ## AWSデプロイ
 
-Python版は [terraform-python/README.md](./terraform-python/README.md) を参照してください。EC2上でFastAPIをsystemdサービスとして動かし、SQLiteはEC2内のファイルとして保存します。
+Python版は [terraform-python/README.md](./terraform-python/README.md) を参照。EC2上でFastAPIをsystemdサービスとして動かし、SQLiteはEC2内のファイルとして保存する。
 
-Java版は [terraform-java/README.md](./terraform-java/README.md) を参照してください。
+Java版は [terraform-java/README.md](./terraform-java/README.md) を参照。
 
 ## 注意
 
 - HTTPSや独自ドメインはまだTerraformに含めていません。
-- `server-python/wordch.sqlite3` や `.venv` はGit管理対象外です。
+- `server-python/wordch.sqlite3` や `.venv` はGit管理対象外。

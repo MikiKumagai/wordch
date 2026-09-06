@@ -1,6 +1,6 @@
 # wordch Terraform for Python
 
-AWSにPython版 `wordch` を配置するためのTerraformです。FastAPIサーバーはEC2上でsystemdサービスとして起動し、SQLite DBはEC2内のファイルとして保存します。
+AWSにPython版 `wordch` を配置するためのTerraform。FastAPIサーバーはEC2上でsystemdサービスとして起動し、SQLite DBはEC2内のファイルとして保存する。
 
 ## 作るもの
 
@@ -10,7 +10,7 @@ AWSにPython版 `wordch` を配置するためのTerraformです。FastAPIサー
 - VPC、public subnets、Internet Gateway、route table
 - EC2用security group
 
-RDSは作りません。Python版はSQLiteを使うため、DB用subnetや5432番ポートも不要です。
+Python版はSQLiteを使うため、DB用subnetや5432番ポートは不要
 
 ## 前提
 
@@ -57,7 +57,7 @@ terraform apply
 
 ## APIデプロイ
 
-FastAPIアプリとCSV初期データをEC2へ配置します。
+FastAPIアプリとCSV初期データをEC2へ配置する。
 
 ```bash
 cd ..
@@ -91,7 +91,7 @@ ssh ec2-user@<app_public_ip> 'sudo journalctl -u wordch -f'
 
 ## Reactデプロイ
 
-Terraform outputの `api_url` を使ってReactをビルドし、S3へ配置します。
+Terraform outputの `api_url` を使ってReactをビルドし、S3へ配置する。
 
 ```bash
 cd client
@@ -101,10 +101,10 @@ aws s3 sync build/ s3://<client_bucket_name> --delete
 
 ## SQLite運用メモ
 
-- SQLite DBは `sqlite_path` に保存されます。
-- EC2を作り直すとDBも消えるため、必要な場合はバックアップしてください。
-- 初回起動時、DBが空なら `db/initdb.d/csv/*.csv` から初期データが入ります。
-- 既にデータがある場合、CSV seedはスキップされます。
+- SQLite DBは `sqlite_path` に保存される。
+- EC2を作り直すとDBも消えるため、必要に応じてバックアップする。
+- 初回起動時、DBが空なら `db/initdb.d/csv/*.csv` から初期データが入る。
+- 既にデータがある場合、CSV seedはスキップされる。
 
 バックアップ例:
 
@@ -115,6 +115,6 @@ scp ec2-user@<app_public_ip>:/tmp/wordch.sqlite3 ./wordch.sqlite3.backup
 
 ## 注意
 
-- APIの8080番はS3 websiteから直接呼ぶ前提で公開しています。
-- HTTPSや独自ドメインはまだ含めていません。必要ならCloudFront、ACM、Route 53、ALBを追加します。
-- 既にRDS付きの古い `terraform-python` をapply済みの場合、現在の構成をapplyするとRDS関連リソースは削除対象になります。
+- APIの8080番は、S3 websiteで配信するReactクライアントから直接呼び出す前提で公開
+- HTTPSや独自ドメインはまだ含めていない
+- 既にRDS付きの古い `terraform-python` をapply済みの場合、現在の構成をapplyするとRDS関連リソースは削除対象になる
